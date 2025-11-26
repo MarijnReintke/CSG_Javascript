@@ -1,23 +1,26 @@
 var xPositie = 0;
 var yPositie = 30;
-var schaal = 0.25;
+var schaal = 0.5;
 
 function setup() {
   canvas = createCanvas(1000,300);
   canvas.parent('processing');
-  frameRate(15);
+  frameRate(60);
   colorMode(RGB,255,255,255,1);
   background(0,0,75,1);
 }
 
 function draw() {
-  background(0,0,75,1);
-  tekenSter(xPositie,yPositie);
+  background(0,0,75,0.1);
+  tekenSter(xPositie,yPositie,schaal);
+  yPositie += 0.25;
+  xPositie += 2;
+  schaal += 0.05
 }
 
-function tekenSter(x,y) {
+function tekenSter(x,y,s) {
   push();
-  scale(1);
+  scale(s);
   strokeWeight(2);
   stroke('white');
   fill('khaki');

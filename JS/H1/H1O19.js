@@ -1,4 +1,5 @@
 var p = 100;
+var q = 100
 
 function setup() {
   canvas = createCanvas(450,450);
@@ -30,7 +31,9 @@ function tekenVierkant(p) {
   push();
   strokeWeight(1);
   stroke('red');
-
+  line(0,p,p,0)
+  line(p,0,p,0)
+  line()
   pop();
 }
 
