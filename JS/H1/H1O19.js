@@ -31,9 +31,10 @@ function tekenVierkant(p) {
   push();
   strokeWeight(1);
   stroke('red');
-  line(0,p,p,0)
-  line(p,0,p,0)
-  line()
+  line(0,height-p,p,0);
+  line(p,0,width,p);
+  line(width,p,width-p,height);
+  line(width-p,height,0,height-p)
   pop();
 }
 
