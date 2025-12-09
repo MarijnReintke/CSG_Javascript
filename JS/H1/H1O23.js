@@ -29,7 +29,7 @@ function draw() {
   y = constrain(y,0,height - 100);
   x = constrain(x,0,width - 100)
 
-  if (y >= 75 && y <= 225 && x >= 700) {
+  if (y >= 75 && y <= 225 && x >= 700 && x<= 875) {
     fill('chartreuse');
   }
   else {
