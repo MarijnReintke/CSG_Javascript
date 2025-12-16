@@ -78,10 +78,10 @@ function draw() {
   afstand2 = dist(xPlr,yPlr,posX2,posY2)
 
   if (xPlr > width-20-straal/2 && level == 10) {
-    levelComplete();
+    winScherm();
   }
   if (xPlr > width-20-straal/2) {
-    winScherm()
+    levelComplete();
   }
 
   if (afstand1 < straal*1.5 || afstand2 < straal*1.5) {
@@ -108,10 +108,10 @@ function eindScherm() {
 
 function levelComplete() {
   level += 1;
-  Yvel1 = abs(Yvel1 * 1.1);
-  Xvel1 = abs(Xvel1 * 1.15);
-  Yvel2 = abs(Yvel2 * 1.15);
-  Xvel2 = abs(Xvel2 * 1.05);
+  Yvel1 = abs(Yvel1 * 1.2);
+  Xvel1 = abs(Xvel1 * 1.2);
+  Yvel2 = abs(Yvel2 * 1.2);
+  Xvel2 = abs(Xvel2 * 1.2);
 
   yPlr = height/2;
   xPlr = straal;

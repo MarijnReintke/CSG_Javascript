@@ -1,7 +1,8 @@
 var aantal = 5;
+var Nbloemen = 6;
 
 function setup() {
-  canvas = createCanvas(450,450);
+  canvas = createCanvas(1000,200);
   canvas.parent('processing');
   frameRate(10);
   colorMode(RGB, 255, 255, 255, 1);
@@ -13,8 +14,23 @@ function setup() {
 function draw() {
   background('lavender');
   fill('black');
-  text("aantal = " + aantal,10,20);    
-  translate(225,225);
+  text("aantal = " + aantal,10,20);
+  translate(width/(Nbloemen*2), height/2)
+  for (var n = 0; n < Nbloemen;n++) {
+  tekenBloem(0.4)
+  translate(width/Nbloemen,0)
+  }
+  if (keyIsDown(LEFT_ARROW) && aantal >= 2) {
+    aantal--;
+  }
+  if (keyIsDown(RIGHT_ARROW)) {
+    aantal++;
+  }   
+}
+
+function tekenBloem(s) {
+  push()
+  scale(s)
   fill(178, 34, 34,0.7);
   for (var n = 0;n < aantal;n++) {
     ellipse(0,0,400,50);
@@ -25,11 +41,6 @@ function draw() {
     rect(0,0,75,75)
     rotate(360 / aantal);
   }
-  if (keyIsDown(LEFT_ARROW) && aantal >= 2) {
-    aantal--;
-  }
-  if (keyIsDown(RIGHT_ARROW)) {
-    aantal++;
-  }   
+  pop()
 }
 
