@@ -1,4 +1,4 @@
-var aantalLagen = 10;
+var aantalLagen = 21;
 var breedte = 90;
 var hoogte;
 var y = 0;
@@ -16,7 +16,7 @@ function setup() {
 function draw() {
   for (var laag = 1; laag <= aantalLagen;laag++) {
   tekenRij(laag,(aantalLagen-laag)*breedte/2, y);
-  y += breedte/2
+  y += hoogte
   }
 }
 
