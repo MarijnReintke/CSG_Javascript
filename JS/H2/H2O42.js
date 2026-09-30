@@ -1,4 +1,4 @@
-class Bom {
+class rasterObject {
   constructor(sprite,stap) {
     this.x = floor(random(1,raster.aantalKolommen))*raster.celGrootte;
     this.y = floor(random(0,raster.aantalRijen))*raster.celGrootte;
@@ -11,17 +11,7 @@ class Bom {
   }
 }
 
-class Vijand {
-  constructor(sprite,stap) {
-    this.x = floor(random(1,raster.aantalKolommen))*raster.celGrootte;
-    this.y = floor(random(0,raster.aantalRijen))*raster.celGrootte;
-    this.sprite = sprite;
-    this.stapGrootte = stap;    
-  }   
-  
-  toon() {
-    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
-  }  
+class Vijand extends rasterObject { 
 
   beweeg() {
     this.x += floor(random(-1,2))*this.stapGrootte;
@@ -32,21 +22,14 @@ class Vijand {
   }
 }
 
-class Jos {
-  constructor(sprite,stap) {
-    this.x = 0;
-    this.y = 200;
-    this.sprite = sprite;
-    this.stapGrootte = stap;
-
-    this.gehaald = false;
-    this.aanDeBeurt = true;
-    this.staOpBom = false;
-  }
-
-  toon() {
-    image(this.sprite,this.x,this.y,raster.celGrootte,raster.celGrootte);
-  }
+class Jos extends rasterObject {
+  constructor(sprite,stap) { 
+    super(sprite,stap);
+    this.x = 0 
+    this.gehaald = false; 
+    this.aanDeBeurt = true; 
+    this.staOpBom = false; 
+} 
   
   beweeg() {
     if (keyIsDown(RIGHT_ARROW)) {
@@ -109,7 +92,7 @@ function setup() {
   raster.berekenCelGrootte();
   
   for (var b = 0;b < 60;b++) {
-    bommenArray.push(new Bom(bomPlaatje,0));
+    bommenArray.push(new rasterObject(bomPlaatje,0));
   }
   
   eve = new Jos(evePlaatje,raster.celGrootte);    

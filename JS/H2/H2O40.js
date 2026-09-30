@@ -1,4 +1,6 @@
-class Bom {
+var aantalBommen = 70
+
+class Raster {
   constructor() {
     this.x = floor(random(1,raster.aantalKolommen))*raster.celGrootte;
     this.y = floor(random(0,raster.aantalRijen))*raster.celGrootte;
@@ -56,7 +58,11 @@ class Jos {
   }
   
   staatOp(bommenLijst) {
-
+    for (var a = 0; a < bommenLijst.length; a++) {
+      if (this.x == bommenLijst[a].x && this.y == bommenLijst[a].y) {
+        this.staOpBom = true
+      }
+    }
     return this.staOpBom;
   }  
   
@@ -66,7 +72,7 @@ class Jos {
 }
 
 function preload() {
-  brug = loadImage("images/backgrounds/dame_op_brug_1800.jpg");
+  brug = loadImage("images/backgrounds/overloper.jpg");
   bomPlaatje = loadImage("images/sprites/bom_100px.png");
 }
 
@@ -79,10 +85,13 @@ function setup() {
   textFont("Verdana");
   textSize(90);
   
-  raster = new Raster(6,9);
+  raster = new Raster(12,18);
   
   raster.berekenCelGrootte();
-  bom1 = new Bom();
+  
+  for (var a = 0; a < aantalBommen; a++) {
+    bommenArray.push(new Bom())
+  }
   
   eve = new Jos();
   eve.stapGrootte=1*raster.celGrootte;
@@ -102,8 +111,9 @@ function setup() {
 
 function draw() {
   background(brug);
-  raster.teken();
-  bom1.toon();
+  for (var a = 0; a < bommenArray.length; a++) {
+    bommenArray[a].toon()
+  }
 
   if (eve.aanDeBeurt) {
     eve.beweeg();

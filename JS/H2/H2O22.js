@@ -3,20 +3,23 @@ var bal = {
   straal: null,
   x: null,
   y: 0,
-  snelheidX: 8,
-  snelheidY: 5,
-  demping: 1.0,
+  snelheidX: 12,
+  snelheidY: 0,
+  demping: 0.8,
+  versnelling: 0.2,
   
   beweeg() {
-    
+    this.snelheidY += this.versnelling
     this.x += this.snelheidX;
     this.y += this.snelheidY;
     
     if (this.x <= this.straal || this.x >= canvas.width - this.straal) {
+      this.x = constrain(this.x, this.straal, canvas.width - this.straal)
       this.snelheidX *= -this.demping;
     }
     
-    if (this.y <= this.straal || this.y >= canvas.height - this.straal) {
+    if (this.y >= canvas.height - this.straal) {
+      this.y = canvas.height - this.straal;
       this.snelheidY *= -this.demping;
       this.snelheidX *= this.demping;
     }

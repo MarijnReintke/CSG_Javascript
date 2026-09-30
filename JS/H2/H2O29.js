@@ -20,12 +20,13 @@ var raster = {
 }
 
 var jos = {
-  x: 400,
+  x: 0,
   y: 300,
   animatie: [],
   aantalFrames: 6,
   frameNummer: 3,
   stapGrootte: null,
+  gehaald: false,
 
   beweeg() {
     if (keyIsDown(LEFT_ARROW)) {
@@ -45,8 +46,11 @@ var jos = {
       this.frameNummer = 5;
     }
     
-    this.x = constrain(this.x,0,canvas.width-raster.celGrootte);
+    this.x = constrain(this.x,0,canvas.width);
     this.y = constrain(this.y,0,canvas.height-raster.celGrootte);
+    if (this.x == canvas.width) {
+      this.gehaald = true;
+    };
   },
   
   wordtGeraakt(vijand) {
@@ -112,4 +116,15 @@ function draw() {
   if (jos.wordtGeraakt(alice)) {
     noLoop();
   }
+  if (jos.gehaald) {
+    noLoop()
+    eindscherm()
+  }
+}
+
+function eindscherm() {
+  background(0,125,0)
+  fill("white")
+  textSize(100)
+  text("Je hebt gewonnen!",25,height/2+25)
 }

@@ -2,7 +2,7 @@ class Vis {
   constructor() {
     this.x = -170;
     this.y = 100;
-    this.snelheid = 10;
+    this.snelheid = 7.5;
     this.gegeten = 0;
   }
   
@@ -17,7 +17,7 @@ class Vis {
   }
   
   eet(p) {
-    if (dist(this.x + 155,this.y + 60,p.x,p.y) < 20) {
+    if (dist(this.x + 155,this.y + 60,p.x,p.y) < 30) {
       return true;
     }
     else {
@@ -50,8 +50,8 @@ class Prooi {
   }
   
   beweeg() {
-    this.x += random(-15,15);
-    this.y += random(-25,25);
+    this.x += random(-5,5);
+    this.y += random(-5,5);
     this.x = constrain(this.x,700,800);
     this.y = constrain(this.y,20,580);
   }
@@ -68,7 +68,7 @@ class Prooi {
 function setup() {
   canvas = createCanvas(900,600);
   canvas.parent('processing');
-  frameRate(10);
+  frameRate(25);
   textFont("Verdana");
   textSize(90);
   gup = new Vis();

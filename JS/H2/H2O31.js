@@ -1,12 +1,15 @@
-var dobbelSteen = {
-  x: 25,
-  y: 25,
-  grootte: 200,
-  diameterOgen: 50,
-  ogen: null,
-  R: null,
-  G: null,
-  B: null,
+class DobbelSteen {
+
+  constructor(x) {
+    this.x = x;
+    this.y = 25;
+    this.grootte = 200;
+    this.diameterOgen = 50;
+    this.ogen = null;
+    this.R = null;
+    this.G = null;
+    this.B = null;
+  }
 
   gooi() {
     this.ogen = floor(random(0,6)) + 1;
@@ -14,7 +17,7 @@ var dobbelSteen = {
     this.R = round(random(0,255));
     this.G = round(random(0,255));
     this.B = round(random(0,255));
-  },
+  }
   
   teken() {
     push();
@@ -42,14 +45,21 @@ function setup() {
   noStroke();
   textFont("Georgia");
   textSize(80);
-  frameRate(10);
+  frameRate(60);
   background('lightcyan');
+  dob1 = new DobbelSteen(25);
+  dob2 = new DobbelSteen(200+50);
+  dob3 = new DobbelSteen(400+75);
 }
 
 function draw() {
   if (mouseIsPressed) {
-    dobbelSteen.gooi();
+    dob1.gooi();
+    dob2.gooi();
+    dob3.gooi();
     background('lightcyan');
-    dobbelSteen.teken();
+    dob1.teken();
+    dob2.teken();
+    dob3.teken();
   }
 }

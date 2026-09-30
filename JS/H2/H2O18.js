@@ -4,9 +4,10 @@ var jos = {
   schaal: 1.0,
   naam: "Jos",
   
-  teken(muisPositieX) {
+  teken(muisPositieX, muisPositieY) {
     this.x = muisPositieX;
-
+    this.y = constrain(muisPositieY,100,150);
+    this.schaal = this.x / (0.25*width);
     // de regels hieronder tot en met pop() zorgen dat Jos wordt getekend. Je hoeft ze niet aan te passen.
     
     push();
@@ -44,7 +45,7 @@ function setup() {
 
 function draw() {
   background('lavender');
-  jos.teken(500);
+  jos.teken(mouseX, mouseY);
   
-  text(jos.naam+" wordt getekend op x-positie (middelpunt neus) " + jos.x + ".",20,20);
+  text(jos.naam+" wordt getekend op x-positie " + jos.x + " met een schaal van " + jos.schaal + ".",20,20);
 }

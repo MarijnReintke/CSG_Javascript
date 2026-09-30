@@ -81,7 +81,8 @@ class Vijand {
   }
 
   beweeg() {
-    this.x += floor(random(-1,2))*this.stapGrootte;
+    this.random = floor(random(-1,2));
+    this.x += this.random*this.stapGrootte;
     this.y += floor(random(-1,2))*this.stapGrootte;
 
     this.x = constrain(this.x,0,canvas.width - raster.celGrootte);
@@ -100,7 +101,7 @@ function preload() {
 function setup() {
   canvas = createCanvas(900,600);
   canvas.parent('processing');
-  frameRate(10);
+  frameRate(5);
   textFont("Verdana");
   textSize(90);
   
@@ -134,6 +135,10 @@ function draw() {
   alice.toon();
   bob.toon();
   
+  if (bob.x == alice.x && bob.y == alice.y) {
+    bob.beweeg()
+  }
+
   if (eve.wordtGeraakt(alice) || eve.wordtGeraakt(bob)) {
     noLoop();
   }

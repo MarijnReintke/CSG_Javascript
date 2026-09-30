@@ -48,8 +48,6 @@ function draw() {
     knikkerVerzameling[i].teken();
   } 
   if (mouseIsPressed) {
-    for (var i = 0; i < knikkerVerzameling.length; i++) {
-      knikkerVerzameling[i].beweeg();
-    }
+      knikkerVerzameling.push(new Knikker(mouseX,mouseY,'red'))
   }
 }
