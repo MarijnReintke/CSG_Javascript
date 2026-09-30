@@ -12,6 +12,10 @@ class Obstruction {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
+    if (this.x == 0 && this.y == 0) {
+      obstructions.splice(obstructions.indexOf(this),1)
+    }
+
     push();
     noStroke();
     fill(100,100,100,1-this.transparency)
@@ -36,7 +40,6 @@ class Hazard {
 
     push();
     noStroke();
-    print((hazards.indexOf(this)+1)*255/(hazards.length))
     if (!(hazards.indexOf(this) == -1)) {
       fill((hazards.indexOf(this)+1)*255/(hazards.length),0,0,1-this.transparency)
     }
@@ -152,13 +155,6 @@ class Plr {
 
   collisionCheck() {
 
-    for (var a = 0; a < obstructions.length; a++) {
-      if (obstructions[a].x == this.targetX && obstructions[a].y == this.targetY) {
-        this.targetX = this.previousX
-        this.targetY = this.previousY
-      }
-    }
-
     for (var a = 0; a < winBlocks.length; a++) {
       if (winBlocks[a].x == this.targetX && winBlocks[a].y == this.targetY) {
 
@@ -166,7 +162,15 @@ class Plr {
         for (var a=0;a < winBlocks.length;a++) {
           winBlocks.splice(a,1)
         }
+        win = true
 
+      }
+    }
+
+    for (var a = 0; a < obstructions.length; a++) {
+      if (obstructions[a].x == this.targetX && obstructions[a].y == this.targetY) {
+        this.targetX = this.previousX
+        this.targetY = this.previousY
       }
     }
 
@@ -175,6 +179,8 @@ class Plr {
   hazardCheck() {
     for (var a = 0; a < hazards.length; a++) {
       if (hazards[a].x == this.targetX && hazards[a].y == this.targetY) {
+        moves = 0
+        hazards.splice(0,hazards.length)
         this.respawn()
       }
     }
@@ -187,6 +193,7 @@ class Plr {
 var targetFrameRate = 60
 
 var plr;
+var win = false
 
 var gridSize = 40;
 var gridWith = 25;
@@ -195,7 +202,7 @@ var gridHeight = 15;
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
-var MODE = 2
+var MODE = 1
 
 var currentHazard = null;
 var moves = 0
@@ -216,20 +223,30 @@ function setup() {
   colorMode(RGB,255,255,255,1)
   frameRate(targetFrameRate)
   plr = new Plr(0,0)
-  for (var a=0;a < 1;a++) {
-    winBlock = new WinBlock(randomXPos(),randomYPos());
-    winBlocks.push(winBlock)
-  }
   for (var a=0;a < 100;a++) {
     obstruction = new Obstruction(randomXPos(),randomYPos())
     obstructions.push(obstruction)
   }
+  for (var a=0;a < 1;a++) {
+    winBlock = new WinBlock(randomXPos(),randomYPos());
+    winBlocks.push(winBlock)
+  }
 }
 
 function draw() {
+  if (win) {
+    winScreen()
+  }
+  else {
+    gameLoop()
+  }
+}
+
+function gameLoop() {
   keyCooldown -= 1/targetFrameRate
+
   background(180,190,200)
-  
+
   if (MODE == 1) {
     tekenLoop()
   }
@@ -241,11 +258,11 @@ function draw() {
   for (var a=0;a < hazards.length;a++) {
     hazards[a].teken()
   }
-  for (var a=0;a < winBlocks.length;a++) {
-    winBlocks[a].teken()
-  }
   for (var a=0;a < obstructions.length;a++) {
     obstructions[a].teken()
+  }
+  for (var a=0;a < winBlocks.length;a++) {
+    winBlocks[a].teken()
   }
   plr.teken()
 
@@ -260,8 +277,6 @@ function draw() {
   text(moves,width-String(moves).length*50-5,65)
   pop();
 }
-
-
 
 
 
@@ -330,4 +345,13 @@ function randomXPos() {
 
 function randomYPos() {
   return gridSize*floor((random(0,gridHeight-1)))
+}
+
+function winScreen() {
+  win = true
+  background(0,175,50);
+  push();
+  textSize(175)
+  text("You Win!",100,height/2+58);
+  pop();
 }
