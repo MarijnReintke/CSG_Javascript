@@ -1,10 +1,14 @@
 class Tile {
-  constructor(x,y) {
+  constructor(x,y,transparency) {
     this.layer = 1
     this.x = x
     this.y = y
     this.width = gridSize
-    this.transparency = 0.9
+    if (!transparency) {
+      transparency = 0.9
+    }
+    this.transparency = transparency
+    this.hidden = false
   }
 
   teken() {
@@ -13,12 +17,12 @@ class Tile {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
+    if (this.hidden) {
+      return
+    }
     push();
     noStroke();
     noFill()
-    if (this.transparency < 1) {
-      this.transparency = 0.9
-    }
     stroke(0,0,0,1-this.transparency)
     strokeWeight(2)
     rect(this.x+1,this.y+1,this.width-2);
@@ -50,12 +54,16 @@ class Spawn extends Tile {
 }
 
 class Obstruction {
-  constructor(x,y) {
+  constructor(x,y,transparency) {
     this.layer = 2
     this.x = x
     this.y = y
     this.width = gridSize
-    this.transparency = 0
+    if (!transparency) {
+      transparency = 0
+    }
+    this.transparency = transparency
+    this.hidden = false
   }
 
   teken() {
@@ -64,6 +72,9 @@ class Obstruction {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
+    if (this.hidden) {
+      return
+    }
     push();
     noStroke();
     fill(100,100,100,1-this.transparency)
@@ -103,10 +114,6 @@ class Obstruction {
       }
     }
 
-    if (this.x == plr.targetX && this.y == plr.targetY) {
-        return false
-    }
-
     return true
   }
 
@@ -128,6 +135,9 @@ class Hazard extends Obstruction {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
+    if (this.hidden) {
+      return
+    }
     push();
     noStroke();
     let aantalKringen = 5
@@ -374,6 +384,9 @@ class WinBlock extends Obstruction {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
+    if (this.hidden) {
+      return
+    }
     push();
     noStroke();
     let aantalKringen = 5
@@ -404,6 +417,7 @@ class Plr {
     this.spawnY = 0
     this.anchored = false
     this.transparency = 0
+    this.hidden = false
   }
 
   respawn() {
@@ -415,6 +429,9 @@ class Plr {
   }
 
   teken() {
+    if (this.hidden) {
+      return
+    }
     fill(0,0,0,1-this.transparency)
     rect(this.x,this.y,this.width);
     fill(255,255,255,1-this.transparency*0.5)
@@ -514,12 +531,19 @@ var tiles = []
 const objects = [Hazard,Obstruction,WinBlock,Bomb,Tile]
 const objectArrays = [bombs,hazards,winBlocks,obstructions,tiles]
 
+var editorTabSize = 250
+
 var debug = false
 
+var levels = []
 
+function preload() {
+  var level1 = loadJSON('./JS/spelAssets/level1.json')
+  levels.push(level1)
+}
 
 function setup() {
-  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize);
+  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+editorTabSize);
   canvas.parent('processing');
   textFont("Verdana");
   textSize(40);
@@ -603,27 +627,19 @@ function gameLoop() {
 
 
 function playerLoop() {
+  plr.hidden = false
   if (moves == 0) {
     plr.anchored = true
   }
   else {
     plr.anchored = false
   }
-  plr.transparency = 0
   plr.beweeg()
-}
-
-function outOfBounds(x,y) {
-  if (x >= width || x <= -gridSize || y >= height || y <= -gridSize) {
-    return true
-  }
-  else {
-    return false
-  }
 }
 
 var fuseSelected = false
 function tekenLoop() {
+  plr.hidden = false
   plr.anchored = true
 
   const cellX = snapToGrid(mouseX)
@@ -678,12 +694,10 @@ function tekenLoop() {
 
 function buildLoop() {
   plr.anchored = true
+  plr.hidden = true
 
   const cellX = snapToGrid(mouseX)
   const cellY = snapToGrid(mouseY)
-  if (outOfBounds(cellX,cellY)) {
-    return
-  }
 
   if (!selectedObject) {
     selectedObject = Hazard
@@ -691,17 +705,23 @@ function buildLoop() {
   if (!currentObject || currentObject.constructor.name !== selectedObject.name) {
     currentObject = new selectedObject
   }
+
+  if (outOfBounds(cellX,cellY)) {
+    currentObject.hidden = true
+    return
+  }
+
   currentObject.x = cellX
   currentObject.y = cellY
   if (currentObject.validPosition()) {
-    currentObject.transparency = 0
+    currentObject.hidden = false
   }
   else {
-    currentObject.transparency = 1
+    currentObject.hidden = true
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT && currentObject.validPosition()) {
-    currentObject.transparency = 0
+    currentObject.hidden = false
     currentObject.getArray().push(currentObject)
     currentObject = null
   }
@@ -712,16 +732,19 @@ function buildLoop() {
 }
 
 function deleteLoop() {
+  plr.anchored = true
+  plr.hidden = true
+
   if (!mouseIsPressed || mouseButton !== LEFT) {
     return
   }
 
-  if (mouseX < 0 || mouseX >= width || mouseY < 0 || mouseY >= height) {
+  if (outOfBounds(mouseX,mouseY)) {
     return
   }
 
-  const cellX = Math.floor(mouseX / gridSize) * gridSize
-  const cellY = Math.floor(mouseY / gridSize) * gridSize
+  const cellX = snapToGrid(mouseX)
+  const cellY = snapToGrid(mouseY)
 
   for (const objectArray of objectArrays) {
     for (let a = 0; a < objectArray.length; a++) {
@@ -798,11 +821,44 @@ function drawHoveredObjectHighlight() {
 }
 
 function printLevel() {
-
+  let levelArray = []
+  for (let objectArray of objectArrays) {
+    for (let object of objectArray) {
+      let obj = {
+        class: object.constructor.name,
+        x: object.x,
+        y: object.y,
+        transparency: object.transparency
+      }
+      levelArray.push(obj)
+    }
+  }
+  print(levelArray)
 }
 
-function loadLevel() {
+function loadLevel(lvl) {
+  plr.respawn()
+  for (let objectArray of objectArrays) {
+    objectArray.splice(0,objectArray.length)
+  }
 
+  json = levels[lvl-1]
+  for (var a=0;a < Object.keys(json).length; a++) {
+    let data = json[a];
+    let constructor = data.class
+
+    const classes = {
+      'Tile': Tile,
+      'Hazard': Hazard,
+      'Obstruction': Obstruction,
+      'WinBlock': WinBlock,
+      'Bomb': Bomb,
+    };
+
+    object = new classes[constructor](data.x,data.y,data.transparency);
+
+    object.getArray().push(object)
+  }
 }
 
 function snapToGrid(value) {
@@ -810,12 +866,31 @@ function snapToGrid(value) {
   return snappedValue
 }
 
+function outOfBounds(x,y) {
+  if (x >= (gridSize*gridWith) || x <= -gridSize || y >= (gridSize*gridHeight) || y <= -gridSize) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
+
+
+
+
+
+
+
 function keyPressed(event) {
   if (event.code == 'ShiftLeft' && MODE == 3) {
     selectedObject = objects[objects.indexOf(selectedObject)+1]
   }
   if (key == 'F6') {
     printLevel()
+  }
+  if (key == 'F9') {
+    loadLevel(1)
   }
   if (key == 'q') {
     MODE = 1

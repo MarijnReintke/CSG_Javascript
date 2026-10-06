@@ -1,0 +1,2492 @@
+[
+    {
+        "class": "Bomb",
+        "x": 200,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 240,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 280,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 320,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 400,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 440,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 480,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 520,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 560,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 600,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 640,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 680,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 720,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 760,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 800,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 360,
+        "y": 440,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 280,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 240,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 360,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 400,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 440,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 480,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 520,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "Hazard",
+        "x": 560,
+        "y": 400,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 360,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 400,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 440,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 480,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 480,
+        "y": 160,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 520,
+        "y": 160,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 560,
+        "y": 160,
+        "transparency": 0
+    },
+    {
+        "class": "WinBlock",
+        "x": 520,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 400,
+        "y": 320,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 440,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 480,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 520,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 560,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 600,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 640,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Obstruction",
+        "x": 680,
+        "y": 280,
+        "transparency": 0
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 0,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 40,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 80,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 120,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 160,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 200,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 240,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 280,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 320,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 360,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 400,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 440,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 480,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 520,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 560,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 600,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 640,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 680,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 720,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 760,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 800,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 840,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 880,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 920,
+        "y": 560,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 0,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 40,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 80,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 120,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 160,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 200,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 240,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 280,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 320,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 360,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 400,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 440,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 480,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 520,
+        "transparency": 0.9
+    },
+    {
+        "class": "Tile",
+        "x": 960,
+        "y": 560,
+        "transparency": 0.9
+    }
+]
