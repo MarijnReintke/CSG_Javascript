@@ -5,15 +5,13 @@ class Tile {
     this.y = y
     this.width = gridSize
     if (!transparency) {
-      transparency = 0.9
+      transparency = 0
     }
     this.transparency = transparency
     this.hidden = false
   }
 
   teken() {
-    this.x = constrain(this.x,0,width-gridSize)
-    this.y = constrain(this.y,0,height-gridSize)
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -22,8 +20,8 @@ class Tile {
     }
     push();
     noStroke();
-    noFill()
-    stroke(0,0,0,1-this.transparency)
+    fill(180,190,200)
+    stroke(160,170,180,1-this.transparency)
     strokeWeight(2)
     rect(this.x+1,this.y+1,this.width-2);
     pop();
@@ -33,6 +31,12 @@ class Tile {
 
     for (var a=0; a < tiles.length;a++) {
       if (this.x == tiles[a].x && this.y == tiles[a].y) {
+        return false
+      }
+    }
+
+    for (var a=0; a < spawns.length;a++) {
+      if (this.x == spawns[a].x && this.y == spawns[a].y) {
         return false
       }
     }
@@ -55,6 +59,22 @@ class Spawn extends Tile {
   getArray() {
     return spawns
   }
+
+  teken() {
+    this.x = snapToGrid(this.x)
+    this.y = snapToGrid(this.y)
+
+    if (this.hidden) {
+      return
+    }
+    push();
+    noStroke();
+    fill(125,125,125)
+    stroke(0,0,0,1-this.transparency)
+    strokeWeight(2)
+    rect(this.x+1,this.y+1,this.width-2);
+    pop();
+  }
 }
 
 class Obstruction {
@@ -71,8 +91,6 @@ class Obstruction {
   }
 
   teken() {
-    this.x = constrain(this.x,0,width-gridSize)
-    this.y = constrain(this.y,0,height-gridSize)
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -134,8 +152,6 @@ class Hazard extends Obstruction {
   }
 
   teken() {
-    this.x = constrain(this.x,0,width-gridSize)
-    this.y = constrain(this.y,0,height-gridSize)
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -243,8 +259,6 @@ class Fuse extends Obstruction {
     if (originAlive == false) {
       fuses.splice(0,fuses.length)
     }
-    this.x = constrain(this.x,0,width-gridSize)
-    this.y = constrain(this.y,0,height-gridSize)
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -329,8 +343,6 @@ class Bomb extends Obstruction {
   }
 
   teken() {
-    this.x = constrain(this.x,0,width-gridSize)
-    this.y = constrain(this.y,0,height-gridSize)
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -383,8 +395,6 @@ class WinBlock extends Obstruction {
   }
 
   teken() {
-    this.x = constrain(this.x,0,width-gridSize)
-    this.y = constrain(this.y,0,height-gridSize)
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -533,8 +543,8 @@ var fuses = []
 var bombs = []
 var tiles = []
 var spawns = []
-const objects = [Hazard,Obstruction,WinBlock,Bomb,Tile]
-const objectArrays = [bombs,hazards,winBlocks,obstructions,tiles]
+const objects = [Hazard,Obstruction,WinBlock,Bomb,Tile,Spawn]
+const objectArrays = [bombs,hazards,winBlocks,obstructions,tiles,spawns]
 
 var editorTabSize = 250
 
@@ -573,29 +583,12 @@ function draw() {
   }
 }
 
-
-
-function gameLoop() {
-  moves = fuses.length
-  keyCooldown -= 1/targetFrameRate
-
-  background(180,190,200)
-
-  if (MODE == 1) {
-    tekenLoop()
-  }
-  if (MODE == 2) {
-    playerLoop()
-  }
-  if (MODE == 3) {
-    buildLoop()
-  }
-  if (MODE == 4) {
-    deleteLoop()
-  }
-
+function drawAll {
   for (var a=0;a < tiles.length;a++) {
     tiles[a].teken()
+  }
+  for (var a=0;a < spawns.length;a++) {
+    spawns[a].teken()
   }
   for (var a=0;a < hazards.length;a++) {
     hazards[a].teken()
@@ -612,6 +605,28 @@ function gameLoop() {
   for (var a=0;a < bombs.length;a++) {
     bombs[a].teken()
   }
+}
+
+function gameLoop() {
+  moves = fuses.length
+  keyCooldown -= 1/targetFrameRate
+
+  background(245,250,255)
+
+  if (MODE == 1) {
+    tekenLoop()
+  }
+  if (MODE == 2) {
+    playerLoop()
+  }
+  if (MODE == 3) {
+    buildLoop()
+  }
+  if (MODE == 4) {
+    deleteLoop()
+  }
+
+  drawAll()
 
   drawHoveredObjectHighlight()
 
