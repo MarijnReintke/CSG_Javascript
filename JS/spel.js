@@ -51,6 +51,10 @@ class Spawn extends Tile {
     super(x,y)
     this.layer = 1
   }
+
+  getArray() {
+    return spawns
+  }
 }
 
 class Obstruction {
@@ -528,6 +532,7 @@ var obstructions = []
 var fuses = []
 var bombs = []
 var tiles = []
+var spawns = []
 const objects = [Hazard,Obstruction,WinBlock,Bomb,Tile]
 const objectArrays = [bombs,hazards,winBlocks,obstructions,tiles]
 
