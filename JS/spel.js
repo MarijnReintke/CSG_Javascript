@@ -146,9 +146,22 @@ class Obstruction {
 }
 
 class Hazard extends Obstruction {
-  constructor(x,y) {
+  constructor(x,y,act) {
     super(x,y)
     this.layer = 2
+    if (!act) {
+      act = false
+    }
+    this.active = act
+  }
+
+  switch() {
+    if (this.active) {
+      this.active = false
+    }
+    else {
+      this.active = true
+    }
   }
 
   teken() {
@@ -163,7 +176,12 @@ class Hazard extends Obstruction {
     let aantalKringen = 5
     let offset = frameCount*aantalKringen/1.25/targetFrameRate
     for (var a=0;a<aantalKringen;a++) {
-      fill(255-((a+offset)%aantalKringen)*100/aantalKringen,0,0,1-this.transparency)
+      if (this.active) {
+        fill(255-((a+offset)%aantalKringen)*100/aantalKringen,0,0,1-this.transparency)
+      }
+      else {
+        fill(100-((a+offset)%aantalKringen)*100/aantalKringen,0,0,1-this.transparency)
+      }
       rect(this.x+a*gridSize/2/aantalKringen,this.y+a*gridSize/2/aantalKringen,this.width-(a*gridSize/aantalKringen))
     }
     pop();
@@ -460,6 +478,9 @@ class Plr {
     this.collisionCheck()
 
     if (this.previousX !== null && this.previousY !== null && ((this.previousX !== this.targetX) || (this.previousY !== this.targetY))) {
+      for (let hazard of hazards) {
+        hazard.switch()
+      }
       fuses.splice(fuses.length-1,1)
     }
     
@@ -508,7 +529,7 @@ class Plr {
 
   hazardCheck() {
     for (var a = 0; a < hazards.length; a++) {
-      if (hazards[a].x == this.targetX && hazards[a].y == this.targetY) {
+      if (hazards[a].active && hazards[a].x == this.targetX && hazards[a].y == this.targetY) {
         this.respawn()
       }
     }
@@ -583,7 +604,7 @@ function draw() {
   }
 }
 
-function drawAll {
+function drawAll() {
   for (var a=0;a < tiles.length;a++) {
     tiles[a].teken()
   }
@@ -626,7 +647,9 @@ function gameLoop() {
     deleteLoop()
   }
 
-  drawAll()
+  if (MODE !== 3) {
+    drawAll()
+  }
 
   drawHoveredObjectHighlight()
 
@@ -728,6 +751,7 @@ function buildLoop() {
 
   if (outOfBounds(cellX,cellY)) {
     currentObject.hidden = true
+    drawAll()
     return
   }
 
@@ -747,7 +771,11 @@ function buildLoop() {
   }
 
   if (currentObject) {
-    currentObject.teken()
+    currentObject.getArray().push(currentObject)
+  }
+  drawAll()
+  if (currentObject) {
+    currentObject.getArray().splice(currentObject.getArray().indexOf(currentObject),1)
   }
 }
 
