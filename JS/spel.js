@@ -613,15 +613,15 @@ function drawAll() {
       }
     }
   }
-  for (var a=0;a<maxLayer) {
+  for (var a=0;a<maxLayer;a++) {
     const layer = a+1
     for (const objectArray of objectArrays) {
-    for (const obj of objectArray) {
-      if (obj.layer == layer) {
-        obj.teken()
+      for (const obj of objectArray) {
+        if (obj.layer == layer) {
+          obj.teken()
+        }
       }
     }
-  }
   }
   // for (var a=0;a < tiles.length;a++) {
   //   tiles[a].teken()
@@ -654,19 +654,17 @@ function gameLoop() {
 
   if (MODE == 1) {
     tekenLoop()
+    drawAll()
   }
   if (MODE == 2) {
     playerLoop()
+    drawAll()
   }
   if (MODE == 3) {
     buildLoop()
   }
   if (MODE == 4) {
     deleteLoop()
-  }
-
-  if (MODE !== 3) {
-    drawAll()
   }
 
   drawHoveredObjectHighlight()
