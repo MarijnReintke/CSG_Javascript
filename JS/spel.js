@@ -198,6 +198,7 @@ class Fuse extends Obstruction {
     super(x,y)
 
     this.layer = 2
+    this.indexed = true
     this.R;
     this.G;
     this.B;
@@ -286,7 +287,7 @@ class Fuse extends Obstruction {
 
     push();
     noStroke();
-    if (!(fuses.indexOf(this) == -1)) {
+    if (this.indexed) {
       const progress = (fuses.indexOf(this) + 1) / fuses.length
       const factor = 0.8 + progress * 0.2
       this.R = factor * R
@@ -303,7 +304,7 @@ class Fuse extends Obstruction {
     let previousFuse = null
     let nextFuse = null
 
-    if (fuseIndex === -1) {
+    if (!this.indexed) {
 
       previousFuse = null
 
@@ -605,8 +606,10 @@ function draw() {
 }
 
 function drawAll() {
-  const maxLayer = 1
-  for (const objectArray of objectArrays) {
+  let maxLayer = 1
+  let allObjectArrays = objectArrays
+  allObjectArrays.push(fuses)
+  for (const objectArray of allObjectArrays) {
     for (const obj of objectArray) {
       if (obj.layer > maxLayer) {
         maxLayer = obj.layer
@@ -614,8 +617,8 @@ function drawAll() {
     }
   }
   for (var a=0;a<maxLayer;a++) {
-    const layer = a+1
-    for (const objectArray of objectArrays) {
+    let layer = a+1
+    for (const objectArray of allObjectArrays) {
       for (const obj of objectArray) {
         if (obj.layer == layer) {
           obj.teken()
@@ -654,7 +657,6 @@ function gameLoop() {
 
   if (MODE == 1) {
     tekenLoop()
-    drawAll()
   }
   if (MODE == 2) {
     playerLoop()
@@ -665,6 +667,7 @@ function gameLoop() {
   }
   if (MODE == 4) {
     deleteLoop()
+    drawAll()
   }
 
   drawHoveredObjectHighlight()
@@ -704,7 +707,7 @@ function tekenLoop() {
   const cellX = snapToGrid(mouseX)
   const cellY = snapToGrid(mouseY)
   if (outOfBounds(cellX,cellY)) {
-    return
+    return drawAll()
   }
 
   let fuse
@@ -719,7 +722,6 @@ function tekenLoop() {
   else {
     fuse.transparency = 1
   }
-  fuse.teken()
 
   if (!(mouseIsPressed === true && mouseButton === LEFT)) {
     fuseSelected = false
@@ -748,6 +750,15 @@ function tekenLoop() {
     (fuseSelected && fuses.length == 1 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY)) {
       fuses.splice(0,fuses.length)
     }
+  }
+
+  if (fuse) {
+    fuse.indexed = false
+    fuses.push(fuse)
+  }
+  drawAll()
+  if (fuse) {
+    fuses.splice(fuses.indexOf(fuse),1)
   }
 }
 
