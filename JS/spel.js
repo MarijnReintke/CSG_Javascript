@@ -605,27 +605,45 @@ function draw() {
 }
 
 function drawAll() {
-  for (var a=0;a < tiles.length;a++) {
-    tiles[a].teken()
+  const maxLayer = 1
+  for (const objectArray of objectArrays) {
+    for (const obj of objectArray) {
+      if (obj.layer > maxLayer) {
+        maxLayer = obj.layer
+      }
+    }
   }
-  for (var a=0;a < spawns.length;a++) {
-    spawns[a].teken()
+  for (var a=0;a<maxLayer) {
+    const layer = a+1
+    for (const objectArray of objectArrays) {
+    for (const obj of objectArray) {
+      if (obj.layer == layer) {
+        obj.teken()
+      }
+    }
   }
-  for (var a=0;a < hazards.length;a++) {
-    hazards[a].teken()
   }
-  for (var a=0;a < obstructions.length;a++) {
-    obstructions[a].teken()
-  }
-  for (var a=0;a < winBlocks.length;a++) {
-    winBlocks[a].teken()
-  }
-  for (var a=0;a < fuses.length;a++) {
-    fuses[a].teken()
-  }
-  for (var a=0;a < bombs.length;a++) {
-    bombs[a].teken()
-  }
+  // for (var a=0;a < tiles.length;a++) {
+  //   tiles[a].teken()
+  // }
+  // for (var a=0;a < spawns.length;a++) {
+  //   spawns[a].teken()
+  // }
+  // for (var a=0;a < hazards.length;a++) {
+  //   hazards[a].teken()
+  // }
+  // for (var a=0;a < obstructions.length;a++) {
+  //   obstructions[a].teken()
+  // }
+  // for (var a=0;a < winBlocks.length;a++) {
+  //   winBlocks[a].teken()
+  // }
+  // for (var a=0;a < fuses.length;a++) {
+  //   fuses[a].teken()
+  // }
+  // for (var a=0;a < bombs.length;a++) {
+  //   bombs[a].teken()
+  // }
 }
 
 function gameLoop() {
