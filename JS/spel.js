@@ -53,7 +53,6 @@ class Tile {
 class Spawn extends Tile {
   constructor(x,y) {
     super(x,y)
-    this.layer = 1
   }
 
   getArray() {
@@ -148,7 +147,6 @@ class Obstruction {
 class Hazard extends Obstruction {
   constructor(x,y,act) {
     super(x,y)
-    this.layer = 2
     if (!act) {
       act = false
     }
@@ -197,7 +195,6 @@ class Fuse extends Obstruction {
   constructor(x,y) {
     super(x,y)
 
-    this.layer = 2
     this.indexed = true
     this.R;
     this.G;
@@ -358,7 +355,6 @@ class Fuse extends Obstruction {
 class Bomb extends Obstruction {
   constructor(x,y) {
     super(x,y)
-    this.layer = 2
   }
 
   teken() {
@@ -410,7 +406,6 @@ class Bomb extends Obstruction {
 class WinBlock extends Obstruction {
   constructor(x,y) {
     super(x,y)
-    this.layer = 2
   }
 
   teken() {
@@ -754,6 +749,7 @@ function tekenLoop() {
 
   if (fuse) {
     fuse.indexed = false
+    print(fuse.indexed)
     fuses.push(fuse)
   }
   drawAll()
