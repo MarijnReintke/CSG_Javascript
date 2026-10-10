@@ -3,7 +3,7 @@
 {
 	"name": "Node.js",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/javascript-node:5-24-trixie"
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:5-24-trixie",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -11,6 +11,19 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
+	"forwardPorts": [8080],
+	"portsAttributes": {
+  		"8080": {
+    	"label": "Website",
+    	"onAutoForward": "openBrowser"
+  		}
+	},
+
+	// "postStartCommand": "nohup python3 -m http.server 8080 --bind 0.0.0.0 >/tmp/website-server.log 2>&1 </dev/null &",
+
+	"otherPortsAttributes": {
+  		"onAutoForward": "ignore"
+	}
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "yarn install",
 
