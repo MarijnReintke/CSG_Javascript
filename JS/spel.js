@@ -750,6 +750,7 @@ function tekenLoop() {
   if (fuse) {
     fuse.indexed = false
     print(fuse.indexed)
+    print("indexed!")
     fuses.push(fuse)
   }
   drawAll()

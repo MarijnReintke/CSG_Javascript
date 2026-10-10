@@ -19,7 +19,9 @@
     	"onAutoForward": "openBrowser"
   		}
 	},
-	"postStartCommand": "bash -c 'if ! curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then (nohup python3 -m http.server 8080 --bind 0.0.0.0 >/tmp/website-server.log 2>&1 </dev/null &); fi",
+	
+	"postStartCommand": "bash -c 'if ! curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then nohup python3 -m http.server 8080 --bind 0.0.0.0 >/tmp/website-server.log 2>&1 </dev/null & sleep 1; fi; curl -fsS http://127.0.0.1:8080/ >/dev/null || { cat /tmp/website-server.log; exit 1; }'",
+
 
 
 	"otherPortsAttributes": {
