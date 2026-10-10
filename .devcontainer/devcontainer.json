@@ -11,6 +11,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
+	
 	"forwardPorts": [8080],
 	"portsAttributes": {
   		"8080": {
@@ -18,8 +19,8 @@
     	"onAutoForward": "openBrowser"
   		}
 	},
+	"postStartCommand": "bash -c 'if ! curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then (nohup python3 -m http.server 8080 --bind 0.0.0.0 >/tmp/website-server.log 2>&1 </dev/null &); fi",
 
-	// "postStartCommand": "nohup python3 -m http.server 8080 --bind 0.0.0.0 >/tmp/website-server.log 2>&1 </dev/null &",
 
 	"otherPortsAttributes": {
   		"onAutoForward": "ignore"
