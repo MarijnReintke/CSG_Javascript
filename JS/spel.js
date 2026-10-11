@@ -552,6 +552,7 @@ var selectedObject = null;
 var currentObject = null;
 var moves = 0
 var level = 1
+let layer = 2
 
 var hazards = []
 var winBlocks = []
@@ -602,8 +603,8 @@ function draw() {
 
 function drawAll() {
   let maxLayer = 1
-  let allObjectArrays = objectArrays
-  allObjectArrays.push(fuses)
+  const allObjectArrays = [...objectArrays, fuses];
+
   for (const objectArray of allObjectArrays) {
     for (const obj of objectArray) {
       if (obj.layer > maxLayer) {
@@ -621,27 +622,6 @@ function drawAll() {
       }
     }
   }
-  // for (var a=0;a < tiles.length;a++) {
-  //   tiles[a].teken()
-  // }
-  // for (var a=0;a < spawns.length;a++) {
-  //   spawns[a].teken()
-  // }
-  // for (var a=0;a < hazards.length;a++) {
-  //   hazards[a].teken()
-  // }
-  // for (var a=0;a < obstructions.length;a++) {
-  //   obstructions[a].teken()
-  // }
-  // for (var a=0;a < winBlocks.length;a++) {
-  //   winBlocks[a].teken()
-  // }
-  // for (var a=0;a < fuses.length;a++) {
-  //   fuses[a].teken()
-  // }
-  // for (var a=0;a < bombs.length;a++) {
-  //   bombs[a].teken()
-  // }
 }
 
 function gameLoop() {
@@ -695,6 +675,7 @@ function playerLoop() {
 }
 
 var fuseSelected = false
+var fuse = null
 function tekenLoop() {
   plr.hidden = false
   plr.anchored = true
@@ -705,13 +686,12 @@ function tekenLoop() {
     return drawAll()
   }
 
-  let fuse
   if (!fuse) {
     fuse = new Fuse()
   }
   fuse.x = cellX
   fuse.y = cellY
-  if (fuse.validPosition() && fuses.length == 0) {
+  if (fuses.length == 0 && fuse.validPosition()) {
     fuse.transparency = 0.5
   }
   else {
@@ -749,8 +729,6 @@ function tekenLoop() {
 
   if (fuse) {
     fuse.indexed = false
-    print(fuse.indexed)
-    print("indexed!")
     fuses.push(fuse)
   }
   drawAll()
