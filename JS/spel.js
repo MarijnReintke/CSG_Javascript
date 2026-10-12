@@ -1,9 +1,15 @@
-class Tile {
-  constructor(x,y,transparency) {
-    this.layer = 1
+class Block {
+  constructor(x,y) {
     this.x = x
     this.y = y
     this.width = gridSize
+  }
+}
+
+class Tile extends Block {
+  constructor(x,y,transparency) {
+    super(x, y)
+    this.layer = 1
     if (!transparency) {
       transparency = 0
     }
@@ -52,7 +58,7 @@ class Tile {
 
 class Spawn extends Tile {
   constructor(x,y) {
-    super(x,y)
+    super(x, y)
   }
 
   getArray() {
@@ -76,12 +82,10 @@ class Spawn extends Tile {
   }
 }
 
-class Obstruction {
+class Obstruction extends Block {
   constructor(x,y,transparency) {
+    super(x, y)
     this.layer = 2
-    this.x = x
-    this.y = y
-    this.width = gridSize
     if (!transparency) {
       transparency = 0
     }
@@ -151,6 +155,8 @@ class Hazard extends Obstruction {
       act = false
     }
     this.active = act
+    this.interval = 3
+    this.tickCount = 0
   }
 
   switch() {
@@ -172,17 +178,28 @@ class Hazard extends Obstruction {
     push();
     noStroke();
     let aantalKringen = 5
-    let offset = frameCount*aantalKringen/1.25/targetFrameRate
+    let offset = round(frameCount*3/targetFrameRate)
     for (var a=0;a<aantalKringen;a++) {
       if (this.active) {
-        fill(255-((a+offset)%aantalKringen)*100/aantalKringen,0,0,1-this.transparency)
+        fill(( (a+offset) % 2)*255,0,0,1-this.transparency)
       }
       else {
-        fill(100-((a+offset)%aantalKringen)*100/aantalKringen,0,0,1-this.transparency)
+        fill(( (this.tickCount) % (this.interval))*255/this.interval,0,0,1-this.transparency)
       }
       rect(this.x+a*gridSize/2/aantalKringen,this.y+a*gridSize/2/aantalKringen,this.width-(a*gridSize/aantalKringen))
     }
     pop();
+  }
+
+  tick() {
+    if (this.active) {
+      return this.switch()
+    }
+    this.tickCount++
+    if (this.tickCount >= this.interval) {
+      this.switch()
+      this.tickCount = 0
+    }
   }
 
   getArray() {
@@ -272,8 +289,9 @@ class Fuse extends Obstruction {
         originAlive = true
       }
     }
-    if (originAlive == false) {
+    if (!originAlive) {
       fuses.splice(0,fuses.length)
+      return
     }
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
@@ -475,7 +493,7 @@ class Plr {
 
     if (this.previousX !== null && this.previousY !== null && ((this.previousX !== this.targetX) || (this.previousY !== this.targetY))) {
       for (let hazard of hazards) {
-        hazard.switch()
+        hazard.tick()
       }
       fuses.splice(fuses.length-1,1)
     }
@@ -546,7 +564,7 @@ const gridHeight = 15;
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
-var MODE = 1
+var MODE = 3
 
 var selectedObject = null;
 var currentObject = null;
@@ -561,8 +579,13 @@ var fuses = []
 var bombs = []
 var tiles = []
 var spawns = []
-const objects = [Hazard,Obstruction,WinBlock,Bomb,Tile,Spawn]
-const objectArrays = [bombs,hazards,winBlocks,obstructions,tiles,spawns]
+const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, Spawn]
+const objectArrays = []
+for (let obj of objects) {
+  obj = new obj()
+  objectArrays.push(obj.getArray())
+  obj = null
+}
 
 var editorTabSize = 250
 
@@ -583,7 +606,9 @@ function setup() {
   noStroke();
   colorMode(RGB,255,255,255,1)
   frameRate(targetFrameRate)
+
   plr = new Plr(0,0)
+
   for (var a=0;a<gridWith;a++) {
     for (var b=0;b<gridHeight;b++) {
       const tile = new Tile(a*gridSize,b*gridSize)
@@ -603,7 +628,7 @@ function draw() {
 
 function drawAll() {
   let maxLayer = 1
-  const allObjectArrays = [...objectArrays, fuses];
+  const allObjectArrays = [...objectArrays, fuses, [plr]];
 
   for (const objectArray of allObjectArrays) {
     for (const obj of objectArray) {
@@ -622,6 +647,7 @@ function drawAll() {
       }
     }
   }
+
 }
 
 function gameLoop() {
@@ -647,8 +673,6 @@ function gameLoop() {
 
   drawHoveredObjectHighlight()
 
-  plr.teken()
-
   push();
   if (moves > 0) {
     fill(0,0,0)
@@ -657,7 +681,9 @@ function gameLoop() {
     fill(255,0,0)
   }
   textSize(75)
-  text(moves,width-String(moves).length*50-5,65)
+  text(moves, String(moves).length, gridHeight*gridSize + 75);
+  textSize(40)
+  text("Moves Left", String(moves).length * 50 + 10, gridHeight*gridSize + 75);
   pop();
 }
 
@@ -675,7 +701,7 @@ function playerLoop() {
 }
 
 var fuseSelected = false
-var fuse = null
+var fuse;
 function tekenLoop() {
   plr.hidden = false
   plr.anchored = true
@@ -687,23 +713,18 @@ function tekenLoop() {
   }
 
   if (!fuse) {
-    fuse = new Fuse()
+    fuse = new Fuse
   }
+
   fuse.x = cellX
   fuse.y = cellY
-  if (fuses.length == 0 && fuse.validPosition()) {
-    fuse.transparency = 0.5
-  }
-  else {
-    fuse.transparency = 1
-  }
 
   if (!(mouseIsPressed === true && mouseButton === LEFT)) {
     fuseSelected = false
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
-    if (fuse.validPosition()) {
+    if (fuse.validPosition() && (fuseSelected || fuses.length == 0)) {
       fuse.transparency = 0
       fuse.getArray().push(fuse)
       fuse = null
@@ -727,13 +748,19 @@ function tekenLoop() {
     }
   }
 
-  if (fuse) {
-    fuse.indexed = false
-    fuses.push(fuse)
-  }
   drawAll()
-  if (fuse) {
-    fuses.splice(fuses.indexOf(fuse),1)
+
+  if (mouseIsPressed === true && mouseButton === LEFT) { 
+    fill(255,255,255,0.25)
+    ellipse(mouseX,mouseY,gridSize)
+  }
+  else if (fuses.length > 0 && fuses[fuses.length-1].x == cellX && fuses[fuses.length-1].y == cellY) {
+    fill(255,255,255,0.25)
+    ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
+  }
+  else if (fuses.length == 0 && fuse.validPosition()) {
+    fill(255,255,255,0.25)
+    ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }
 }
 
@@ -751,22 +778,13 @@ function buildLoop() {
     currentObject = new selectedObject
   }
 
-  if (outOfBounds(cellX,cellY)) {
-    currentObject.hidden = true
-    drawAll()
-    return
-  }
-
   currentObject.x = cellX
   currentObject.y = cellY
-  if (currentObject.validPosition()) {
-    currentObject.hidden = false
-  }
-  else {
-    currentObject.hidden = true
+  if (!validPosition(currentObject)) {
+    return drawAll()
   }
 
-  if (mouseIsPressed === true && mouseButton === LEFT && currentObject.validPosition()) {
+  if (mouseIsPressed === true && mouseButton === LEFT) {
     currentObject.hidden = false
     currentObject.getArray().push(currentObject)
     currentObject = null
@@ -837,7 +855,7 @@ function drawHoveredObjectHighlight() {
       return
     }
 
-    if (currentObject.x === cellX && currentObject.y === cellY && currentObject.validPosition()) {
+    if (currentObject.x === cellX && currentObject.y === cellY && validPosition(currentObject)) {
       push()
       noFill()
       stroke(0, 150, 255)
@@ -925,6 +943,21 @@ function outOfBounds(x,y) {
   }
 }
 
+function validPosition(obj) {
+  if (outOfBounds(obj.x,obj.y)) {
+    return false
+  }
+
+  for (const objectArray of objectArrays) {
+    for (const otherObj of objectArray) {
+      if (otherObj.layer == obj.layer && otherObj.x == obj.x && otherObj.y == obj.y) {
+        return false
+      }
+    }
+  }
+
+  return true
+}
 
 
 
@@ -935,6 +968,9 @@ function outOfBounds(x,y) {
 function keyPressed(event) {
   if (event.code == 'ShiftLeft' && MODE == 3) {
     selectedObject = objects[objects.indexOf(selectedObject)+1]
+    if (!selectedObject) {
+      selectedObject = objects[0]
+    }
   }
   if (key == 'F6') {
     printLevel()
