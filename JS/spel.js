@@ -8,13 +8,14 @@ class Block {
     }
     this.transparency = transparency
     this.hidden = false
+    this.canCollide = true
   }
 }
 
 class Tile extends Block {
   constructor(x,y,transparency) {
     super(x, y)
-    this.layer = 1
+    this.layer = 0
     if (!transparency) {
       transparency = 0
     }
@@ -47,7 +48,7 @@ class Tile extends Block {
 class Spawn extends Block {
   constructor(x,y,transparency) {
     super(x,y,transparency)
-    this.layer = 1
+    this.layer = 0
   }
 
   getArray() {
@@ -107,6 +108,7 @@ class Hazard extends Block {
     this.active = act
     this.interval = 3
     this.tickCount = 0
+    this.canCollide = false
   }
 
   switch() {
@@ -162,12 +164,10 @@ class Fuse extends Block {
   constructor(x,y,transparency) {
     super(x,y,transparency)
 
-    this.layer = 2
+    this.layer = 1
     this.electrified = false
-    this.R;
-    this.G;
-    this.B;
     this.origin;
+    this.canCollide = false
     if (fuses.length > 0) {
       this.origin = fuses[0].origin
     }
@@ -180,8 +180,8 @@ class Fuse extends Block {
       }
     }
 
-    for (var a=0; a < bombs.length;a++) {
-      if (this.x == bombs[a].x && this.y == bombs[a].y) {
+    for (var a=0; a < fuseAttachments.length;a++) {
+      if (this.x == fuseAttachments[a].x && this.y == fuseAttachments[a].y) {
         return false
       }
     }
@@ -204,18 +204,14 @@ class Fuse extends Block {
       }
     }
 
-    if (this.x == plr.targetX && this.y == plr.targetY) {
-        return false
-    }
-
-    if (bombs.length == 0) {
+    if (fuseAttachments.length == 0) {
       return false
     }
 
     if (fuses.length == 0) {
-      for (var a=0;a < bombs.length;a++) {
-        if ((abs(this.x-bombs[a].x) + abs(this.y-bombs[a].y)) == 40) {
-          this.origin = bombs[a]
+      for (var a=0;a < fuseAttachments.length;a++) {
+        if ((abs(this.x-fuseAttachments[a].x) + abs(this.y-fuseAttachments[a].y)) == 40) {
+          this.origin = fuseAttachments[a]
           return true
         }
       }
@@ -243,8 +239,8 @@ class Fuse extends Block {
 
   teken() {
     let originAlive = false
-    for (let bomb of bombs) {
-      if (bombs.indexOf(bomb) == bombs.indexOf(this.origin)) {
+    for (let attachment of fuseAttachments) {
+      if (fuseAttachments.indexOf(attachment) == fuseAttachments.indexOf(this.origin)) {
         originAlive = true
       }
     }
@@ -263,14 +259,8 @@ class Fuse extends Block {
     push();
     noStroke();
     if (!this.electrified) {
-      const progress = (fuses.indexOf(this) + 1) / fuses.length
-      const factor = 0.8 + progress * 0.2
-      this.R = factor * R
-      this.G = factor * G
-      this.B = factor * B
-      fill(this.R,this.G,this.B,1 - this.transparency)
-    }
-    else {
+      fill(R,G,B,1 - this.transparency)
+    } else {
       fill(255,200,0,1-this.transparency)
     }
 
@@ -329,6 +319,7 @@ class FuseAttachment extends Block {
   constructor(x,y) {
     super(x,y)
     this.layer = 2
+    this.canCollide = false
   }
 
   teken() {
@@ -350,47 +341,18 @@ class Bomb extends Block {
   constructor(x,y,transparency) {
     super(x,y,transparency)
     this.layer = 2
+    this.spriteIndex = 0
   }
 
   teken() {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
-    let fuse = fuses[0]
-
-    push();
-    noStroke();
-    if (fuse && fuse.origin == this) {
-      fill(150,150,150,1-this.transparency);
-      if (this.x-fuse.x == 40) {
-        // left
-        rect(this.x,this.y+10,3,20)
-      }
-      else if (this.x-fuse.x == -40) {
-        // right
-        rect(this.x+this.width-3,this.y+10,3,20)
-      }
-      else if (this.y-fuse.y == 40) {
-        // top
-        rect(this.x+10,this.y,20,3)
-      }
-      else if (this.y-fuse.y == -40) {
-        // bottom
-        rect(this.x+10,this.y+this.width-3,20,3)
-      }
+    if (this.hidden) {
+      return
     }
-    fill(25,25,25,1-this.transparency);
-    rect(this.x+3,this.y+3,this.width-6);
-    let offset = 15
-    fill(50,50,50,1-this.transparency);
-    rect(this.x+gridSize-this.width+offset-3,this.y+3,this.width-offset);
-    // offset = 30
-    // fill(150,150,150,1-this.transparency);
-    // rect(this.x+gridSize-this.width+offset-3,this.y+3,this.width-offset);
-    offset = 35
-    fill(250,250,250,1-this.transparency);
-    rect(this.x+gridSize-this.width+offset-6,this.y+6,this.width-offset);
-    pop();
+
+    image(dynamiteSprites[this.spriteIndex], this.x, this.y, this.width, this.width)
   }
 
   getArray() {
@@ -402,6 +364,7 @@ class WinBlock extends Block {
   constructor(x,y,transparency) {
     super(x,y,transparency)
     this.layer = 2
+    this.canCollide = false
   }
 
   teken() {
@@ -432,13 +395,13 @@ class Plr {
     this.layer = 2
     this.targetX = x
     this.targetY = y
-    this.previousX = null
-    this.previousY = null
     this.x = x
     this.y = y
     this.width = gridSize-8
     this.spawnX = 0
     this.spawnY = 0
+    this.previousX = this.spawnX
+    this.previousY = this.spawnY
     this.anchored = false
     this.transparency = 0
     this.hidden = false
@@ -467,17 +430,21 @@ class Plr {
   }
 
   beweeg() {
-    this.targetX = constrain(this.targetX,0,width-gridSize);
-    this.targetY = constrain(this.targetY,0,height-gridSize);
+    this.targetX = constrain(this.targetX,0,gridSize*gridWith-gridSize);
+    this.targetY = constrain(this.targetY,0,gridSize*gridHeight-gridSize);
     this.targetY = snapToGrid(this.targetY);
     this.targetX = snapToGrid(this.targetX);
-    this.collisionCheck()
 
-    if (this.previousX !== null && this.previousY !== null && ((this.previousX !== this.targetX) || (this.previousY !== this.targetY))) {
+    if ((this.previousX != this.targetX || this.previousY != this.targetY) && !this.collisionCheck()) {
       tick()
     }
-    
+    else {
+      this.targetX = this.previousX
+      this.targetY = this.previousY
+    }
+
     this.hazardCheck()
+    
     this.previousX = this.targetX
     this.previousY = this.targetY
 
@@ -490,34 +457,21 @@ class Plr {
     for (var a = 0; a < winBlocks.length; a++) {
       if (winBlocks[a].x == this.targetX && winBlocks[a].y == this.targetY) {
         plr.respawn()
-        return
+        return true
       }
     }
 
-    for (var a = 0; a < obstructions.length; a++) {
-      if (obstructions[a].x == this.targetX && obstructions[a].y == this.targetY) {
-        this.targetX = this.previousX
-        this.targetY = this.previousY
-        return
+    const allObjectArrays = [...objectArrays, fuses, [plr]];
+
+    for (const objectArray of allObjectArrays) {
+      for (const obj of objectArray) {
+        if (obj.canCollide && obj.layer == this.layer && obj.x == this.targetX && obj.y == this.targetY) {
+          return true
+        }
       }
     }
 
-    for (var a = 0; a < fuses.length; a++) {
-      if (fuses[a].x == this.targetX && fuses[a].y == this.targetY) {
-        this.targetX = this.previousX
-        this.targetY = this.previousY
-        return
-      }
-    }
-
-    for (var a = 0; a < bombs.length; a++) {
-      if (bombs[a].x == this.targetX && bombs[a].y == this.targetY) {
-        this.targetX = this.previousX
-        this.targetY = this.previousY
-        return
-      }
-    }
-
+    return false
   }
 
   hazardCheck() {
@@ -527,9 +481,30 @@ class Plr {
       }
     }
   }
-
 }
 
+class Flashbang {
+  constructor() {
+    this.x = 0
+    this.y = 0
+    this.transparency = 0
+  }
+
+  teken() {
+    if (this.transparency >= 1) {
+      flashbangs.splice(flashbangs.indexOf(this),1)
+    }
+    push()
+    fill(255,255,255,1-this.transparency)
+    rect(0,0,width,height)
+    pop()
+    this.transparency += 0.005
+  }
+
+  getArray() {
+    flashbangs
+  }
+}
 
 const targetFrameRate = 60
 
@@ -537,8 +512,8 @@ var plr;
 var win = false
 
 const gridSize = 40;
-const gridWith = 25;
-const gridHeight = 15;
+const gridWith = 28;
+const gridHeight = 16;
 
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
@@ -549,7 +524,7 @@ var selectedObject = null;
 var currentObject = null;
 var moves = 0
 var wireLimit = 50
-var wireInterval = 5
+var wireInterval = 2
 var movesBeforeInterval = wireInterval
 var level = 1
 var currentLayer = 2
@@ -563,23 +538,31 @@ var bombs = []
 var tiles = []
 var spawns = []
 var fuseAttachments = []
+var flashbangs = []
 const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, Spawn, FuseAttachment]
 const objectArrays = []
-for (let obj of objects) {
-  obj = new obj()
-  objectArrays.push(obj.getArray())
-  obj = null
-}
 
 var editorTabSize = 250
 
 var debug = false
 
 var levels = []
+var dynamiteSprites = []
 
 function preload() {
-  var level1 = loadJSON('./JS/spelAssets/level1.json')
-  levels.push(level1)
+  let children
+  
+  children = 1
+  for (var a=0;a<children;a++) {
+    var json = loadJSON('JS/spelAssets/levels/' + a + '.json')
+    levels.push(json)
+  }
+
+  children = 7
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/dynamite/' + a + '.png')
+    dynamiteSprites.push(png)
+  }
 }
 
 function setup() {
@@ -590,6 +573,13 @@ function setup() {
   noStroke();
   colorMode(RGB,255,255,255,1)
   frameRate(targetFrameRate)
+  noSmooth();
+
+  for (let obj of objects) {
+    obj = new obj()
+  objectArrays.push(obj.getArray())
+    obj = null
+  }
 
   plr = new Plr(0,0)
 
@@ -631,7 +621,7 @@ function drawAll() {
   }
   else {
     for (var a=0;a<maxLayer;a++) {
-      let layer = a+1
+      let layer = a
       for (const objectArray of allObjectArrays) {
         for (const obj of objectArray) {
           if (obj.layer == layer) {
@@ -722,8 +712,11 @@ function gameLoop() {
     textSize(40)
     text("Layer " + currentLayer, 15, gridHeight*gridSize + 125);
   }
-
   pop();
+
+  for (flashbang of flashbangs) {
+    flashbang.teken()
+  }
 }
 
 
@@ -732,6 +725,10 @@ function playerLoop() {
   plr.hidden = false
   if (moves == 0) {
     plr.anchored = true
+    if (explode()) {
+      MODE == 1
+      plr.respawn()
+    }
   }
   else {
     plr.anchored = false
@@ -940,6 +937,8 @@ function loadLevel(lvl) {
       'Obstruction': Obstruction,
       'WinBlock': WinBlock,
       'Bomb': Bomb,
+      'Spawn': Spawn,
+      'FuseAttachment': FuseAttachment
     };
 
     object = new classes[constructor](data.x,data.y,data.transparency);
@@ -992,13 +991,29 @@ function tick() {
   moves--
 }
 
-
+let explosionTick = 0
+let flashbangTransparency = 0
+let flashbang
+function explode() {
+  if (explosionTick % 6 == 1) {
+    if (bombs[0].spriteIndex == dynamiteSprites.length-1) {
+      flashbang = new Flashbang()
+      flashbangs.push(flashbang)
+      bombs.splice(0,1)
+      return true
+    }
+    bombs[0].spriteIndex += 1
+  }
+  explosionTick++
+  return false
+}
 
 
 function keyPressed(event) {
+
   // note to self: this prevents the page from scrolling down when spacebar is pressed
   if (key === ' ') {
-    return false; 
+    event.preventDefault();
   }
 
   if (event.code == 'ShiftLeft' && MODE == 3) {
@@ -1030,11 +1045,11 @@ function keyPressed(event) {
   }
   if ((key === 'w' || keyCode == '38') && MODE == 4) {
     currentLayer += 1
-    currentLayer = constrain(currentLayer, 1, maxLayer)
+    currentLayer = constrain(currentLayer, 0, maxLayer)
   }
   if ((key === 's' || keyCode == '40') && MODE == 4) {
     currentLayer -= 1
-    currentLayer = constrain(currentLayer, 1, maxLayer)
+    currentLayer = constrain(currentLayer, 0, maxLayer)
   }
 
   if (key == 'r') {
@@ -1060,6 +1075,7 @@ function keyPressed(event) {
   if (key === 'd' || keyCode == '39') {
     plr.targetX += gridSize
   }
+
 }
 
 function randomXPos() {
