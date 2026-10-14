@@ -3,6 +3,7 @@ class Block {
     this.x = x
     this.y = y
     this.width = gridSize
+    this.height = gridSize
     if (!transparency) {
       transparency = 0
     }
@@ -390,6 +391,26 @@ class WinBlock extends Block {
   }
 }
 
+class Door extends Block {
+  constructor() {
+    super()
+    this.layer = 2
+    this.width = gridSize*2
+    this.height = gridSize*3
+  }
+
+  teken() {
+    push()
+    fill(255,255,255)
+    rect(this.x,this.y,this.width,this.height)
+    pop()
+  }
+
+  getArray() {
+    return doors
+  }
+}
+
 class Plr {
   constructor(x,y) {
     this.layer = 2
@@ -398,6 +419,7 @@ class Plr {
     this.x = x
     this.y = y
     this.width = gridSize-8
+    this.height = gridSize
     this.spawnX = 0
     this.spawnY = 0
     this.previousX = this.spawnX
@@ -408,7 +430,14 @@ class Plr {
   }
 
   respawn() {
-    fuses.splice(0,fuses.length)
+    for (let fuse of fuses) {
+      if (fuse.electrified) {
+        fuse.electrified = false
+      }
+    }
+    for (let bomb of bombs) {
+      bomb.spriteIndex = 0
+    }
     moves = 0
     this.targetX = this.spawnX
     this.targetY = this.spawnY
@@ -416,7 +445,6 @@ class Plr {
     this.previousY = this.targetY
     this.x = this.spawnX
     this.y = this.spawnY
-    MODE = 1
   }
 
   teken() {
@@ -465,7 +493,7 @@ class Plr {
 
     for (const objectArray of allObjectArrays) {
       for (const obj of objectArray) {
-        if (obj.canCollide && obj.layer == this.layer && obj.x == this.targetX && obj.y == this.targetY) {
+        if (obj.canCollide && obj.layer == this.layer && objectOverlapsCell(obj,this.targetX,this.targetY)) {
           return true
         }
       }
@@ -488,17 +516,32 @@ class Flashbang {
     this.x = 0
     this.y = 0
     this.transparency = 0
+    this.tick = 0
+    this.time = 2
   }
 
   teken() {
-    if (this.transparency >= 1) {
-      flashbangs.splice(flashbangs.indexOf(this),1)
+    if (flashbangs.length > 1) {
+      flashbangs.splice(0,flashbangs.length-1)
     }
-    push()
-    fill(255,255,255,1-this.transparency)
-    rect(0,0,width,height)
-    pop()
-    this.transparency += 0.005
+
+    let lastTick = this.time * targetFrameRate
+    if (this.tick >= lastTick) {
+      flashbangs.splice(flashbangs.indexOf(this), 1);
+      return
+    }
+
+    let progress = this.tick / lastTick;
+
+    this.transparency = Math.pow(progress, 2);
+
+    push();
+    fill(255, 255, 255, (1 - this.transparency));
+    noStroke();
+    rect(0, 0, width, height);
+    pop();
+
+    this.tick += 1;
   }
 
   getArray() {
@@ -506,10 +549,42 @@ class Flashbang {
   }
 }
 
+class Countdown {
+  constructor(number) {
+    this.x = gridSize*gridWith/2
+    this.y = gridHeight*gridSize/2+gridSize
+    this.transparency = 0
+    this.size = 600
+    this.number = number
+  }
+
+  teken() {
+    if (this.transparency >= 1) {
+      countdowns.splice(countdowns.indexOf(this),1)
+    }
+
+    if (countdowns.length > 1) {
+      countdowns.splice(0,countdowns.length-1)
+    }
+
+    push()
+    textAlign(CENTER,CENTER)
+    fill(255,255,255,1-this.transparency)
+    textSize(this.size)
+    text(this.number,this.x,this.y)
+    pop()
+    this.size += 5
+    this.transparency += 0.04
+  }
+
+  getArray() {
+    countdowns
+  }
+}
+
 const targetFrameRate = 60
 
 var plr;
-var win = false
 
 const gridSize = 40;
 const gridWith = 28;
@@ -518,7 +593,7 @@ const gridHeight = 16;
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
-var MODE = 3
+var MODE = 1
 
 var selectedObject = null;
 var currentObject = null;
@@ -529,6 +604,7 @@ var movesBeforeInterval = wireInterval
 var level = 1
 var currentLayer = 2
 var maxLayer = 3
+var shakeIntensity = 0
 
 var hazards = []
 var winBlocks = []
@@ -539,10 +615,12 @@ var tiles = []
 var spawns = []
 var fuseAttachments = []
 var flashbangs = []
-const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, Spawn, FuseAttachment]
+var countdowns = []
+var doors = []
+const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, Spawn, FuseAttachment, Door]
 const objectArrays = []
 
-var editorTabSize = 250
+var editorTabSize = 260
 
 var debug = false
 
@@ -558,7 +636,7 @@ function preload() {
     levels.push(json)
   }
 
-  children = 7
+  children = 6
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/dynamite/' + a + '.png')
     dynamiteSprites.push(png)
@@ -592,15 +670,14 @@ function setup() {
 }
 
 function draw() {
-  if (win) {
-    winScreen()
-  }
-  else {
-    gameLoop()
-  }
+  gameLoop()
 }
 
 function drawAll() {
+  push()
+  let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))
+  let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))
+  translate(xOffset,yOffset)
   const allObjectArrays = [...objectArrays, fuses, [plr]];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
@@ -631,11 +708,16 @@ function drawAll() {
       }
     }
   }
-
+  pop()
 }
 
 function gameLoop() {
   keyCooldown -= 1/targetFrameRate
+  if (shakeIntensity > 0) {
+    shakeIntensity -= 0.25
+  } else {
+    shakeIntensity = 0
+  }
 
   background(5,10,15)
 
@@ -714,8 +796,12 @@ function gameLoop() {
   }
   pop();
 
-  for (flashbang of flashbangs) {
-    flashbang.teken()
+  if (countdowns.length > 0) {
+    countdowns[countdowns.length-1].teken()
+  }
+
+  if (flashbangs.length > 0) {
+    flashbangs[flashbangs.length-1].teken()
   }
 }
 
@@ -723,16 +809,19 @@ function gameLoop() {
 
 function playerLoop() {
   plr.hidden = false
+
   if (moves == 0) {
     plr.anchored = true
     if (explode()) {
-      MODE == 1
-      plr.respawn()
+      flashbang = new Flashbang()
+      flashbangs.push(flashbang)
+      shakeIntensity = 40
     }
   }
   else {
     plr.anchored = false
   }
+
   plr.beweeg()
 }
 
@@ -851,15 +940,31 @@ function deleteLoop() {
   const cellY = snapToGrid(mouseY)
 
   for (const objectArray of objectArrays) {
-    for (let a = 0; a < objectArray.length; a++) {
+    for (let a=0; a < objectArray.length; a++) {
       const object = objectArray[a]
-
-      if (object.layer == currentLayer && object.x === cellX && object.y === cellY) {
+      if (object.layer == currentLayer && objectOverlapsCell(object,cellX,cellY)) {
         objectArray.splice(a, 1)
         return
       }
     }
   }
+}
+
+
+function objectOverlapsCell(obj, cellX, cellY) {
+  for (let a = 0; a < obj.height / gridSize; a++) {
+    let objectY = obj.y + a*gridSize;
+
+    for (let b = 0; b < obj.width / gridSize; b++) {
+      let objectX = obj.x + b*gridSize;
+
+      if (objectX == cellX && objectY == cellY) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 function drawHoveredObjectHighlight() {
@@ -874,12 +979,12 @@ function drawHoveredObjectHighlight() {
 
     for (const objectArray of objectArrays) {
       for (const object of objectArray) {
-        if (object.layer == currentLayer && object.x == cellX && object.y == cellY) {
+        if (object.layer == currentLayer && objectOverlapsCell(object,cellX,cellY)) {
           push()
           noFill()
           stroke(255, 75, 100)
           strokeWeight(3)
-          rect(object.x + 1.5, object.y + 1.5, gridSize - 3, gridSize - 3)
+          rect(object.x + 1.5, object.y + 1.5, object.width - 3, object.height - 3)
           pop()
         }
       }
@@ -896,7 +1001,7 @@ function drawHoveredObjectHighlight() {
       noFill()
       stroke(0, 150, 255)
       strokeWeight(3)
-      rect(currentObject.x + 1.5, currentObject.y + 1.5, gridSize - 3, gridSize - 3)
+      rect(currentObject.x + 1.5, currentObject.y + 1.5, currentObject.width - 3, currentObject.height - 3)
       pop()
       return
     }
@@ -961,21 +1066,44 @@ function outOfBounds(x,y) {
   }
 }
 
+
 function validPosition(obj) {
-  if (outOfBounds(obj.x,obj.y)) {
-    return false
+  if (outOfBounds(obj.x, obj.y)) {
+    return false;
   }
 
   for (const objectArray of objectArrays) {
     for (const otherObj of objectArray) {
-      if (otherObj.layer == obj.layer && otherObj.x == obj.x && otherObj.y == obj.y) {
-        return false
+
+      if (otherObj.layer !== obj.layer) {
+        continue
+      }
+
+      for (let a = 0; a < otherObj.height / gridSize; a++) {
+        const otherY = otherObj.y + a * gridSize;
+
+        for (let b = 0; b < otherObj.width / gridSize; b++) {
+          const otherX = otherObj.x + b * gridSize;
+
+          for (let c = 0; c < obj.height / gridSize; c++) {
+            const objY = obj.y + c * gridSize;
+
+            for (let d = 0; d < obj.width / gridSize; d++) {
+              const objX = obj.x + d * gridSize;
+
+              if (otherX === objX && otherY === objY) {
+                return false;
+              }
+            }
+          }
+        }
       }
     }
   }
 
-  return true
+  return true;
 }
+
 
 function tick() {
   if (moves <= 0 || fuses.length == 0) {
@@ -989,25 +1117,51 @@ function tick() {
     firstUnelectrifiedFuse.tick()
   }
   moves--
+
+  if (moves > 0 && moves <= 5) {
+    let countdown = new Countdown(moves)
+    countdowns.push(countdown)
+  }
 }
 
 let explosionTick = 0
-let flashbangTransparency = 0
-let flashbang
 function explode() {
-  if (explosionTick % 6 == 1) {
-    if (bombs[0].spriteIndex == dynamiteSprites.length-1) {
-      flashbang = new Flashbang()
-      flashbangs.push(flashbang)
-      bombs.splice(0,1)
+  if (bombs[0].spriteIndex == dynamiteSprites.length-1) {
+    return false
+  }
+
+  if (explosionTick % 6 == 0) {
+    if (bombs[0].spriteIndex == dynamiteSprites.length-2) {
+      bombs[0].spriteIndex++
       return true
     }
-    bombs[0].spriteIndex += 1
+    bombs[0].spriteIndex++
   }
   explosionTick++
   return false
 }
 
+function gameOver() {
+
+}
+
+function SetMode(mode) {
+  if (mode == 1) {
+    plr.respawn()
+  }
+  if (mode == 2) {
+    explosionTick = 0
+    movesBeforeInterval = wireInterval
+    moves = fuses.length*wireInterval
+  }
+  if (mode == 3) {
+
+  }
+  if (mode == 4) {
+    
+  }
+  MODE = mode
+}
 
 function keyPressed(event) {
 
@@ -1030,18 +1184,16 @@ function keyPressed(event) {
   }
 
   if (key == 'q' && MODE !== 1) {
-    MODE = 1
+    SetMode(1)
   }
   if (key == 'Enter' && MODE !== 2) {
-    movesBeforeInterval = wireInterval
-    moves = fuses.length*wireInterval
-    MODE = 2
+    SetMode(2)
   }
   if (key == 'z' && MODE !== 3) {
-    MODE = 3
+    SetMode(3)
   }
   if (key == 'b' && MODE !== 4) {
-    MODE = 4
+    SetMode(4)
   }
   if ((key === 'w' || keyCode == '38') && MODE == 4) {
     currentLayer += 1
@@ -1052,8 +1204,8 @@ function keyPressed(event) {
     currentLayer = constrain(currentLayer, 0, maxLayer)
   }
 
-  if (key == 'r') {
-    plr.respawn()
+  if (key == 'r' && MODE == 2) {
+    SetMode(1)
   }
 
   if (keyCooldown > 0 || plr.anchored) {
@@ -1076,21 +1228,4 @@ function keyPressed(event) {
     plr.targetX += gridSize
   }
 
-}
-
-function randomXPos() {
-  return gridSize*(floor(random(0,gridWith-1)))
-}
-
-function randomYPos() {
-  return gridSize*floor((random(0,gridHeight-1)))
-}
-
-function winScreen() {
-  win = true
-  background(0,175,50);
-  push();
-  textSize(175)
-  text("You Win!",100,height/2+58);
-  pop();
 }
