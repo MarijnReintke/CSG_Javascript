@@ -231,7 +231,6 @@ class Fuse extends Block {
   }
 
   tick() {
-    movesBeforeInterval--
     if (movesBeforeInterval <= 0) {
       movesBeforeInterval = wireInterval
       this.electrified = true
@@ -253,38 +252,23 @@ class Fuse extends Block {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
-    let R = 225
-    let G = 150
-    let B = 75
-
     push();
     noStroke();
-    if (!this.electrified) {
-      fill(R,G,B,1 - this.transparency)
-    } else {
-      fill(255,200,0,1-this.transparency)
-    }
 
     const fuseIndex = fuses.indexOf(this)
 
     let previousFuse = null
     let nextFuse = null
 
-
-
     if (fuseIndex === 0) {
       previousFuse = this.origin
     } else {
-      previousFuse = fuses[fuseIndex - 1]
+      previousFuse = fuses[fuseIndex-1]
     }
 
     if (fuseIndex + 1 < fuses.length) {
-      nextFuse = fuses[fuseIndex + 1]
+      nextFuse = fuses[fuseIndex+1]
     }
-
-    const fuseWidth = 16
-    const fuseOffset = (gridSize - fuseWidth) / 2
-    rect(this.x + fuseOffset, this.y + fuseOffset, fuseWidth, fuseWidth)
 
     for (const neighbor of [previousFuse, nextFuse]) {
       if (!neighbor) continue
@@ -292,23 +276,14 @@ class Fuse extends Block {
       const dx = neighbor.x - this.x
       const dy = neighbor.y - this.y
 
-      if (dx === gridSize) {
-        rect(this.x + gridSize / 2, this.y + fuseOffset, gridSize / 2, fuseWidth)
-      } else if (dx === -gridSize) {
-        rect(this.x, this.y + fuseOffset, gridSize / 2, fuseWidth)
-      } else if (dy === gridSize) {
-        rect(this.x + fuseOffset, this.y + gridSize / 2, fuseWidth, gridSize / 2)
-      } else if (dy === -gridSize) {
-        rect(this.x + fuseOffset, this.y, fuseWidth, gridSize / 2)
-      }
-    }
-
-    if (MODE == 2) {
-      if ((fuses.indexOf(this)) == fuses.length-1) {
-        fill(255,150,0)
-        rect(this.x + 15/2, this.y + 15/2, this.width-15)
-        fill(255,255,100)
-        rect(this.x + 25/2, this.y + 25/2, this.width-25)
+      if (dx == gridSize && dy == 0) {
+        // right
+      } else if (dx == -gridSize && dy == 0) {
+        // left
+      } else if (dy == gridSize && dx == 0) {
+        // down
+      } else if (dy == -gridSize && dx == 0) {
+        // up
       }
     }
     pop();
@@ -395,11 +370,18 @@ class Door extends Block {
   constructor() {
     super()
     this.layer = 2
-    this.width = gridSize*2
+    this.width = gridSize
     this.height = gridSize*3
+    this.open = false
   }
 
   teken() {
+    if (this.open) {
+      this.canCollide = false
+    }
+    else {
+      this.canCollide = true
+    }
     push()
     fill(255,255,255)
     rect(this.x,this.y,this.width,this.height)
@@ -541,7 +523,7 @@ class Flashbang {
     rect(0, 0, width, height);
     pop();
 
-    this.tick += 1;
+    this.tick++;
   }
 
   getArray() {
@@ -582,6 +564,61 @@ class Countdown {
   }
 }
 
+class SmokeParticle {
+  constructor(x,y) {
+    this.x = x + gridSize/2
+    this.xOffset = floor(random(-60,60))
+    this.y = y + gridSize
+    this.rotation = floor(random(0,360))
+    this.transparency = 0
+    this.time = floor(random(1,3))
+    this.tick = 0
+    this.size = 40
+    this.lastTick = this.time * targetFrameRate
+  }
+
+  teken() {
+
+    let progress
+
+    progress = this.tick/this.lastTick
+    let transparency
+    transparency = this.transparency + (1-this.transparency) * progress
+
+    progress = this.tick/this.lastTick;
+    progress = Math.sqrt(progress)
+    progress = sin(progress*180)
+    let size
+    size = this.size * progress;
+
+    progress = this.tick/this.lastTick
+    let x
+    x = this.x + this.xOffset * progress
+
+    push();
+    translate(x,this.y)
+    rectMode(CENTER)
+    rotate(this.rotation)
+    fill(190, 190, 190, (1 - transparency));
+    noStroke();
+    rect(0,0,size);
+    pop();
+
+    this.tick++;
+    this.y -= 2;
+  }
+
+  check() {
+    if (this.tick >= this.lastTick) {
+      smokeParticles.splice(smokeParticles.indexOf(this), 1);
+    }
+  }
+
+  getArray() {
+    smokeParticles
+  }
+}
+
 const targetFrameRate = 60
 
 var plr;
@@ -594,6 +631,8 @@ var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
 var MODE = 1
+
+var bombConnected = false
 
 var selectedObject = null;
 var currentObject = null;
@@ -617,6 +656,7 @@ var fuseAttachments = []
 var flashbangs = []
 var countdowns = []
 var doors = []
+var smokeParticles = []
 const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, Spawn, FuseAttachment, Door]
 const objectArrays = []
 
@@ -636,7 +676,7 @@ function preload() {
     levels.push(json)
   }
 
-  children = 6
+  children = 7
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/dynamite/' + a + '.png')
     dynamiteSprites.push(png)
@@ -652,6 +692,7 @@ function setup() {
   colorMode(RGB,255,255,255,1)
   frameRate(targetFrameRate)
   noSmooth();
+  angleMode(DEGREES)
 
   for (let obj of objects) {
     obj = new obj()
@@ -708,13 +749,21 @@ function drawAll() {
       }
     }
   }
+
+  for (smokeParticle of smokeParticles) {
+    smokeParticle.teken()
+  }
+  for (smokeParticle of smokeParticles) {
+    smokeParticle.check()
+  }
+
   pop()
 }
 
 function gameLoop() {
   keyCooldown -= 1/targetFrameRate
   if (shakeIntensity > 0) {
-    shakeIntensity -= 0.25
+    shakeIntensity -= 0.15
   } else {
     shakeIntensity = 0
   }
@@ -815,7 +864,7 @@ function playerLoop() {
     if (explode()) {
       flashbang = new Flashbang()
       flashbangs.push(flashbang)
-      shakeIntensity = 40
+      shakeIntensity = 30
     }
   }
   else {
@@ -1112,10 +1161,13 @@ function tick() {
   for (let hazard of hazards) {
      hazard.tick()
   }
+
+  movesBeforeInterval--
   const firstUnelectrifiedFuse = fuses.find(fuse => !fuse.electrified)
   if (firstUnelectrifiedFuse) {
     firstUnelectrifiedFuse.tick()
   }
+
   moves--
 
   if (moves > 0 && moves <= 5) {
@@ -1127,12 +1179,18 @@ function tick() {
 let explosionTick = 0
 function explode() {
   if (bombs[0].spriteIndex == dynamiteSprites.length-1) {
+    if (explosionTick % 3 == 0) {
+    let particle = new SmokeParticle(bombs[0].x,bombs[0].y)
+    smokeParticles.push(particle)
+    }
+    explosionTick++
     return false
   }
 
   if (explosionTick % 6 == 0) {
     if (bombs[0].spriteIndex == dynamiteSprites.length-2) {
       bombs[0].spriteIndex++
+      explosionTick = 0
       return true
     }
     bombs[0].spriteIndex++
@@ -1146,6 +1204,10 @@ function gameOver() {
 }
 
 function SetMode(mode) {
+  shakeIntensity = 0
+  flashbangs.splice(0,flashbangs.length)
+  countdowns.splice(0,countdowns.length)
+  smokeParticles.splice(0,smokeParticles.length)
   if (mode == 1) {
     plr.respawn()
   }
@@ -1158,7 +1220,7 @@ function SetMode(mode) {
 
   }
   if (mode == 4) {
-    
+
   }
   MODE = mode
 }
