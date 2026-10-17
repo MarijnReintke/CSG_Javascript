@@ -175,33 +175,13 @@ class Fuse extends Block {
   }
 
   validPosition() {
-    for (var a=0; a < fuses.length;a++) {
-      if (this.x == fuses[a].x && this.y == fuses[a].y) {
-        return false
-      }
-    }
+    const collidableObjects = [fuses,fuseAttachments,obstructions,doors,hazards]
 
-    for (var a=0; a < fuseAttachments.length;a++) {
-      if (this.x == fuseAttachments[a].x && this.y == fuseAttachments[a].y) {
-        return false
-      }
-    }
-
-    for (var a=0; a < hazards.length;a++) {
-      if (this.x == hazards[a].x && this.y == hazards[a].y) {
-        return false
-      }
-    }
-
-    for (var a=0; a < winBlocks.length;a++) {
-      if (this.x == winBlocks[a].x && this.y == winBlocks[a].y) {
-        return false
-      }
-    }
-
-    for (var a=0; a < obstructions.length;a++) {
-      if (this.x == obstructions[a].x && this.y == obstructions[a].y) {
-        return false
+    for (let array of collidableObjects) {
+      for (let obj of array) {
+        if (objectOverlapsCell(obj,this.x,this.y)) {
+          return false
+        }
       }
     }
 
@@ -230,30 +210,14 @@ class Fuse extends Block {
     return fuses
   }
 
-  tick() {
-    if (movesBeforeInterval <= 0) {
-      movesBeforeInterval = wireInterval
-      this.electrified = true
-    }
-  }
-
   teken() {
-    let originAlive = false
-    for (let attachment of fuseAttachments) {
-      if (fuseAttachments.indexOf(attachment) == fuseAttachments.indexOf(this.origin)) {
-        originAlive = true
-      }
-    }
-    if (!originAlive) {
-      fuses.splice(0,fuses.length)
+    if (!fuseAttachments.includes(this.origin)) {
+      fuses.splice(0, fuses.length)
       return
     }
 
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
-
-    push();
-    noStroke();
 
     const fuseIndex = fuses.indexOf(this)
 
@@ -263,30 +227,76 @@ class Fuse extends Block {
     if (fuseIndex === 0) {
       previousFuse = this.origin
     } else {
-      previousFuse = fuses[fuseIndex-1]
+      previousFuse = fuses[fuseIndex - 1]
     }
 
     if (fuseIndex + 1 < fuses.length) {
-      nextFuse = fuses[fuseIndex+1]
+      nextFuse = fuses[fuseIndex + 1]
     }
 
-    for (const neighbor of [previousFuse, nextFuse]) {
-      if (!neighbor) continue
+    let prevDx = 0
+    let prevDy = 0
+    if (previousFuse) {
+      prevDx = previousFuse.x - this.x
+      prevDy = previousFuse.y - this.y
+    }
 
-      const dx = neighbor.x - this.x
-      const dy = neighbor.y - this.y
+    let nextDx = 0
+    let nextDy = 0
+    if (nextFuse) {
+      nextDx = nextFuse.x - this.x
+      nextDy = nextFuse.y - this.y
+    }
 
-      if (dx == gridSize && dy == 0) {
-        // right
-      } else if (dx == -gridSize && dy == 0) {
-        // left
-      } else if (dy == gridSize && dx == 0) {
-        // down
-      } else if (dy == -gridSize && dx == 0) {
-        // up
+    let shape
+
+    if (previousFuse && nextFuse) {
+      if (prevDx == -gridSize && nextDx == gridSize ||
+          prevDx == gridSize && nextDx == -gridSize) {
+        shape = "horizontal"
+      } else if (
+          prevDy == -gridSize && nextDy == gridSize ||
+          prevDy == gridSize && nextDy == -gridSize
+      ) {
+        shape = "vertical"
+      } else if (
+          (prevDx == -gridSize && nextDy == -gridSize) ||
+          (prevDy == -gridSize && nextDx == -gridSize)
+      ) {
+        shape = "bottom-right"
+      } else if (
+          (prevDx == gridSize && nextDy == -gridSize) ||
+          (prevDy == -gridSize && nextDx == gridSize)
+      ) {
+        shape = "bottom-left"
+      } else if (
+          (prevDx == -gridSize && nextDy == gridSize) ||
+          (prevDy == gridSize && nextDx == -gridSize)
+      ) {
+        shape = "top-right"
+      } else if (
+          (prevDx == gridSize && nextDy == gridSize) ||
+          (prevDy == gridSize && nextDx == gridSize)
+      ) {
+        shape = "top-left"
+      }
+    } else if (previousFuse) {
+      if (prevDx == gridSize) {
+        shape = "left-end"
+      } else if (prevDx == -gridSize) {
+        shape = "right-end"
+      } else if (prevDy == gridSize) {
+        shape = "top-end"
+      } else if (prevDy == -gridSize) {
+        shape = "bottom-end"
       }
     }
-    pop();
+
+    if (this.electrified) {
+      shape = shape + "-charged"
+    }
+
+    image(wireSprites[shape],this.x,this.y,gridSize,gridSize)
   }
 
 }
@@ -296,16 +306,98 @@ class FuseAttachment extends Block {
     super(x,y)
     this.layer = 2
     this.canCollide = false
+    this.electrified = false
+    this.orientation
   }
 
   teken() {
+    this.orientation = fuseAttachmentOrientation
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
-    push();
-    fill(255,255,0)
-    rect(this.x,this.y,this.width);
-    pop();
+    if (MODE == 2) {
+      this.electrified = true
+    }
+    else {
+      this.electrified = false
+    }
+
+    let previousFuse = true
+    let nextFuse = null
+
+    let prevDx = 0
+    let prevDy = 0
+
+    if (this.orientation == 'right') {
+      prevDx = -gridSize
+    } else if (this.orientation == 'left') {
+      prevDx = gridSize
+    } else if (this.orientation == 'bottom') {
+      prevDy = gridSize
+    } else if (this.orientation == 'top') {
+      prevDy = -gridSize
+    }
+
+    if (fuses.length > 0) {
+      nextFuse = fuses[0]
+    }
+
+    let nextDx = 0
+    let nextDy = 0
+    if (nextFuse) {
+      nextDx = nextFuse.x - this.x
+      nextDy = nextFuse.y - this.y
+    }
+
+    let shape
+
+    if (previousFuse && nextFuse) {
+      if (prevDx == -gridSize && nextDx == gridSize ||
+          prevDx == gridSize && nextDx == -gridSize) {
+        shape = "horizontal"
+      } else if (
+          prevDy == -gridSize && nextDy == gridSize ||
+          prevDy == gridSize && nextDy == -gridSize
+      ) {
+        shape = "vertical"
+      } else if (
+          (prevDx == -gridSize && nextDy == -gridSize) ||
+          (prevDy == -gridSize && nextDx == -gridSize)
+      ) {
+        shape = "bottom-right"
+      } else if (
+          (prevDx == gridSize && nextDy == -gridSize) ||
+          (prevDy == -gridSize && nextDx == gridSize)
+      ) {
+        shape = "bottom-left"
+      } else if (
+          (prevDx == -gridSize && nextDy == gridSize) ||
+          (prevDy == gridSize && nextDx == -gridSize)
+      ) {
+        shape = "top-right"
+      } else if (
+          (prevDx == gridSize && nextDy == gridSize) ||
+          (prevDy == gridSize && nextDx == gridSize)
+      ) {
+        shape = "top-left"
+      }
+    } else if (previousFuse) {
+      if (prevDx == gridSize) {
+        shape = "left-end"
+      } else if (prevDx == -gridSize) {
+        shape = "right-end"
+      } else if (prevDy == gridSize) {
+        shape = "top-end"
+      } else if (prevDy == -gridSize) {
+        shape = "bottom-end"
+      }
+    }
+
+    if (this.electrified) {
+      shape = shape + "-charged"
+    }
+
+    image(wireSprites[shape],this.x,this.y,gridSize,gridSize)
   }
 
   getArray() {
@@ -644,6 +736,7 @@ var level = 1
 var currentLayer = 2
 var maxLayer = 3
 var shakeIntensity = 0
+var fuseAttachmentOrientation = "bottom"
 
 var hazards = []
 var winBlocks = []
@@ -666,6 +759,7 @@ var debug = false
 
 var levels = []
 var dynamiteSprites = []
+var wireSprites
 
 function preload() {
   let children
@@ -680,6 +774,29 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/dynamite/' + a + '.png')
     dynamiteSprites.push(png)
+  }
+
+  wireSprites = {
+    "horizontal": loadImage('JS/spelAssets/sprites/wire/horizontal.png'),
+    "vertical": loadImage('JS/spelAssets/sprites/wire/vertical.png'),
+    "top-left": loadImage('JS/spelAssets/sprites/wire/top-left.png'),
+    "top-right": loadImage('JS/spelAssets/sprites/wire/top-right.png'),
+    "bottom-left": loadImage('JS/spelAssets/sprites/wire/bottom-left.png'),
+    "bottom-right": loadImage('JS/spelAssets/sprites/wire/bottom-right.png'),
+    "left-end": loadImage('JS/spelAssets/sprites/wire/left-end.png'),
+    "right-end": loadImage('JS/spelAssets/sprites/wire/right-end.png'),
+    "top-end": loadImage('JS/spelAssets/sprites/wire/top-end.png'),
+    "bottom-end": loadImage('JS/spelAssets/sprites/wire/bottom-end.png'),
+    "horizontal-charged": loadImage('JS/spelAssets/sprites/wire/horizontal-charged.png'),
+    "vertical-charged": loadImage('JS/spelAssets/sprites/wire/vertical-charged.png'),
+    "top-left-charged": loadImage('JS/spelAssets/sprites/wire/top-left-charged.png'),
+    "top-right-charged": loadImage('JS/spelAssets/sprites/wire/top-right-charged.png'),
+    "bottom-left-charged": loadImage('JS/spelAssets/sprites/wire/bottom-left-charged.png'),
+    "bottom-right-charged": loadImage('JS/spelAssets/sprites/wire/bottom-right-charged.png'),
+    "left-end-charged": loadImage('JS/spelAssets/sprites/wire/left-end-charged.png'),
+    "right-end-charged": loadImage('JS/spelAssets/sprites/wire/right-end-charged.png'),
+    "top-end-charged": loadImage('JS/spelAssets/sprites/wire/top-end-charged.png'),
+    "bottom-end-charged": loadImage('JS/spelAssets/sprites/wire/bottom-end-charged.png'),
   }
 }
 
@@ -880,6 +997,13 @@ function tekenLoop() {
   plr.hidden = false
   plr.anchored = true
 
+  bombConnected = false
+  for (let bomb of bombs) {
+    if (fuses.length > 0 && fuses[fuses.length-1].x == bomb.x && fuses[fuses.length-1].y == bomb.y) {
+      bombConnected = true
+    }
+  }
+
   const cellX = snapToGrid(mouseX)
   const cellY = snapToGrid(mouseY)
   if (outOfBounds(cellX,cellY)) {
@@ -898,7 +1022,7 @@ function tekenLoop() {
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
-    if (fuse.validPosition() && (fuseSelected || fuses.length == 0) && fuses.length < wireLimit) {
+    if (fuse.validPosition() && (fuseSelected || fuses.length == 0) && fuses.length < wireLimit && !bombConnected) {
       fuse.transparency = 0
       fuse.getArray().push(fuse)
       fuse = null
@@ -959,9 +1083,16 @@ function buildLoop() {
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
-    currentObject.hidden = false
-    currentObject.getArray().push(currentObject)
-    currentObject = new selectedObject
+    if (currentObject.constructor.name !== "FuseAttachment") {
+      print(currentObject.constructor.name)
+      currentObject.hidden = false
+      currentObject.getArray().push(currentObject)
+      currentObject = new selectedObject
+    } else if (fuseAttachments.length == 0) {
+      currentObject.hidden = false
+      currentObject.getArray().push(currentObject)
+      currentObject = new selectedObject
+    }
   }
 
   if (currentObject) {
@@ -1163,9 +1294,11 @@ function tick() {
   }
 
   movesBeforeInterval--
-  const firstUnelectrifiedFuse = fuses.find(fuse => !fuse.electrified)
-  if (firstUnelectrifiedFuse) {
-    firstUnelectrifiedFuse.tick()
+  for (var a=0;a<fuses.length;a++) {
+    if (!fuses[a].electrified && movesBeforeInterval <= 0) {
+      movesBeforeInterval = wireInterval
+      fuses[a].electrified = true
+    }
   }
 
   moves--
@@ -1225,6 +1358,18 @@ function SetMode(mode) {
   MODE = mode
 }
 
+function rotateFuseAttachment() {
+    if (fuseAttachmentOrientation == "top") {
+      fuseAttachmentOrientation = "right"
+    } else if (fuseAttachmentOrientation == "right") {
+      fuseAttachmentOrientation = "bottom"
+    } else if (fuseAttachmentOrientation == "bottom") {
+      fuseAttachmentOrientation = "left"
+    } else if (fuseAttachmentOrientation == "left") {
+      fuseAttachmentOrientation = "top"
+    }
+}
+
 function keyPressed(event) {
 
   // note to self: this prevents the page from scrolling down when spacebar is pressed
@@ -1248,7 +1393,7 @@ function keyPressed(event) {
   if (key == 'q' && MODE !== 1) {
     SetMode(1)
   }
-  if (key == 'Enter' && MODE !== 2) {
+  if (key == 'Enter' && bombConnected && MODE !== 2) {
     SetMode(2)
   }
   if (key == 'z' && MODE !== 3) {
@@ -1257,13 +1402,17 @@ function keyPressed(event) {
   if (key == 'b' && MODE !== 4) {
     SetMode(4)
   }
-  if ((key === 'w' || keyCode == '38') && MODE == 4) {
+
+  if ((key == 'w' || keyCode == '38') && MODE == 4) {
     currentLayer += 1
     currentLayer = constrain(currentLayer, 0, maxLayer)
   }
-  if ((key === 's' || keyCode == '40') && MODE == 4) {
+  if ((key == 's' || keyCode == '40') && MODE == 4) {
     currentLayer -= 1
     currentLayer = constrain(currentLayer, 0, maxLayer)
+  }
+  if (key == 'r' && MODE == 3 && selectedObject == FuseAttachment) {
+    rotateFuseAttachment()
   }
 
   if (key == 'r' && MODE == 2) {
@@ -1277,16 +1426,16 @@ function keyPressed(event) {
   if (event.code == 'Space' && MODE == 2) {
     tick()
   }
-  if (key === 'w' || keyCode == '38') {
+  if (key == 'w' || keyCode == '38') {
     plr.targetY += -gridSize
   }
-  if (key === 'a' || keyCode == '37') {
+  if (key == 'a' || keyCode == '37') {
     plr.targetX += -gridSize
   }
-  if (key === 's' || keyCode == '40') {
+  if (key == 's' || keyCode == '40') {
     plr.targetY += gridSize
   }
-  if (key === 'd' || keyCode == '39') {
+  if (key == 'd' || keyCode == '39') {
     plr.targetX += gridSize
   }
 
