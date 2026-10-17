@@ -297,6 +297,22 @@ class Fuse extends Block {
     }
 
     image(wireSprites[shape],this.x,this.y,gridSize,gridSize)
+
+    if (this.electrified) {
+
+      if (elecs.length > 0) {
+        for (let elec of elecs) {
+          if (elec.parent == this) {
+            elec.teken()
+            return
+          }
+        }
+      }
+    
+    let elec = new Electricity(this)
+    elecs.push(elec)
+    elec.teken()
+    }
   }
 
 }
@@ -307,18 +323,14 @@ class FuseAttachment extends Block {
     this.layer = 2
     this.canCollide = false
     this.electrified = false
-    this.orientation
+    this.orientation = 'top'
   }
 
   teken() {
-    this.orientation = fuseAttachmentOrientation
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
-    if (MODE == 2) {
-      this.electrified = true
-    }
-    else {
+    if (MODE !== 2) {
       this.electrified = false
     }
 
@@ -338,7 +350,7 @@ class FuseAttachment extends Block {
       prevDy = -gridSize
     }
 
-    if (fuses.length > 0) {
+    if (fuses.length > 0 && fuseAttachments.indexOf(this) == 0) {
       nextFuse = fuses[0]
     }
 
@@ -398,6 +410,22 @@ class FuseAttachment extends Block {
     }
 
     image(wireSprites[shape],this.x,this.y,gridSize,gridSize)
+
+    if (this.electrified) {
+
+      if (elecs.length > 0) {
+        for (let elec of elecs) {
+          if (elec.parent == this) {
+            elec.teken()
+            return
+          }
+        }
+      }
+    
+    let elec = new Electricity(this)
+    elecs.push(elec)
+    elec.teken()
+    }
   }
 
   getArray() {
@@ -504,15 +532,6 @@ class Plr {
   }
 
   respawn() {
-    for (let fuse of fuses) {
-      if (fuse.electrified) {
-        fuse.electrified = false
-      }
-    }
-    for (let bomb of bombs) {
-      bomb.spriteIndex = 0
-    }
-    moves = 0
     this.targetX = this.spawnX
     this.targetY = this.spawnY
     this.previousX = this.targetX
@@ -579,6 +598,16 @@ class Plr {
   hazardCheck() {
     for (var a = 0; a < hazards.length; a++) {
       if (hazards[a].active && hazards[a].x == this.targetX && hazards[a].y == this.targetY) {
+        this.respawn()
+      }
+    }
+    for (let orb of elecOrbs) {
+      if (orb.targetX == this.targetX && orb.targetY == this.targetY) {
+        this.respawn()
+      }
+    }
+    for (let elec of elecs) {
+      if (elec.x == this.targetX && elec.y == this.targetY) {
         this.respawn()
       }
     }
@@ -711,6 +740,79 @@ class SmokeParticle {
   }
 }
 
+class ElecOrb {
+  constructor(x,y) {
+    this.x = x
+    this.y = y
+    this.targetX = x
+    this.targetY = y
+    this.spriteIndex = 0
+    this.layer = 2
+    this.currentFuse
+  }
+
+  teken() {
+    if (this.currentFuse) {
+      this.targetX = this.currentFuse.x
+      this.targetY = this.currentFuse.y
+    }
+
+    this.x += (this.targetX-this.x)/5;
+    this.y += (this.targetY-this.y)/5;
+
+    image(elecOrbSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
+
+    if (frameCount % 6 == 0) {
+      if (this.spriteIndex == elecOrbSprites.length-1) {
+        this.spriteIndex = 0
+      } else {
+        this.spriteIndex++
+      }
+    }
+  }
+
+  nextFuse() {
+    if (!this.currentFuse) {
+      fuseAttachments[0].electrified = true
+      this.currentFuse = fuses[0]
+      return
+    }
+    this.currentFuse.electrified = true
+    this.currentFuse = fuses[fuses.indexOf(this.currentFuse)+1]
+    if (fuses.indexOf(this.currentFuse) == fuses.length-1) {
+      elecOrbs.splice(0,elecOrbs.length)
+    }
+  }
+
+  getArray() {
+    elecOrbs
+  }
+}
+
+class Electricity {
+  constructor(parent) {
+    this.parent = parent
+    this.x = parent.x
+    this.y = parent.y
+    this.tick = 0
+    this.parent
+  }
+
+  teken() {
+    if (elecs.length > 1) {
+      this.tick = elecs[0].tick
+    }
+
+    fill(255,255,0)
+
+    this.tick++
+  }
+
+  getArray() {
+    elecs
+  }
+}
+
 const targetFrameRate = 60
 
 var plr;
@@ -723,13 +825,14 @@ var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
 var MODE = 1
+var GAMEOVER = false
 
 var bombConnected = false
 
 var selectedObject = null;
 var currentObject = null;
 var moves = 0
-var wireLimit = 50
+var wireLimit = 20
 var wireInterval = 2
 var movesBeforeInterval = wireInterval
 var level = 1
@@ -750,6 +853,8 @@ var flashbangs = []
 var countdowns = []
 var doors = []
 var smokeParticles = []
+var elecOrbs = []
+var elecs = []
 const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, Spawn, FuseAttachment, Door]
 const objectArrays = []
 
@@ -759,6 +864,7 @@ var debug = false
 
 var levels = []
 var dynamiteSprites = []
+var elecOrbSprites = []
 var wireSprites
 
 function preload() {
@@ -774,6 +880,12 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/dynamite/' + a + '.png')
     dynamiteSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/elecOrb/' + a + '.png')
+    elecOrbSprites.push(png)
   }
 
   wireSprites = {
@@ -836,7 +948,7 @@ function drawAll() {
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))
   translate(xOffset,yOffset)
-  const allObjectArrays = [...objectArrays, fuses, [plr]];
+  const allObjectArrays = [...objectArrays, fuses, elecOrbs];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
     let layer
@@ -866,6 +978,8 @@ function drawAll() {
       }
     }
   }
+
+  plr.teken()
 
   for (smokeParticle of smokeParticles) {
     smokeParticle.teken()
@@ -1076,6 +1190,10 @@ function buildLoop() {
     currentObject = new selectedObject
   }
 
+  if (selectedObject == FuseAttachment) {
+    currentObject.orientation = fuseAttachmentOrientation
+  }
+
   currentObject.x = cellX
   currentObject.y = cellY
   if (!validPosition(currentObject)) {
@@ -1084,7 +1202,6 @@ function buildLoop() {
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
     if (currentObject.constructor.name !== "FuseAttachment") {
-      print(currentObject.constructor.name)
       currentObject.hidden = false
       currentObject.getArray().push(currentObject)
       currentObject = new selectedObject
@@ -1294,11 +1411,9 @@ function tick() {
   }
 
   movesBeforeInterval--
-  for (var a=0;a<fuses.length;a++) {
-    if (!fuses[a].electrified && movesBeforeInterval <= 0) {
-      movesBeforeInterval = wireInterval
-      fuses[a].electrified = true
-    }
+  if (movesBeforeInterval == 0) {
+    elecOrbs[0].nextFuse()
+    movesBeforeInterval = wireInterval
   }
 
   moves--
@@ -1312,7 +1427,7 @@ function tick() {
 let explosionTick = 0
 function explode() {
   if (bombs[0].spriteIndex == dynamiteSprites.length-1) {
-    if (explosionTick % 3 == 0) {
+    if (explosionTick % 6 == 0) {
     let particle = new SmokeParticle(bombs[0].x,bombs[0].y)
     smokeParticles.push(particle)
     }
@@ -1320,7 +1435,7 @@ function explode() {
     return false
   }
 
-  if (explosionTick % 6 == 0) {
+  if (explosionTick % 3 == 0) {
     if (bombs[0].spriteIndex == dynamiteSprites.length-2) {
       bombs[0].spriteIndex++
       explosionTick = 0
@@ -1341,10 +1456,19 @@ function SetMode(mode) {
   flashbangs.splice(0,flashbangs.length)
   countdowns.splice(0,countdowns.length)
   smokeParticles.splice(0,smokeParticles.length)
+  elecOrbs.splice(0,elecOrbs.length)
+  for (let fuse of fuses) {
+    fuse.electrified = false
+  }
+  for (let bomb of bombs) {
+    bomb.spriteIndex = 0
+  }
   if (mode == 1) {
     plr.respawn()
   }
   if (mode == 2) {
+    let elecOrb = new ElecOrb(fuseAttachments[0].x,fuseAttachments[0].y)
+    elecOrbs.push(elecOrb)
     explosionTick = 0
     movesBeforeInterval = wireInterval
     moves = fuses.length*wireInterval
