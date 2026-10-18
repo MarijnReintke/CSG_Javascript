@@ -32,13 +32,7 @@ class Tile extends Block {
       return
     }
     push();
-      if (MODE == 1) {
-        drawingContext.setLineDash([5,5])
-        stroke(255,255,255)
-        strokeWeight(1)
-      } else {
-        noStroke();
-      }
+      noStroke()
       if (this.x/gridSize % 2 == 0) {
         if (this.y/gridSize % 2 == 0) {
           fill(150,160,170,1-this.transparency)
@@ -56,6 +50,18 @@ class Tile extends Block {
       }
       rect(this.x,this.y,this.width)
     pop();
+
+    if (MODE == 1 && !(this.x == 0 || this.x == gridSize*(gridWith-1) 
+        || this.y == 0 || this.y == gridSize*(gridHeight-1))) {
+      for (let tileHighlight of tileHighlights) {
+        if (tileHighlight.parent == this) {
+          return tileHighlight.teken()
+        }
+      }
+      let tileHighlight = new TileHighlight(this)
+      tileHighlights.push(tileHighlight)
+      tileHighlight.teken()
+    }
   }
 
   getArray() {
@@ -314,7 +320,7 @@ class FuseAttachment extends Block {
     this.layer = 2
     this.canCollide = false
     this.electrified = false
-    this.orientation = fuseAttachmentOrientation
+    this.orientation = buildOrientation
   }
 
   teken() {
@@ -336,9 +342,9 @@ class FuseAttachment extends Block {
     } else if (this.orientation == 'left') {
       prevDx = gridSize
     } else if (this.orientation == 'bottom') {
-      prevDy = gridSize
-    } else if (this.orientation == 'top') {
       prevDy = -gridSize
+    } else if (this.orientation == 'top') {
+      prevDy = gridSize
     }
 
     if (fuses.length > 0 && fuseAttachments.indexOf(this) == 0) {
@@ -422,6 +428,7 @@ class FuseAttachment extends Block {
   getArray() {
     return fuseAttachments
   }
+
 }
 
 class Bomb extends Block {
@@ -478,30 +485,79 @@ class WinBlock extends Block {
 }
 
 class Door extends Block {
-  constructor() {
-    super()
+  constructor(x,y) {
+    super(x,y)
     this.layer = 2
-    this.width = gridSize
-    this.height = gridSize*3
+    this.width
+    this.height
     this.open = false
+    this.orientation = buildOrientation
+    this.rotation
+    this.tick = 0
+    this.spriteIndex = 0
   }
 
   teken() {
+    if (this.orientation == 'left' || this.orientation == 'right') {
+      this.width = gridSize
+      this.height = gridSize*3
+    } else {
+      this.width = gridSize*3
+      this.height = gridSize
+    }
+
+    if (this.orientation == 'left') {
+      this.rotation = 180
+    } else if (this.orientation == 'right') {
+      this.rotation = 0
+    } else if (this.orientation == 'bottom') {
+      this.rotation = 90
+    } else if (this.orientation == 'top') {
+      this.rotation = -90
+    }
+
+    if (this.tick % 3 == 0 && this.tick > 0) {
+      this.tick = 0
+      if (this.spriteIndex == doorSprites.length-1) {
+        this.spriteIndex = 0
+      } else {
+        this.spriteIndex++
+      }
+    }
+
     if (this.open) {
       this.canCollide = false
-    }
-    else {
+      if (this.spriteIndex !== 4) {
+        this.tick++
+      } else {
+        this.tick = 0
+      }
+    } else {
+      if (this.spriteIndex !== 0) {
+        this.tick++
+      } else {
+        this.tick = 0
+      }
       this.canCollide = true
     }
+
     push()
-    fill(255,255,255)
-    rect(this.x,this.y,this.width,this.height)
+      imageMode(CENTER)
+      translate(this.x + this.width/2,this.y + this.height/2)
+      rotate(this.rotation)
+      image(doorSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
     pop()
+
   }
 
   getArray() {
     return doors
   }
+
+}
+
+class Entrance {
+
 }
 
 class Plr {
@@ -683,7 +739,7 @@ class SmokeParticle {
     this.y = y + gridSize
     this.rotation = floor(random(0,360))
     this.transparency = 0
-    this.time = floor(random(1,3))
+    this.time = random(1,2.5)
     this.tick = 0
     this.size = 40
     this.lastTick = this.time * targetFrameRate
@@ -790,22 +846,23 @@ class Electricity {
     this.spriteIndex = 0
     this.parent
     this.rotation = 0
+    this.shape = shape
     if (shape == 'vertical-charged') {
       this.rotation = 90
     } else if (shape == 'top-right-charged') {
-      this.rotation = 45
+      this.rotation = 0
     } else if (shape == 'bottom-right-charged') {
-      this.rotation = -225
+      this.rotation = 90
     } else if (shape == 'bottom-left-charged') {
-      this.rotation = 225
+      this.rotation = 180
     } else if (shape == 'top-left-charged') {
-      this.rotation = -45
+      this.rotation = 270
     }
   }
 
   teken() {
     if (this.tick % 5 == 0) {
-      if (this.spriteIndex == electricitySprites.length-1) {
+      if (this.spriteIndex == 3) {
         this.spriteIndex = 0
       } else {
         this.spriteIndex++
@@ -816,11 +873,18 @@ class Electricity {
       this.spriteIndex = elecs[0].spriteIndex
     }
 
+
+    let shape
+    shape = String(this.spriteIndex)
+    if (this.shape !== 'vertical-charged' && this.shape !== 'horizontal-charged') {
+      shape = shape + "-corner"
+    }
+
     push()
       imageMode(CENTER)
       translate(this.x+gridSize/2,this.y+gridSize/2)
       rotate(this.rotation)
-      image(electricitySprites[this.spriteIndex],0,0,gridSize,gridSize)
+      image(electricitySprites[shape],0,0,gridSize,gridSize)
     pop()
 
     this.tick++
@@ -828,6 +892,43 @@ class Electricity {
 
   getArray() {
     elecs
+  }
+}
+
+class TileHighlight {
+  constructor(parent) {
+    this.x = parent.x
+    this.y = parent.y
+    this.tick = 0
+    this.parent = parent
+    this.spriteIndex = 0
+    this.transparency = 0.5
+  }
+
+  teken() {
+    if (!this.parent) {
+      tileHighlights.splice(tileHighlights.indexOf(this),1)
+    }
+
+    if (this.tick % 20 == 0) {
+      if (this.spriteIndex == tileHighlightSprites.length-1) {
+        this.spriteIndex = 0
+      } else {
+        this.spriteIndex++
+      }
+    }
+
+    if (tileHighlights.length > 1) {
+      this.spriteIndex = tileHighlights[0].spriteIndex
+    }
+
+    image(tileHighlightSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
+    
+    this.tick++
+  }
+
+  getArray() {
+    tileHighlights
   }
 }
 
@@ -857,7 +958,8 @@ var level = 1
 var currentLayer = 2
 var maxLayer = 3
 var shakeIntensity = 0
-var fuseAttachmentOrientation = "bottom"
+
+var buildOrientation = 'top'
 
 var hazards = []
 var winBlocks = []
@@ -872,6 +974,7 @@ var doors = []
 var smokeParticles = []
 var elecOrbs = []
 var elecs = []
+var tileHighlights = []
 const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, FuseAttachment, Door]
 const objectArrays = []
 
@@ -883,6 +986,8 @@ var levels = []
 var dynamiteSprites = []
 var elecOrbSprites = []
 var electricitySprites = []
+var tileHighlightSprites = []
+var doorSprites = []
 var wireSprites
 
 function preload() {
@@ -908,8 +1013,25 @@ function preload() {
 
   children = 4
   for (var a=0;a<children;a++) {
-    var png = loadImage('JS/spelAssets/sprites/electricity/' + a + '.png')
-    electricitySprites.push(png)
+    var png = loadImage('JS/spelAssets/sprites/tileHighlight/' + a + '.png')
+    tileHighlightSprites.push(png)
+  }
+
+  children = 8
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/door/' + a + '.png')
+    doorSprites.push(png)
+  }
+
+  electricitySprites = {
+    "0": loadImage('JS/spelAssets/sprites/electricity/0.png'),
+    "0-corner": loadImage('JS/spelAssets/sprites/electricity/0-corner.png'),
+    "1": loadImage('JS/spelAssets/sprites/electricity/1.png'),
+    "1-corner": loadImage('JS/spelAssets/sprites/electricity/1-corner.png'),
+    "2": loadImage('JS/spelAssets/sprites/electricity/2.png'),
+    "2-corner": loadImage('JS/spelAssets/sprites/electricity/2-corner.png'),
+    "3": loadImage('JS/spelAssets/sprites/electricity/3.png'),
+    "3-corner": loadImage('JS/spelAssets/sprites/electricity/3-corner.png'),
   }
 
   wireSprites = {
@@ -1088,6 +1210,9 @@ function gameLoop() {
     textSize(20)
     if (currentObject) {
       text("this.layer = " + currentObject.layer, 15, gridHeight*gridSize + 150);
+      if (currentObject.orientation) {
+        text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 15, gridHeight*gridSize + 175);
+      }
     }
   }
 
@@ -1161,7 +1286,7 @@ function tekenLoop() {
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
-    if (fuse.validPosition() && (fuseSelected || fuses.length == 0) && fuses.length < wireLimit && !bombConnected) {
+    if (fuse.validPosition() && fuses.length < wireLimit && !bombConnected) {
       fuse.transparency = 0
       fuse.getArray().push(fuse)
       fuse = null
@@ -1212,15 +1337,25 @@ function buildLoop() {
     selectedObject = Hazard
   }
   if (!currentObject || currentObject.constructor.name !== selectedObject.name) {
-    currentObject = new selectedObject
-  }
-
-  if (selectedObject == FuseAttachment) {
-    currentObject.orientation = fuseAttachmentOrientation
+    currentObject = new selectedObject()
   }
 
   currentObject.x = cellX
   currentObject.y = cellY
+  if (currentObject.orientation) {
+    currentObject.orientation = buildOrientation
+  }
+
+  if (selectedObject == Door) {
+    if (currentObject.orientation == 'left' || currentObject.orientation == 'right') {
+      currentObject.width = gridSize
+      currentObject.height = gridSize*3
+    } else {
+      currentObject.width = gridSize*3
+      currentObject.height = gridSize
+    }
+  }
+
   if (!validPosition(currentObject)) {
     return drawAll()
   }
@@ -1230,11 +1365,11 @@ function buildLoop() {
        currentObject.constructor.name !== "Bomb") {
       currentObject.hidden = false
       currentObject.getArray().push(currentObject)
-      currentObject = new selectedObject
+      currentObject = null
     } else if (currentObject.getArray().length == 0) {
       currentObject.hidden = false
       currentObject.getArray().push(currentObject)
-      currentObject = new selectedObject
+      currentObject = null
     }
   }
 
@@ -1245,17 +1380,17 @@ function buildLoop() {
   if (currentObject) {
     currentObject.getArray().splice(currentObject.getArray().indexOf(currentObject),1)
   }
+
+  if (!currentObject) {
+    currentObject = new selectedObject()
+  }
 }
 
 function deleteLoop() {
   plr.anchored = true
   plr.hidden = true
 
-  if (!mouseIsPressed || mouseButton !== LEFT) {
-    return
-  }
-
-  if (outOfBounds(mouseX,mouseY)) {
+  if (!mouseIsPressed || mouseButton !== LEFT || outOfBounds(mouseX,mouseY)) {
     return
   }
 
@@ -1340,7 +1475,8 @@ function printLevel() {
         class: object.constructor.name,
         x: object.x,
         y: object.y,
-        transparency: object.transparency
+        transparency: object.transparency,
+        orientation: object.orientation
       }
       levelArray.push(obj)
     }
@@ -1370,6 +1506,9 @@ function loadLevel(lvl) {
     };
 
     object = new classes[constructor](data.x,data.y,data.transparency);
+    if (data.orientation) {
+      object.orientation = data.orientation
+    }
 
     object.getArray().push(object)
   }
@@ -1492,6 +1631,7 @@ function SetMode(mode) {
   smokeParticles.splice(0,smokeParticles.length)
   elecOrbs.splice(0,elecOrbs.length)
   elecs.splice(0,elecs.length)
+  tileHighlights.splice(0,tileHighlights.length)
   for (let fuse of fuses) {
     fuse.electrified = false
   }
@@ -1518,29 +1658,36 @@ function SetMode(mode) {
   MODE = mode
 }
 
-function rotateFuseAttachment() {
-    if (fuseAttachmentOrientation == "top") {
-      fuseAttachmentOrientation = "right"
-    } else if (fuseAttachmentOrientation == "right") {
-      fuseAttachmentOrientation = "bottom"
-    } else if (fuseAttachmentOrientation == "bottom") {
-      fuseAttachmentOrientation = "left"
-    } else if (fuseAttachmentOrientation == "left") {
-      fuseAttachmentOrientation = "top"
-    }
+function changeOrientation(value) {
+  if (value == "top") {
+    value = "right"
+  } else if (value == "right") {
+    value = "bottom"
+  } else if (value == "bottom") {
+    value = "left"
+  } else if (value == "left") {
+    value = "top"
+  }
+  return value
 }
 
 function keyPressed(event) {
 
-  // note to self: this prevents the page from scrolling down when spacebar is pressed
-  if (key === ' ') {
+  // note to self: these prevent the page from scrolling
+  if (key === ' ' || keyCode == '37' || keyCode == '38' || keyCode == '39' || keyCode == '40') {
     event.preventDefault();
   }
 
-  if (event.code == 'ShiftLeft' && MODE == 3) {
+  if (key == 'd' && MODE == 3) {
     selectedObject = objects[objects.indexOf(selectedObject)+1]
     if (!selectedObject) {
       selectedObject = objects[0]
+    }
+  }
+  if (key == 'a' && MODE == 3) {
+    selectedObject = objects[objects.indexOf(selectedObject)-1]
+    if (!selectedObject) {
+      selectedObject = objects[objects.length-1]
     }
   }
   if (key == 'F6') {
@@ -1571,8 +1718,8 @@ function keyPressed(event) {
     currentLayer -= 1
     currentLayer = constrain(currentLayer, 0, maxLayer)
   }
-  if (key == 'r' && MODE == 3 && selectedObject == FuseAttachment) {
-    rotateFuseAttachment()
+  if (key == 'r' && MODE == 3 && currentObject.orientation) {
+    buildOrientation = changeOrientation(buildOrientation)
   }
 
   if (key == 'r' && MODE == 2) {

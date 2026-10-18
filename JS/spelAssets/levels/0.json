@@ -2688,297 +2688,73 @@
         "transparency": 0
     },
     {
-        "class": "Obstruction",
-        "x": 360,
+        "class": "FuseAttachment",
+        "x": 440,
+        "y": 560,
+        "transparency": 0,
+        "orientation": "left"
+    },
+    {
+        "class": "Door",
+        "x": 280,
         "y": 280,
-        "transparency": 0
+        "transparency": 0,
+        "orientation": "left"
     },
     {
-        "class": "Obstruction",
-        "x": 360,
-        "y": 240,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
+        "class": "Door",
         "x": 360,
         "y": 200,
-        "transparency": 0
+        "transparency": 0,
+        "orientation": "top"
     },
     {
-        "class": "Obstruction",
-        "x": 360,
-        "y": 160,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 360,
-        "y": 120,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 360,
-        "y": 80,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 360,
-        "y": 40,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 360,
-        "y": 0,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 400,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 440,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 520,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
+        "class": "Door",
         "x": 560,
-        "y": 280,
-        "transparency": 0
+        "y": 320,
+        "transparency": 0,
+        "orientation": "right"
     },
     {
-        "class": "Obstruction",
-        "x": 600,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 680,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 720,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 760,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
+        "class": "Door",
         "x": 800,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
         "y": 240,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 320,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 360,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 400,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 440,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 480,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 520,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 560,
-        "transparency": 0
-    },
-    {
-        "class": "Obstruction",
-        "x": 840,
-        "y": 600,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 640,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 480,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 840,
-        "y": 80,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 840,
-        "y": 40,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 840,
-        "y": 0,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 880,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 920,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 960,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 1000,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 1040,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 1080,
-        "y": 280,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 360,
-        "y": 440,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 360,
-        "y": 480,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 360,
-        "y": 520,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 360,
-        "y": 560,
-        "transparency": 0
-    },
-    {
-        "class": "Hazard",
-        "x": 360,
-        "y": 600,
-        "transparency": 0
-    },
-    {
-        "class": "WinBlock",
-        "x": 1080,
-        "y": 480,
-        "transparency": 0
-    },
-    {
-        "class": "WinBlock",
-        "x": 1080,
-        "y": 440,
-        "transparency": 0
-    },
-    {
-        "class": "Bomb",
-        "x": 560,
-        "y": 240,
-        "transparency": 0
-    },
-    {
-        "class": "FuseAttachment",
-        "x": 760,
-        "y": 600,
-        "transparency": 0
+        "transparency": 0,
+        "orientation": "bottom"
     },
     {
         "class": "Door",
-        "x": 840,
+        "x": 720,
         "y": 120,
-        "transparency": 0
+        "transparency": 0,
+        "orientation": "bottom"
     },
     {
         "class": "Door",
-        "x": 360,
-        "y": 320,
-        "transparency": 0
+        "x": 600,
+        "y": 120,
+        "transparency": 0,
+        "orientation": "bottom"
+    },
+    {
+        "class": "Door",
+        "x": 560,
+        "y": 160,
+        "transparency": 0,
+        "orientation": "bottom"
+    },
+    {
+        "class": "Door",
+        "x": 560,
+        "y": 200,
+        "transparency": 0,
+        "orientation": "bottom"
+    },
+    {
+        "class": "Door",
+        "x": 600,
+        "y": 240,
+        "transparency": 0,
+        "orientation": "bottom"
     }
 ]
