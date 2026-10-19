@@ -454,33 +454,9 @@ class Bomb extends Block {
   }
 }
 
-class WinBlock extends Block {
-  constructor(x,y,transparency) {
-    super(x,y,transparency)
-    this.layer = 2
-    this.canCollide = false
-  }
-
-  teken() {
-    this.x = snapToGrid(this.x)
-    this.y = snapToGrid(this.y)
-
-    if (this.hidden) {
-      return
-    }
-    push();
-    noStroke();
-    let aantalKringen = 5
-    let offset = frameCount*aantalKringen/1.25/targetFrameRate
-    for (var a=0;a<aantalKringen;a++) {
-      fill(0,255-((a+offset)%aantalKringen)*100/aantalKringen,0,1-this.transparency)
-      rect(this.x+a*gridSize/2/aantalKringen,this.y+a*gridSize/2/aantalKringen,this.width-(a*gridSize/aantalKringen))
-    }
-    pop();
-  }
-
-  getArray() {
-    return winBlocks
+class Button extends Block {
+  constructor(x,y) {
+    super(x,y)
   }
 }
 
@@ -495,6 +471,7 @@ class Door extends Block {
     this.rotation
     this.tick = 0
     this.spriteIndex = 0
+    this.previousState = this.open
   }
 
   teken() {
@@ -516,7 +493,7 @@ class Door extends Block {
       this.rotation = -90
     }
 
-    if (this.tick % 3 == 0 && this.tick > 0) {
+    if ((this.tick % 3 == 0 && this.tick > 0) || this.previousState !== this.open) {
       this.tick = 0
       if (this.spriteIndex == doorSprites.length-1) {
         this.spriteIndex = 0
@@ -548,6 +525,8 @@ class Door extends Block {
       image(doorSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
     pop()
 
+    this.previousState = this.open
+
   }
 
   getArray() {
@@ -556,8 +535,126 @@ class Door extends Block {
 
 }
 
-class Entrance {
+class Exit extends Block {
+  constructor(x,y) {
+    super(x,y)
+    this.layer = 2
+    this.width = gridSize
+    this.height = gridSize*3
+    this.open = false
+    this.rotation = 180
+    this.tick = 0
+    this.spriteIndex = 0
+    this.previousState = this.open
+  }
 
+  teken() {
+
+    if ((this.tick % 3 == 0 && this.tick > 0) || this.previousState !== this.open) {
+      this.tick = 0
+      if (this.spriteIndex == exitSprites.length-1) {
+        this.spriteIndex = 0
+      } else {
+        this.spriteIndex++
+      }
+    }
+
+    if (this.open) {
+      this.canCollide = false
+      if (this.spriteIndex !== 4) {
+        this.tick++
+      } else {
+        this.tick = 0
+      }
+    } else {
+      if (this.spriteIndex !== 0) {
+        this.tick++
+      } else {
+        this.tick = 0
+      }
+      this.canCollide = true
+    }
+
+    push()
+      imageMode(CENTER)
+      translate(this.x + this.width/2,this.y + this.height/2)
+      rotate(this.rotation)
+      image(exitSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
+    pop()
+
+    this.previousState = this.open
+
+  }
+
+  getArray() {
+    return exits
+  }
+
+}
+
+class Entrance {
+  constructor() {
+    this.x = 0
+    this.y = gridSize*6
+    this.layer = 2
+    this.width = gridSize
+    this.height = gridSize*3
+    this.open = false
+    this.rotation = 0
+    this.tick = 0
+    this.time = 1
+    this.ticksUntilClose = this.time*targetFrameRate
+    this.spriteIndex = 0
+    this.previousState = this.open
+    this.canCollide = true
+  }
+
+  openAndClose() {
+    this.open = true
+    this.ticksUntilClose = this.time*targetFrameRate
+  }
+
+  teken() {
+
+    if (this.ticksUntilClose == 0) {
+      this.ticksUntilClose = this.time*targetFrameRate
+      this.open = false
+    }
+
+    if ((this.tick % 3 == 0 && this.tick > 0) || this.previousState !== this.open) {
+      this.tick = 0
+      if (this.spriteIndex == entranceSprites.length-1) {
+        this.spriteIndex = 0
+      } else {
+        this.spriteIndex++
+      }
+    }
+
+    if (this.open) {
+      if (this.spriteIndex !== 4) {
+        this.tick++
+      } else {
+        this.tick = 0
+      }
+    } else {
+      if (this.spriteIndex !== 0) {
+        this.tick++
+      } else {
+        this.tick = 0
+      }
+    }
+
+    push()
+      imageMode(CENTER)
+      translate(this.x + this.width/2,this.y + this.height/2)
+      rotate(this.rotation)
+      image(entranceSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
+    pop()
+
+    this.previousState = this.open
+    this.ticksUntilClose--
+
+  }
 }
 
 class Plr {
@@ -579,11 +676,12 @@ class Plr {
   }
 
   spawn() {
+    entrance.openAndClose()
     this.targetX = this.spawnX
     this.targetY = this.spawnY
     this.previousX = this.targetX
     this.previousY = this.targetY
-    this.x = this.spawnX
+    this.x = -gridSize
     this.y = this.spawnY
   }
 
@@ -622,14 +720,7 @@ class Plr {
 
   collisionCheck() {
 
-    for (var a = 0; a < winBlocks.length; a++) {
-      if (winBlocks[a].x == this.targetX && winBlocks[a].y == this.targetY) {
-        plr.spawn()
-        return true
-      }
-    }
-
-    const allObjectArrays = [...objectArrays, fuses, [plr]];
+    const allObjectArrays = [...objectArrays, [entrance]];
 
     for (const objectArray of allObjectArrays) {
       for (const obj of objectArray) {
@@ -935,6 +1026,7 @@ class TileHighlight {
 const targetFrameRate = 60
 
 var plr;
+var entrance;
 
 const gridSize = 40;
 const gridWith = 28;
@@ -945,6 +1037,7 @@ var keyCooldown = 0
 
 var MODE = 1
 var GAMEOVER = false
+var LEVELCOMPLETE = false
 
 var bombConnected = false
 
@@ -962,7 +1055,6 @@ var shakeIntensity = 0
 var buildOrientation = 'top'
 
 var hazards = []
-var winBlocks = []
 var obstructions = []
 var fuses = []
 var bombs = []
@@ -975,7 +1067,8 @@ var smokeParticles = []
 var elecOrbs = []
 var elecs = []
 var tileHighlights = []
-const objects = [Tile, Obstruction, Hazard, WinBlock, Bomb, FuseAttachment, Door]
+var exits = []
+const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit]
 const objectArrays = []
 
 var editorTabSize = 260
@@ -988,6 +1081,8 @@ var elecOrbSprites = []
 var electricitySprites = []
 var tileHighlightSprites = []
 var doorSprites = []
+var entranceSprites = []
+var exitSprites = []
 var wireSprites
 
 function preload() {
@@ -1021,6 +1116,18 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/door/' + a + '.png')
     doorSprites.push(png)
+  }
+
+  children = 8
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/entrance/' + a + '.png')
+    entranceSprites.push(png)
+  }
+
+  children = 8
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/exit/' + a + '.png')
+    exitSprites.push(png)
   }
 
   electricitySprites = {
@@ -1076,6 +1183,7 @@ function setup() {
   }
 
   plr = new Plr(0,0)
+  entrance = new Entrance()
 
   for (var a=0;a<gridWith;a++) {
     for (var b=0;b<gridHeight;b++) {
@@ -1094,7 +1202,7 @@ function drawAll() {
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))
   translate(xOffset,yOffset)
-  const allObjectArrays = [...objectArrays, fuses, elecOrbs];
+  const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance]];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
     let layer
@@ -1361,13 +1469,12 @@ function buildLoop() {
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
-    if (currentObject.constructor.name !== "FuseAttachment" &&
-       currentObject.constructor.name !== "Bomb") {
-      currentObject.hidden = false
-      currentObject.getArray().push(currentObject)
-      currentObject = null
-    } else if (currentObject.getArray().length == 0) {
-      currentObject.hidden = false
+    if (selectedObject == Bomb || selectedObject == FuseAttachment || selectedObject == Exit) {
+      if (currentObject.getArray().length == 0) {
+        currentObject.getArray().push(currentObject)
+        currentObject = null
+      }
+    } else {
       currentObject.getArray().push(currentObject)
       currentObject = null
     }
@@ -1485,7 +1592,6 @@ function printLevel() {
 }
 
 function loadLevel(lvl) {
-  plr.spawn()
   for (let objectArray of objectArrays) {
     objectArray.splice(0,objectArray.length)
   }
@@ -1499,10 +1605,10 @@ function loadLevel(lvl) {
       'Tile': Tile,
       'Hazard': Hazard,
       'Obstruction': Obstruction,
-      'WinBlock': WinBlock,
       'Bomb': Bomb,
       'FuseAttachment': FuseAttachment,
-      'Door': Door
+      'Door': Door,
+      'Exit': Exit
     };
 
     object = new classes[constructor](data.x,data.y,data.transparency);
@@ -1542,7 +1648,8 @@ function validPosition(obj) {
     }
   }
 
-  for (const objectArray of objectArrays) {
+  const allObjectArrays = [...objectArrays, [entrance]]
+  for (const objectArray of allObjectArrays) {
     for (const otherObj of objectArray) {
 
       if (otherObj.layer !== obj.layer) {

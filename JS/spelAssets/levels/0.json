@@ -3732,41 +3732,22 @@
         "transparency": 0
     },
     {
-        "class": "WinBlock",
-        "x": 1080,
-        "y": 400,
-        "transparency": 0
-    },
-    {
-        "class": "WinBlock",
-        "x": 1080,
-        "y": 440,
-        "transparency": 0
-    },
-    {
-        "class": "WinBlock",
-        "x": 1080,
-        "y": 480,
-        "transparency": 0
-    },
-    {
         "class": "Bomb",
-        "x": 1040,
-        "y": 40,
+        "x": 920,
+        "y": 560,
         "transparency": 0
     },
     {
         "class": "FuseAttachment",
-        "x": 880,
-        "y": 560,
+        "x": 1000,
+        "y": 40,
         "transparency": 0,
-        "orientation": "top"
+        "orientation": "bottom"
     },
     {
-        "class": "Door",
-        "x": 0,
-        "y": 240,
-        "transparency": 0,
-        "orientation": "right"
+        "class": "Exit",
+        "x": 1080,
+        "y": 400,
+        "transparency": 0
     }
 ]
