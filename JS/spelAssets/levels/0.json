@@ -3749,5 +3749,17 @@
         "x": 1080,
         "y": 400,
         "transparency": 0
+    },
+    {
+        "class": "Button",
+        "x": 800,
+        "y": 200,
+        "transparency": 0
+    },
+    {
+        "class": "Button",
+        "x": 1040,
+        "y": 560,
+        "transparency": 0
     }
 ]

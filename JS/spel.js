@@ -172,7 +172,7 @@ class Fuse extends Block {
   }
 
   validPosition() {
-    const collidableObjects = [fuses,fuseAttachments,obstructions,doors]
+    const collidableObjects = [fuses,fuseAttachments,obstructions,doors,buttons,exits,[entrance]]
 
     for (let array of collidableObjects) {
       for (let obj of array) {
@@ -457,6 +457,24 @@ class Bomb extends Block {
 class Button extends Block {
   constructor(x,y) {
     super(x,y)
+    this.layer = 2
+    this.spriteIndex
+    this.canCollide = false
+    this.pressed = false
+  }
+
+  teken() {
+    if (this.pressed) {
+      this.spriteIndex = 1
+    } else {
+      this.spriteIndex = 0
+    }
+
+    image(buttonSprites[this.spriteIndex],this.x,this.y,this.width,this.width)
+  }
+
+  getArray() {
+    return buttons
   }
 }
 
@@ -549,6 +567,15 @@ class Exit extends Block {
   }
 
   teken() {
+    let allButtonsPressed = buttons.every(obj => obj.pressed == true)
+    if (!LEVELCOMPLETE) {
+      if (allButtonsPressed) {
+        this.open = true
+      }
+      else {
+        this.open = false
+      }
+    }
 
     if ((this.tick % 3 == 0 && this.tick > 0) || this.previousState !== this.open) {
       this.tick = 0
@@ -673,10 +700,12 @@ class Plr {
     this.anchored = false
     this.transparency = 0
     this.hidden = false
+    this.winAnimationTick = 0
   }
 
   spawn() {
     entrance.openAndClose()
+    this.winAnimationTick = 0
     this.targetX = this.spawnX
     this.targetY = this.spawnY
     this.previousX = this.targetX
@@ -693,6 +722,34 @@ class Plr {
     rect(this.x+4,this.y+4,this.width);
     fill(255,255,255,1-this.transparency*0.5)
     rect(this.x+4 + this.width-this.width*0.9,this.y+4 + this.width-this.width*0.9,this.width*0.8);
+  }
+
+  winAnimation() {
+    let fuseStepsRemaining = 0
+    if (elecOrbs.length > 0) {
+      fuseStepsRemaining = fuses.length - fuses.indexOf(elecOrbs[0].currentFuse)-1
+    }
+    if (this.winAnimationTick == 1.5*targetFrameRate) {
+      this.targetX += gridSize
+    }
+    if (this.winAnimationTick >= 2.5*targetFrameRate) {
+      for (let exit of exits) {
+        exit.open = false
+      }
+      if (fuseStepsRemaining > 0) {
+        if (round(this.winAnimationTick-2.5*targetFrameRate) % 3 == 0) {
+          elecOrbs[0].nextFuse()
+        }
+      } else {
+        explode()
+      }
+    }
+
+
+    this.x += (this.targetX-this.x)/3;
+    this.y += (this.targetY-this.y)/3;
+
+    this.winAnimationTick++
   }
 
   beweeg() {
@@ -730,23 +787,35 @@ class Plr {
       }
     }
 
+    for (let button of buttons) {
+      if (button.x == this.targetX && button.y == this.targetY) {
+        button.pressed = true
+      }
+    }
+
+    for (let exit of exits) {
+      if (objectOverlapsCell(exit,this.targetX,this.targetY)) {
+        LEVELCOMPLETE = true
+      }
+    }
+
     return false
   }
 
   hazardCheck() {
     for (var a = 0; a < hazards.length; a++) {
       if (hazards[a].active && hazards[a].x == this.targetX && hazards[a].y == this.targetY) {
-        this.spawn()
+        GAMEOVER = true
       }
     }
     for (let orb of elecOrbs) {
       if (orb.targetX == this.targetX && orb.targetY == this.targetY) {
-        this.spawn()
+        GAMEOVER = true
       }
     }
     for (let elec of elecs) {
       if (elec.x == this.targetX && elec.y == this.targetY) {
-        this.spawn()
+        GAMEOVER = true
       }
     }
   }
@@ -786,7 +855,7 @@ class Flashbang {
   }
 
   getArray() {
-    flashbangs
+    return flashbangs
   }
 }
 
@@ -819,7 +888,7 @@ class Countdown {
   }
 
   getArray() {
-    countdowns
+    return countdowns
   }
 }
 
@@ -874,7 +943,7 @@ class SmokeParticle {
   }
 
   getArray() {
-    smokeParticles
+    return smokeParticles
   }
 }
 
@@ -924,7 +993,7 @@ class ElecOrb {
   }
 
   getArray() {
-    elecOrbs
+    return elecOrbs
   }
 }
 
@@ -982,7 +1051,7 @@ class Electricity {
   }
 
   getArray() {
-    elecs
+    return elecs
   }
 }
 
@@ -1019,7 +1088,7 @@ class TileHighlight {
   }
 
   getArray() {
-    tileHighlights
+    return tileHighlights
   }
 }
 
@@ -1068,7 +1137,8 @@ var elecOrbs = []
 var elecs = []
 var tileHighlights = []
 var exits = []
-const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit]
+var buttons = []
+const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button]
 const objectArrays = []
 
 var editorTabSize = 260
@@ -1083,6 +1153,7 @@ var tileHighlightSprites = []
 var doorSprites = []
 var entranceSprites = []
 var exitSprites = []
+var buttonSprites = []
 var wireSprites
 
 function preload() {
@@ -1128,6 +1199,12 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/exit/' + a + '.png')
     exitSprites.push(png)
+  }
+
+  children = 2
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/button/' + a + '.png')
+    buttonSprites.push(png)
   }
 
   electricitySprites = {
@@ -1331,6 +1408,18 @@ function gameLoop() {
     textSize(40)
     text("Layer " + currentLayer, 15, gridHeight*gridSize + 125);
   }
+
+  if (GAMEOVER) {
+    push()
+    textAlign(CENTER,CENTER)
+    fill(255,255,255)
+    textSize(125)
+    text("You Died!",gridWith*gridSize/2,gridHeight*gridSize/2-35)
+    textSize(50)
+    text("Press [R] to Restart",gridWith*gridSize/2,gridHeight*gridSize/2+35)
+    pop()
+  }
+
   pop();
 
   if (countdowns.length > 0) {
@@ -1347,20 +1436,23 @@ function gameLoop() {
 function playerLoop() {
   plr.hidden = false
 
-  if (moves == 0) {
-    plr.anchored = true
-    if (explode()) {
-      elecOrbs.splice(0,elecOrbs.length)
-      flashbang = new Flashbang()
-      flashbangs.push(flashbang)
-      shakeIntensity = 30
+  if (!(LEVELCOMPLETE || GAMEOVER)) {
+    if (moves == 0) {
+      plr.anchored = true
+      explode()
     }
-  }
-  else {
-    plr.anchored = false
-  }
+    else {
+      plr.anchored = false
+    }
 
-  plr.beweeg()
+    plr.beweeg()
+  } else if (LEVELCOMPLETE) {
+    plr.anchored = true
+    plr.winAnimation()
+  } else {
+    plr.anchored = true
+    plr.beweeg()
+  }
 }
 
 var fuseSelected = false
@@ -1608,7 +1700,8 @@ function loadLevel(lvl) {
       'Bomb': Bomb,
       'FuseAttachment': FuseAttachment,
       'Door': Door,
-      'Exit': Exit
+      'Exit': Exit,
+      'Button': Button,
     };
 
     object = new classes[constructor](data.x,data.y,data.transparency);
@@ -1719,6 +1812,13 @@ function explode() {
     if (bombs[0].spriteIndex == dynamiteSprites.length-2) {
       bombs[0].spriteIndex++
       explosionTick = 0
+      elecOrbs.splice(0,elecOrbs.length)
+      let flashbang = new Flashbang()
+      flashbangs.push(flashbang)
+      shakeIntensity = 30
+      if (!LEVELCOMPLETE) {
+        GAMEOVER = true
+      }
       return true
     }
     bombs[0].spriteIndex++
@@ -1739,12 +1839,19 @@ function SetMode(mode) {
   elecOrbs.splice(0,elecOrbs.length)
   elecs.splice(0,elecs.length)
   tileHighlights.splice(0,tileHighlights.length)
+  LEVELCOMPLETE = false
+  GAMEOVER = false
   for (let fuse of fuses) {
     fuse.electrified = false
   }
   for (let bomb of bombs) {
     bomb.spriteIndex = 0
   }
+  for (let button of buttons) {
+    button.pressed = false
+  }
+
+
   if (mode == 1) {
 
   }
