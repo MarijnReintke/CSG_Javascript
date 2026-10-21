@@ -54,6 +54,9 @@ class Tile extends Block {
     if (MODE == 1 && !(this.x == 0 || this.x == gridSize*(gridWith-1) 
         || this.y == 0 || this.y == gridSize*(gridHeight-1))) {
       for (let tileHighlight of tileHighlights) {
+        if (this.x == tileHighlight.x && this.y == tileHighlight.y) {
+          tileHighlight.parent = this
+        }
         if (tileHighlight.parent == this) {
           return tileHighlight.teken()
         }
@@ -1467,7 +1470,9 @@ function playerLoop() {
   } else {
     plr.anchored = true
     plr.beweeg()
-    explode()
+    if (moves == 0) {
+      explode()
+    }
   }
 }
 
@@ -1821,8 +1826,6 @@ function explode() {
       smokeParticles.push(particle)
     }
     explosionTick++
-    if (LEVELCOMPLETE) {
-    }
     return false
   }
 
