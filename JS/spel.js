@@ -705,6 +705,7 @@ class Plr {
 
   spawn() {
     entrance.openAndClose()
+    this.hidden = false
     this.winAnimationTick = 0
     this.targetX = this.spawnX
     this.targetY = this.spawnY
@@ -737,7 +738,7 @@ class Plr {
         exit.open = false
       }
       if (fuseStepsRemaining > 0) {
-        if (round(this.winAnimationTick-2.5*targetFrameRate) % 3 == 0) {
+        if (round(this.winAnimationTick-2.5*targetFrameRate) % 2 == 0) {
           elecOrbs[0].nextFuse()
         }
       } else {
@@ -956,16 +957,22 @@ class ElecOrb {
     this.spriteIndex = 0
     this.layer = 2
     this.currentFuse
+    this.damping = 5
   }
 
   teken() {
+    if (LEVELCOMPLETE) {
+      this.damping = 2
+    } else {
+      this.damping = 5
+    }
     if (this.currentFuse) {
       this.targetX = this.currentFuse.x
       this.targetY = this.currentFuse.y
     }
 
-    this.x += (this.targetX-this.x)/5;
-    this.y += (this.targetY-this.y)/5;
+    this.x += (this.targetX-this.x)/this.damping;
+    this.y += (this.targetY-this.y)/this.damping;
 
     image(elecOrbSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
 
@@ -1429,12 +1436,20 @@ function gameLoop() {
   if (flashbangs.length > 0) {
     flashbangs[flashbangs.length-1].teken()
   }
+
+  if (LEVELCOMPLETE) {
+    push()
+    textAlign(CENTER,CENTER)
+    fill(255,255,255)
+    textSize(125)
+    text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2)
+    pop()
+  }
 }
 
 
 
 function playerLoop() {
-  plr.hidden = false
 
   if (!(LEVELCOMPLETE || GAMEOVER)) {
     if (moves == 0) {
@@ -1452,6 +1467,7 @@ function playerLoop() {
   } else {
     plr.anchored = true
     plr.beweeg()
+    explode()
   }
 }
 
@@ -1805,6 +1821,8 @@ function explode() {
       smokeParticles.push(particle)
     }
     explosionTick++
+    if (LEVELCOMPLETE) {
+    }
     return false
   }
 
@@ -1818,6 +1836,9 @@ function explode() {
       shakeIntensity = 30
       if (!LEVELCOMPLETE) {
         GAMEOVER = true
+      } else {
+        LEVELCOMPLETE = true
+        plr.hidden = true
       }
       return true
     }
@@ -1841,6 +1862,7 @@ function SetMode(mode) {
   tileHighlights.splice(0,tileHighlights.length)
   LEVELCOMPLETE = false
   GAMEOVER = false
+  LEVELCOMPLETE = false
   for (let fuse of fuses) {
     fuse.electrified = false
   }
