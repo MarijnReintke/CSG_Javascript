@@ -1111,46 +1111,60 @@ class TileHighlight {
   }
 }
 
-class TextButton {
-  constructor(x,y,w,h) {
+class TextButton { 
+  constructor(x, y, w, h, action) { 
     this.x = x
     this.y = y
     this.width = w
     this.height = h
+    this.action = action
     this.hidden = false
-    this.pressed = false
     this.hovering = false
-  }
+    this.mouseWasHeld = false
+    this.selected = true
+  } 
 
-  teken() {
+  teken() { 
+    if (this.hidden) return
+
     this.hoverCheck()
-    if (mouseIsPressed && this.hovering) {
-      this.pressed = true
+    
+    this.selected = false
+    if (this.hovering && mouseIsPressed && mouseButton === LEFT && !this.mouseWasHeld) { 
+      this.selected = true
+      fill(150, 150, 150)
+    } else if (this.hovering) { 
+      fill(255, 175, 25)
     } else {
-      this.pressed = false
-    }
-    if (this.pressed) {
-      fill(225,225,225)
-    } else if (this.hovering) {
-      fill(255,200,50)
-    } else {
-      fill(255,150,0)
-    }
-    rect(this.x,this.y,this.width,this.height)
-  }
+      fill(255, 150, 0)
+    } 
 
-  hoverCheck() {
-    if (mouseX >= this.x && mouseX <= this.x+this.width && mouseY >= this.y && mouseY <= this.y+this.height) {
-      this.hovering = true
-    } else {
-      this.hovering = false
+    if (!this.hovering && mouseIsPressed && mouseButton === LEFT) {
+      this.mouseWasHeld = true
+    } else if (!(mouseIsPressed && mouseButton === LEFT)) {
+      if (this.hovering && this.selected) {
+        this.action()
+      }
+      this.mouseWasHeld = false
     }
-  }
+    
+    rect(this.x, this.y, this.width, this.height)
+  } 
+
+  hoverCheck() { 
+    if (mouseX >= this.x && mouseX <= this.x + this.width && 
+        mouseY >= this.y && mouseY <= this.y + this.height) { 
+      this.hovering = true
+    } else { 
+      this.hovering = false
+    } 
+  } 
 
   getArray() {
-    textButtons
+    return textButtons
   }
 }
+
 
 const targetFrameRate = 60
 
@@ -1314,7 +1328,9 @@ function setup() {
   noSmooth();
   angleMode(DEGREES)
 
-  nextLevelButton = new TextButton(100,100,100,150)
+  nextLevelButton = new TextButton(100,100,100,150, () => {
+    print("hi")
+  })
   textButtons.push(nextLevelButton)
 
   for (let obj of objects) {
@@ -2042,4 +2058,10 @@ function keyPressed(event) {
     plr.targetX += gridSize
   }
 
+}
+
+function mousePressed() {
+  if (mouseButton === LEFT) {
+    
+  }
 }
