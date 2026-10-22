@@ -1102,6 +1102,47 @@ class TileHighlight {
   }
 }
 
+class TextButton {
+  constructor(x,y,w,h) {
+    this.x = x
+    this.y = y
+    this.width = w
+    this.height = h
+    this.hidden = false
+    this.pressed = false
+    this.hovering = false
+  }
+
+  teken() {
+    this.hoverCheck()
+    if (mouseIsPressed && this.hovering) {
+      this.pressed = true
+    } else {
+      this.pressed = false
+    }
+    if (this.pressed) {
+      fill(225,225,225)
+    } else if (this.hovering) {
+      fill(255,200,50)
+    } else {
+      fill(255,150,0)
+    }
+    rect(this.x,this.y,this.width,this.height)
+  }
+
+  hoverCheck() {
+    if (mouseX >= this.x && mouseX <= this.x+this.width && mouseY >= this.y && mouseY <= this.y+this.height) {
+      this.hovering = true
+    } else {
+      this.hovering = false
+    }
+  }
+
+  getArray() {
+    textButtons
+  }
+}
+
 const targetFrameRate = 60
 
 var plr;
@@ -1148,6 +1189,7 @@ var elecs = []
 var tileHighlights = []
 var exits = []
 var buttons = []
+var textButtons = []
 const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button]
 const objectArrays = []
 
@@ -1263,6 +1305,9 @@ function setup() {
   noSmooth();
   angleMode(DEGREES)
 
+  nextLevelButton = new TextButton(100,100,100,150)
+  textButtons.push(nextLevelButton)
+
   for (let obj of objects) {
     obj = new obj()
   objectArrays.push(obj.getArray())
@@ -1328,8 +1373,11 @@ function drawAll() {
   for (smokeParticle of smokeParticles) {
     smokeParticle.check()
   }
-
   pop()
+
+  for (let textButton of textButtons) {
+    textButton.teken()
+  }
 }
 
 function gameLoop() {
