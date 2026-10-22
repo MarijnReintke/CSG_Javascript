@@ -822,6 +822,15 @@ class Plr {
         GAMEOVER = true
       }
     }
+
+    for (const objectArray of objectArrays) {
+      for (const obj of objectArray) {
+        if (obj.canCollide && obj.layer == this.layer && objectOverlapsCell(obj, this.targetX, this.targetY)) {
+          GAMEOVER = true
+        }
+      }
+    }
+
   }
 }
 
