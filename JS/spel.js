@@ -1113,43 +1113,53 @@ class TileHighlight {
 
 class TextButton { 
   constructor(x, y, w, h, action) { 
-    this.x = x
-    this.y = y
-    this.width = w
-    this.height = h
+    this.width = gridSize*6
+    this.height = gridSize*3
+    this.x = x-this.width/2
+    this.y = y-this.height/2+120
     this.action = action
-    this.hidden = false
+    this.hidden = true
     this.hovering = false
     this.mouseWasHeld = false
-    this.selected = true
+    this.selected = false
+    this.spriteIndex = 0
   } 
 
-  teken() { 
+  teken() {
+    this.hidden = !LEVELCOMPLETE
+
     if (this.hidden) return
 
     this.hoverCheck()
-    
-    this.selected = false
-    if (this.hovering && mouseIsPressed && mouseButton === LEFT && !this.mouseWasHeld) { 
-      this.selected = true
-      fill(150, 150, 150)
-    } else if (this.hovering) { 
-      fill(255, 175, 25)
-    } else {
-      fill(255, 150, 0)
-    } 
 
-    if (!this.hovering && mouseIsPressed && mouseButton === LEFT) {
-      this.mouseWasHeld = true
-    } else if (!(mouseIsPressed && mouseButton === LEFT)) {
-      if (this.hovering && this.selected) {
+    const leftPressed = mouseIsPressed && mouseButton === LEFT
+
+    if (!this.mouseWasHeld && leftPressed && this.hovering) {
+      this.pressedInside = this.hovering
+    } else if (!this.hovering) {
+      this.pressedInside = false
+    }
+
+    if (this.hovering && leftPressed && this.pressedInside) {
+      this.spriteIndex = 2
+    } else if (this.hovering) {
+      this.spriteIndex = 1
+    } else {
+      this.spriteIndex = 0
+    }
+
+    if (!leftPressed && this.mouseWasHeld) {
+      if (this.pressedInside && this.hovering) {
         this.action()
       }
-      this.mouseWasHeld = false
+
+      this.pressedInside = false
     }
-    
-    rect(this.x, this.y, this.width, this.height)
-  } 
+
+    this.mouseWasHeld = leftPressed
+
+    image(nextLevelButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+  }
 
   hoverCheck() { 
     if (mouseX >= this.x && mouseX <= this.x + this.width && 
@@ -1229,14 +1239,15 @@ var doorSprites = []
 var entranceSprites = []
 var exitSprites = []
 var buttonSprites = []
+var nextLevelButtonSprites = []
 var wireSprites
 
 function preload() {
   let children
   
-  children = 1
+  children = 2
   for (var a=0;a<children;a++) {
-    var json = loadJSON('JS/spelAssets/levels/' + a + '.json')
+    var json = loadJSON('JS/spelAssets/levels/' + (a+1) + '.json')
     levels.push(json)
   }
 
@@ -1280,6 +1291,12 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/button/' + a + '.png')
     buttonSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/nextLevelButton/' + a + '.png')
+    nextLevelButtonSprites.push(png)
   }
 
   electricitySprites = {
@@ -1328,11 +1345,6 @@ function setup() {
   noSmooth();
   angleMode(DEGREES)
 
-  nextLevelButton = new TextButton(100,100,100,150, () => {
-    print("hi")
-  })
-  textButtons.push(nextLevelButton)
-
   for (let obj of objects) {
     obj = new obj()
   objectArrays.push(obj.getArray())
@@ -1341,6 +1353,11 @@ function setup() {
 
   plr = new Plr(0,0)
   entrance = new Entrance()
+  nextLevelButton = new TextButton(gridSize*gridWith/2,gridSize*gridHeight/2,150,100, () => {
+    level++
+    loadLevel(level)
+  })
+  textButtons.push(nextLevelButton)
 
   for (var a=0;a<gridWith;a++) {
     for (var b=0;b<gridHeight;b++) {
@@ -1392,17 +1409,13 @@ function drawAll() {
 
   plr.teken()
 
-  for (smokeParticle of smokeParticles) {
+  for (let smokeParticle of smokeParticles) {
     smokeParticle.teken()
   }
-  for (smokeParticle of smokeParticles) {
+  for (let smokeParticle of smokeParticles) {
     smokeParticle.check()
   }
   pop()
-
-  for (let textButton of textButtons) {
-    textButton.teken()
-  }
 }
 
 function gameLoop() {
@@ -1517,9 +1530,13 @@ function gameLoop() {
     push()
     textAlign(CENTER,CENTER)
     fill(255,255,255)
-    textSize(125)
-    text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2)
+    textSize(75)
+    text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2-50)
     pop()
+  }
+
+  for (let textButton of textButtons) {
+    textButton.teken()
   }
 }
 
@@ -1778,11 +1795,16 @@ function printLevel() {
 }
 
 function loadLevel(lvl) {
+
+  json = levels[lvl-1]
+  if (!json) {
+    return console.warn("failed to load level " + lvl + " :(")
+  }
+
   for (let objectArray of objectArrays) {
     objectArray.splice(0,objectArray.length)
   }
 
-  json = levels[lvl-1]
   for (var a=0;a < Object.keys(json).length; a++) {
     let data = json[a];
     let constructor = data.class
@@ -1805,6 +1827,8 @@ function loadLevel(lvl) {
 
     object.getArray().push(object)
   }
+  
+  SetMode(1)
 }
 
 function snapToGrid(value) {
@@ -1913,7 +1937,6 @@ function explode() {
       if (!LEVELCOMPLETE) {
         GAMEOVER = true
       } else {
-        LEVELCOMPLETE = true
         plr.hidden = true
       }
       return true
@@ -2006,7 +2029,7 @@ function keyPressed(event) {
     printLevel()
   }
   if (key == 'F9') {
-    loadLevel(1)
+    loadLevel(level)
   }
 
   if (key == 'q' && MODE !== 1) {
