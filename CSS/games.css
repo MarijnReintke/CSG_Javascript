@@ -76,16 +76,15 @@ button, a.button, a:hover, button:hover, a.button:hover {
 }
 
 button:hover,button:focus, a.button:hover {
-    background-color: transparent ;
+    background-color: #0b00b0 ;
     border-color: #ffb606;
     outline-style: none;
 }
 
 .container {
     margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    max-width: 1040px;
+    padding-bottom: 20px;
+    width: 1140px;
 }
 
 #clicker,#code {
@@ -95,5 +94,5 @@ button:hover,button:focus, a.button:hover {
 
 #processing {
     text-align: center;
-    margin-top: 0.5em;
+    height: 900px
 }

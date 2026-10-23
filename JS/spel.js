@@ -1112,53 +1112,56 @@ class TileHighlight {
 }
 
 class TextButton { 
-  constructor(x, y, w, h, action) { 
-    this.width = gridSize*6
-    this.height = gridSize*3
+  constructor(x, y, w, h) { 
+    this.width = w
+    this.height = h
     this.x = x-this.width/2
-    this.y = y-this.height/2+120
-    this.action = action
+    this.y = y-this.height/2
     this.hidden = true
     this.hovering = false
     this.mouseWasHeld = false
     this.selected = false
+    this.clickable = true
+    this.spriteArray
     this.spriteIndex = 0
   } 
 
   teken() {
-    this.hidden = !LEVELCOMPLETE
-
     if (this.hidden) return
 
-    this.hoverCheck()
+    if (this.clickable) {
+      this.hoverCheck()
 
-    const leftPressed = mouseIsPressed && mouseButton === LEFT
+      const leftPressed = mouseIsPressed && mouseButton === LEFT
 
-    if (!this.mouseWasHeld && leftPressed && this.hovering) {
-      this.pressedInside = this.hovering
-    } else if (!this.hovering) {
-      this.pressedInside = false
-    }
-
-    if (this.hovering && leftPressed && this.pressedInside) {
-      this.spriteIndex = 2
-    } else if (this.hovering) {
-      this.spriteIndex = 1
-    } else {
-      this.spriteIndex = 0
-    }
-
-    if (!leftPressed && this.mouseWasHeld) {
-      if (this.pressedInside && this.hovering) {
-        this.action()
+      if (!this.mouseWasHeld && leftPressed && this.hovering) {
+        this.pressedInside = this.hovering
+      } else if (!this.hovering) {
+        this.pressedInside = false
       }
 
-      this.pressedInside = false
+      if (this.hovering && leftPressed && this.pressedInside) {
+        this.spriteIndex = 2
+      } else if (this.hovering) {
+        this.spriteIndex = 1
+      } else {
+        this.spriteIndex = 0
+      }
+
+      if (!leftPressed && this.mouseWasHeld) {
+        if (this.pressedInside && this.hovering) {
+          this.action()
+        }
+
+        this.pressedInside = false
+      }
+
+      this.mouseWasHeld = leftPressed
+    } else {
+      myCanvas.elt.style.filter = 'grayscale(100%)'
     }
 
-    this.mouseWasHeld = leftPressed
-
-    image(nextLevelButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+    image(this.spriteArray[this.spriteIndex],this.x,this.y,this.width,this.height)
   }
 
   hoverCheck() { 
@@ -1172,6 +1175,38 @@ class TextButton {
 
   getArray() {
     return textButtons
+  }
+}
+
+class NextLevelButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*6,gridSize*3)
+    this.spriteArray = nextLevelButtonSprites
+  }
+
+  teken() {
+    this.hidden = !LEVELCOMPLETE
+    super.teken();
+  }
+
+  action() {
+    level++
+    loadLevel(level)
+  }
+}
+
+class StartButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*10,gridSize*2)
+    this.spriteArray = nextLevelButtonSprites
+  }
+
+  teken() {
+    this.hidden = (MODE !== 1)
+  }
+
+  action() {
+    SetMode(2)
   }
 }
 
@@ -1337,7 +1372,7 @@ function preload() {
 function setup() {
   canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+editorTabSize);
   canvas.parent('processing');
-  textFont("Verdana");
+  textFont("Courier New");
   textSize(40);
   noStroke();
   colorMode(RGB,255,255,255,1)
@@ -1353,10 +1388,7 @@ function setup() {
 
   plr = new Plr(0,0)
   entrance = new Entrance()
-  nextLevelButton = new TextButton(gridSize*gridWith/2,gridSize*gridHeight/2,150,100, () => {
-    level++
-    loadLevel(level)
-  })
+  nextLevelButton = new NextLevelButton(gridSize*gridWith/2,gridSize*gridHeight/2+120)
   textButtons.push(nextLevelButton)
 
   for (var a=0;a<gridWith;a++) {
@@ -1718,7 +1750,6 @@ function deleteLoop() {
   }
 }
 
-
 function objectOverlapsCell(obj, cellX, cellY) {
   for (let a = 0; a < obj.height / gridSize; a++) {
     let objectY = obj.y + a*gridSize;
@@ -2025,10 +2056,10 @@ function keyPressed(event) {
       selectedObject = objects[objects.length-1]
     }
   }
-  if (key == 'F6') {
+  if (key == '6') {
     printLevel()
   }
-  if (key == 'F9') {
+  if (key == '9') {
     loadLevel(level)
   }
 
