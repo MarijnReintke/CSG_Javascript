@@ -1,6 +1,7 @@
 canvas {
     image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    position: relative;
+    z-index: 1
 }
 
 body {
@@ -25,9 +26,10 @@ h1, h2, h3, h4, h5, h6, p {
 h1 {
     font-size: 120px;
     position: absolute;
-    top: 500px;
-    left: 500px;
-    z-index: -1;
+    top: 360px;
+    left: 420px;
+    z-index: 0;
+    color: #fffecc
 }
 
 a,a:hover, a:focus, a:active, a:visited {
@@ -90,7 +92,7 @@ button:hover,button:focus, a.button:hover {
     margin: 0 auto;
     padding-bottom: 20px;
     width: 1140px;
-    background: #000000
+    background: transparent
 }
 
 #clicker,#code {
@@ -100,5 +102,6 @@ button:hover,button:focus, a.button:hover {
 
 #processing {
     text-align: center;
-    height: 900px
+    height: 900px;
+    background: #100020
 }

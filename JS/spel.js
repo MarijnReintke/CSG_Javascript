@@ -22,6 +22,7 @@ class Tile extends Block {
     }
     this.transparency = transparency
     this.hidden = false
+    this.spriteIndex = 0
   }
 
   teken() {
@@ -31,25 +32,24 @@ class Tile extends Block {
     if (this.hidden) {
       return
     }
-    push();
-      noStroke()
-      if (this.x/gridSize % 2 == 0) {
-        if (this.y/gridSize % 2 == 0) {
-          fill(150,160,170,1-this.transparency)
-        }
-        else {
-          fill(120,130,140,1-this.transparency)
-        }
-      } else {
-        if (this.y/gridSize % 2 == 0) {
-          fill(120,130,140,1-this.transparency)
-        }
-        else {
-          fill(150,160,170,1-this.transparency)
-        }
+
+    if (this.x/gridSize % 2 == 0) {
+      if (this.y/gridSize % 2 == 0) {
+        this.spriteIndex = 1
       }
-      rect(this.x,this.y,this.width)
-    pop();
+      else {
+        this.spriteIndex = 0
+      }
+    } else {
+      if (this.y/gridSize % 2 == 0) {
+        this.spriteIndex = 0
+      }
+      else {
+        this.spriteIndex = 1
+      }
+    }
+
+    image(tileSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
 
     if (MODE == 1 && !(this.x == 0 || this.x == gridSize*(gridWith-1) 
         || this.y == 0 || this.y == gridSize*(gridHeight-1))) {
@@ -77,6 +77,7 @@ class Obstruction extends Block {
   constructor(x,y,transparency) {
     super(x,y,transparency)
     this.layer = 2
+    this.spriteIndex = 0
   }
 
   teken() {
@@ -86,11 +87,9 @@ class Obstruction extends Block {
     if (this.hidden) {
       return
     }
-    push();
-    noStroke();
-    fill(100,100,100,1-this.transparency)
-    rect(this.x,this.y,this.width);
-    pop();
+
+    image(obstructionSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
+    
   }
 
   getArray() {
@@ -1122,14 +1121,12 @@ class TextButton {
     this.mouseWasHeld = false
     this.selected = false
     this.clickable = true
-    this.spriteArray
     this.spriteIndex = 0
   } 
 
-  teken() {
-    if (this.hidden) return
+  state() {
 
-    if (this.clickable) {
+    if (this.clickable && !this.hidden) {
       this.hoverCheck()
 
       const leftPressed = mouseIsPressed && mouseButton === LEFT
@@ -1151,6 +1148,7 @@ class TextButton {
       if (!leftPressed && this.mouseWasHeld) {
         if (this.pressedInside && this.hovering) {
           this.action()
+          this.hidden = true
         }
 
         this.pressedInside = false
@@ -1158,10 +1156,9 @@ class TextButton {
 
       this.mouseWasHeld = leftPressed
     } else {
-      myCanvas.elt.style.filter = 'grayscale(100%)'
+      this.spriteIndex = 3
     }
 
-    image(this.spriteArray[this.spriteIndex],this.x,this.y,this.width,this.height)
   }
 
   hoverCheck() { 
@@ -1181,12 +1178,17 @@ class TextButton {
 class NextLevelButton extends TextButton {
   constructor(x,y) {
     super(x,y,gridSize*6,gridSize*3)
-    this.spriteArray = nextLevelButtonSprites
   }
 
   teken() {
+    this.clickable = levels[level]
     this.hidden = !LEVELCOMPLETE
-    super.teken();
+
+    super.state();
+
+    if (this.hidden) return
+
+    image(nextLevelButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
   }
 
   action() {
@@ -1197,12 +1199,19 @@ class NextLevelButton extends TextButton {
 
 class StartButton extends TextButton {
   constructor(x,y) {
-    super(x,y,gridSize*10,gridSize*2)
-    this.spriteArray = nextLevelButtonSprites
+    super(x,y,gridSize*12.5,gridSize*2.5)
+    this.clickable = false
   }
 
   teken() {
+    this.clickable = bombConnected
     this.hidden = (MODE !== 1)
+
+    super.state()
+
+    if (this.hidden) return
+
+    image(startButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
   }
 
   action() {
@@ -1275,6 +1284,9 @@ var entranceSprites = []
 var exitSprites = []
 var buttonSprites = []
 var nextLevelButtonSprites = []
+var startButtonSprites = []
+var tileSprites = []
+var obstructionSprites = []
 var wireSprites
 
 function preload() {
@@ -1328,10 +1340,28 @@ function preload() {
     buttonSprites.push(png)
   }
 
-  children = 3
+  children = 4
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/nextLevelButton/' + a + '.png')
     nextLevelButtonSprites.push(png)
+  }
+
+  children = 4
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/startButton/' + a + '.png')
+    startButtonSprites.push(png)
+  }
+
+  children = 2
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/tile/' + a + '.png')
+    tileSprites.push(png)
+  }
+
+  children = 1
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/obstruction/' + a + '.png')
+    obstructionSprites.push(png)
   }
 
   electricitySprites = {
@@ -1389,7 +1419,8 @@ function setup() {
   plr = new Plr(0,0)
   entrance = new Entrance()
   nextLevelButton = new NextLevelButton(gridSize*gridWith/2,gridSize*gridHeight/2+120)
-  textButtons.push(nextLevelButton)
+  startButton = new StartButton(gridSize*gridWith-gridSize*7,gridSize*gridHeight+gridSize*2)
+  textButtons.push(nextLevelButton, startButton)
 
   for (var a=0;a<gridWith;a++) {
     for (var b=0;b<gridHeight;b++) {
@@ -1511,7 +1542,7 @@ function gameLoop() {
     textSize(40)
     text(movesBeforeInterval, 15, gridHeight*gridSize + 125);
     textSize(30)
-    text("Moves Before Electricity Progresses", String(movesBeforeInterval).length * 30 + 20, gridHeight*gridSize + 125);
+    text("Moves Before Elec. Moves", String(movesBeforeInterval).length * 30 + 20, gridHeight*gridSize + 125);
   }
 
   if (MODE == 3) {
@@ -1990,6 +2021,7 @@ function SetMode(mode) {
   elecOrbs.splice(0,elecOrbs.length)
   elecs.splice(0,elecs.length)
   tileHighlights.splice(0,tileHighlights.length)
+  bombConnected = false
   LEVELCOMPLETE = false
   GAMEOVER = false
   LEVELCOMPLETE = false
