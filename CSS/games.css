@@ -5,6 +5,7 @@ canvas {
 
 body {
     font-family: sans-serif;
+    background: #200040
     
 }
 
@@ -22,7 +23,11 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 120px;
+    position: absolute;
+    top: 500px;
+    left: 500px;
+    z-index: -1;
 }
 
 a,a:hover, a:focus, a:active, a:visited {
@@ -76,7 +81,7 @@ button, a.button, a:hover, button:hover, a.button:hover {
 }
 
 button:hover,button:focus, a.button:hover {
-    background-color: #0b00b0 ;
+    background-color: transparent ;
     border-color: #ffb606;
     outline-style: none;
 }
@@ -85,6 +90,7 @@ button:hover,button:focus, a.button:hover {
     margin: 0 auto;
     padding-bottom: 20px;
     width: 1140px;
+    background: #000000
 }
 
 #clicker,#code {

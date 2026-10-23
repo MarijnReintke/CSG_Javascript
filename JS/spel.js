@@ -2039,7 +2039,7 @@ function changeOrientation(value) {
 
 function keyPressed(event) {
 
-  // note to self: these prevent the page from scrolling
+  // note to self: deze zorgen ervoor dat de website niet scrollt
   if (key === ' ' || keyCode == '37' || keyCode == '38' || keyCode == '39' || keyCode == '40') {
     event.preventDefault();
   }
