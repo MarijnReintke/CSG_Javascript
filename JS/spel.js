@@ -1148,7 +1148,6 @@ class TextButton {
       if (!leftPressed && this.mouseWasHeld) {
         if (this.pressedInside && this.hovering) {
           this.action()
-          this.hidden = true
         }
 
         this.pressedInside = false
@@ -1194,6 +1193,7 @@ class NextLevelButton extends TextButton {
   action() {
     level++
     loadLevel(level)
+    this.hidden = true
   }
 }
 
@@ -1216,9 +1216,52 @@ class StartButton extends TextButton {
 
   action() {
     SetMode(2)
+    this.hidden = true
   }
 }
 
+class MenuStartButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*6,gridSize*2)
+  }
+
+  teken() {
+    this.hidden = (MODE !== 0)
+
+    super.state()
+
+    if (this.hidden) return
+
+    image(menuStartButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+  }
+
+  action() {
+    loadLevel(level)
+    SetMode(1)
+    this.hidden = true
+  }
+}
+
+class LevelSelectButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*6,gridSize*2)
+  }
+
+  teken() {
+    this.hidden = (MODE !== 0)
+
+    super.state()
+
+    if (this.hidden) return
+
+    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+  }
+
+  action() {
+    SetMode("LEVELSELECT")
+    this.hidden = true
+  }
+}
 
 const targetFrameRate = 60
 
@@ -1232,7 +1275,7 @@ const gridHeight = 16;
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
-var MODE = 1
+var MODE = 0
 var GAMEOVER = false
 var LEVELCOMPLETE = false
 
@@ -1287,6 +1330,8 @@ var nextLevelButtonSprites = []
 var startButtonSprites = []
 var tileSprites = []
 var obstructionSprites = []
+var menuStartButtonSprites = []
+var levelSelectButtonSprites = []
 var wireSprites
 
 function preload() {
@@ -1350,6 +1395,18 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/startButton/' + a + '.png')
     startButtonSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/menuStartButton/' + a + '.png')
+    menuStartButtonSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/levelSelectButton/' + a + '.png')
+    levelSelectButtonSprites.push(png)
   }
 
   children = 2
@@ -1420,7 +1477,9 @@ function setup() {
   entrance = new Entrance()
   nextLevelButton = new NextLevelButton(gridSize*gridWith/2,gridSize*gridHeight/2+120)
   startButton = new StartButton(gridSize*gridWith-gridSize*7,gridSize*gridHeight+gridSize*2)
-  textButtons.push(nextLevelButton, startButton)
+  menuStartButton = new MenuStartButton(width/2-gridSize*4,height/2+gridSize*2)
+  levelSelectButton = new LevelSelectButton(width/2+gridSize*4,height/2+gridSize*2)
+  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton)
 
   for (var a=0;a<gridWith;a++) {
     for (var b=0;b<gridHeight;b++) {
@@ -1431,7 +1490,54 @@ function setup() {
 }
 
 function draw() {
-  gameLoop()
+  if (MODE == 0) {
+    menu()
+  } else if (MODE == "LEVELSELECT") {
+    levelSelect()
+  } else {
+    gameLoop()
+  }
+
+  for (let textButton of textButtons) {
+    textButton.teken()
+  }
+}
+
+function levelSelect() {
+  background(0,0,0)
+  push()
+    fill(255,255,255)
+    textSize(50)
+    textAlign(CENTER,CENTER)
+    text("W.I.P",width/2,height/2)
+  pop()
+}
+
+function menu() {
+  background(160,150,170)
+
+  for (var a=0;a<3;a++) {
+    let smokeParticle = new SmokeParticle(random(0,width),height-150)
+    smokeParticles.push(smokeParticle)
+  }
+
+  for (let particle of smokeParticles) {
+    particle.teken()
+  }
+
+  for (let particle of smokeParticles) {
+    particle.check()
+  }
+
+  push()
+    fill(0,0,0)
+    rect(0,0,width,150)
+    rect(0,height,width,-150)
+    textAlign(CENTER,CENTER)
+    textSize(125)
+    text("MENU SCREEN",width/2,300)
+  pop()
+
 }
 
 function drawAll() {
@@ -1596,10 +1702,6 @@ function gameLoop() {
     textSize(75)
     text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2-50)
     pop()
-  }
-
-  for (let textButton of textButtons) {
-    textButton.teken()
   }
 }
 
@@ -1863,6 +1965,8 @@ function loadLevel(lvl) {
     return console.warn("failed to load level " + lvl + " :(")
   }
 
+  level = lvl
+
   for (let objectArray of objectArrays) {
     objectArray.splice(0,objectArray.length)
   }
@@ -2095,6 +2199,9 @@ function keyPressed(event) {
     loadLevel(level)
   }
 
+  if (key == 'm' && MODE !== 0) {
+    SetMode(0)
+  }
   if (key == 'q' && MODE !== 1) {
     SetMode(1)
   }

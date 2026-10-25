@@ -26,10 +26,12 @@ h1, h2, h3, h4, h5, h6, p {
 h1 {
     font-size: 120px;
     position: absolute;
-    top: 360px;
-    left: 420px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
     z-index: 0;
-    color: #fffecc
+    color: #200040
 }
 
 a,a:hover, a:focus, a:active, a:visited {
