@@ -1,26 +1,18 @@
 class Block {
-  constructor(x,y,transparency) {
+  constructor(x,y) {
     this.x = x
     this.y = y
     this.width = gridSize
     this.height = gridSize
-    if (!transparency) {
-      transparency = 0
-    }
-    this.transparency = transparency
     this.hidden = false
     this.canCollide = true
   }
 }
 
 class Tile extends Block {
-  constructor(x,y,transparency) {
+  constructor(x,y) {
     super(x, y)
     this.layer = 0
-    if (!transparency) {
-      transparency = 0
-    }
-    this.transparency = transparency
     this.hidden = false
     this.spriteIndex = 0
   }
@@ -74,8 +66,8 @@ class Tile extends Block {
 }
 
 class Obstruction extends Block {
-  constructor(x,y,transparency) {
-    super(x,y,transparency)
+  constructor(x,y) {
+    super(x,y)
     this.layer = 2
     this.spriteIndex = 0
   }
@@ -99,8 +91,8 @@ class Obstruction extends Block {
 }
 
 class Hazard extends Block {
-  constructor(x,y,transparency,act) {
-    super(x,y,transparency)
+  constructor(x,y,act) {
+    super(x,y)
     if (!act) {
       act = false
     }
@@ -133,10 +125,10 @@ class Hazard extends Block {
     let offset = round(frameCount*3/targetFrameRate)
     for (var a=0;a<aantalKringen;a++) {
       if (this.active) {
-        fill(( (a+offset) % 2)*255,0,0,1-this.transparency)
+        fill(( (a+offset) % 2)*255,0,0,1)
       }
       else {
-        fill(( (this.tickCount) % (this.interval))*255/this.interval,0,0,1-this.transparency)
+        fill(( (this.tickCount) % (this.interval))*255/this.interval,0,0,1)
       }
       rect(this.x+a*gridSize/2/aantalKringen,this.y+a*gridSize/2/aantalKringen,this.width-(a*gridSize/aantalKringen))
     }
@@ -161,8 +153,8 @@ class Hazard extends Block {
 }
 
 class Fuse extends Block {
-  constructor(x,y,transparency) {
-    super(x,y,transparency)
+  constructor(x,y) {
+    super(x,y)
 
     this.layer = 1
     this.electrified = false
@@ -190,14 +182,14 @@ class Fuse extends Block {
 
     if (fuses.length == 0) {
       for (var a=0;a < fuseAttachments.length;a++) {
-        if ((abs(this.x-fuseAttachments[a].x) + abs(this.y-fuseAttachments[a].y)) == 40) {
+        if ((abs(this.x-fuseAttachments[a].x) + abs(this.y-fuseAttachments[a].y)) == gridSize) {
           this.origin = fuseAttachments[a]
           return true
         }
       }
     }
     else {
-      if ((abs(this.x-fuses[fuses.length-1].x) + abs(this.y-fuses[fuses.length-1].y)) == 40) {
+      if ((abs(this.x-fuses[fuses.length-1].x) + abs(this.y-fuses[fuses.length-1].y)) == gridSize) {
         return true
       }
     }
@@ -434,8 +426,8 @@ class FuseAttachment extends Block {
 }
 
 class Bomb extends Block {
-  constructor(x,y,transparency) {
-    super(x,y,transparency)
+  constructor(x,y) {
+    super(x,y)
     this.layer = 2
     this.spriteIndex = 0
   }
@@ -448,7 +440,7 @@ class Bomb extends Block {
       return
     }
 
-    image(dynamiteSprites[this.spriteIndex], this.x, this.y, this.width, this.width)
+    image(dynamiteSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
   }
 
   getArray() {
@@ -693,14 +685,13 @@ class Plr {
     this.targetY = y
     this.x = x
     this.y = y
-    this.width = gridSize-8
+    this.width = gridSize-8*gridScale
     this.height = gridSize
     this.spawnX = gridSize
     this.spawnY = gridSize*7
     this.previousX = this.spawnX
     this.previousY = this.spawnY
     this.anchored = false
-    this.transparency = 0
     this.hidden = false
     this.winAnimationTick = 0
   }
@@ -721,10 +712,10 @@ class Plr {
     if (this.hidden) {
       return
     }
-    fill(0,0,0,1-this.transparency)
-    rect(this.x+4,this.y+4,this.width);
-    fill(255,255,255,1-this.transparency*0.5)
-    rect(this.x+4 + this.width-this.width*0.9,this.y+4 + this.width-this.width*0.9,this.width*0.8);
+    fill(0,0,0,1)
+    rect(this.x+4*gridScale,this.y+4*gridScale,this.width);
+    fill(255,255,255,1)
+    rect(this.x+4*gridScale + this.width-this.width*0.9,this.y+4*gridScale + this.width-this.width*0.9,this.width*0.8);
   }
 
   winAnimation() {
@@ -876,7 +867,7 @@ class Countdown {
     this.x = gridSize*gridWith/2
     this.y = gridHeight*gridSize/2+gridSize
     this.transparency = 0
-    this.size = 600
+    this.size = 600*gridScale
     this.number = number
   }
 
@@ -895,7 +886,7 @@ class Countdown {
     textSize(this.size)
     text(this.number,this.x,this.y)
     pop()
-    this.size += 5
+    this.size += 5*gridScale
     this.transparency += 0.04
   }
 
@@ -907,13 +898,13 @@ class Countdown {
 class SmokeParticle {
   constructor(x,y) {
     this.x = x + gridSize/2
-    this.xOffset = floor(random(-60,60))
+    this.xOffset = floor(random(-60,60))*gridScale
     this.y = y + gridSize
     this.rotation = floor(random(0,360))
     this.transparency = 0
     this.time = random(1,2.5)
     this.tick = 0
-    this.size = 40
+    this.size = gridSize
     this.lastTick = this.time * targetFrameRate
   }
 
@@ -945,7 +936,7 @@ class SmokeParticle {
     pop();
 
     this.tick++;
-    this.y -= 2;
+    this.y -= gridSize/20;
   }
 
   check() {
@@ -1080,7 +1071,6 @@ class TileHighlight {
     this.tick = 0
     this.parent = parent
     this.spriteIndex = 0
-    this.transparency = 0.5
   }
 
   teken() {
@@ -1268,7 +1258,8 @@ const targetFrameRate = 60
 var plr;
 var entrance;
 
-const gridSize = 40;
+const gridSize = 5;
+const gridScale = gridSize/40
 const gridWith = 28;
 const gridHeight = 16;
 
@@ -1313,8 +1304,6 @@ var textButtons = []
 const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button]
 const objectArrays = []
 
-var editorTabSize = 260
-
 var debug = false
 
 var levels = []
@@ -1337,9 +1326,9 @@ var wireSprites
 function preload() {
   let children
   
-  children = 2
+  children = 3
   for (var a=0;a<children;a++) {
-    var json = loadJSON('JS/spelAssets/levels/' + (a+1) + '.json')
+    var json = loadJSON('JS/spelAssets/levels/' + a + '.json')
     levels.push(json)
   }
 
@@ -1457,9 +1446,9 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+editorTabSize);
+  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+260);
   canvas.parent('processing');
-  textFont("Courier New");
+  textFont("Courier");
   textSize(40);
   noStroke();
   colorMode(RGB,255,255,255,1)
@@ -1469,24 +1458,17 @@ function setup() {
 
   for (let obj of objects) {
     obj = new obj()
-  objectArrays.push(obj.getArray())
-    obj = null
+    objectArrays.push(obj.getArray())
   }
 
   plr = new Plr(0,0)
   entrance = new Entrance()
-  nextLevelButton = new NextLevelButton(gridSize*gridWith/2,gridSize*gridHeight/2+120)
+  nextLevelButton = new NextLevelButton(gridSize*gridWith/2,gridSize*gridHeight/2+120*gridScale)
   startButton = new StartButton(gridSize*gridWith-gridSize*7,gridSize*gridHeight+gridSize*2)
   menuStartButton = new MenuStartButton(width/2-gridSize*4,height/2+gridSize*2)
   levelSelectButton = new LevelSelectButton(width/2+gridSize*4,height/2+gridSize*2)
   textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton)
 
-  for (var a=0;a<gridWith;a++) {
-    for (var b=0;b<gridHeight;b++) {
-      const tile = new Tile(a*gridSize,b*gridSize)
-      tiles.push(tile)
-    }
-  }
 }
 
 function draw() {
@@ -1507,7 +1489,7 @@ function levelSelect() {
   background(0,0,0)
   push()
     fill(255,255,255)
-    textSize(50)
+    textSize(50*gridScale)
     textAlign(CENTER,CENTER)
     text("W.I.P",width/2,height/2)
   pop()
@@ -1534,8 +1516,8 @@ function menu() {
     rect(0,0,width,150)
     rect(0,height,width,-150)
     textAlign(CENTER,CENTER)
-    textSize(125)
-    text("MENU SCREEN",width/2,300)
+    textSize(125*gridScale)
+    text("MENU SCREEN",width/2,gridSize*4+150)
   pop()
 
 }
@@ -1624,10 +1606,10 @@ function gameLoop() {
     else {
       fill(255,0,0)
     }
-    textSize(75)
-    text(moves, 10, gridHeight*gridSize + 75);
-    textSize(40)
-    text("Moves Left", String(moves).length * 50 + 15, gridHeight*gridSize + 75);
+    textSize(75*gridScale)
+    text(moves, 10*gridScale, gridHeight*gridSize + 75*gridScale);
+    textSize(40*gridScale)
+    text("Moves Left", String(moves).length * 50*gridScale + 15*gridScale, gridHeight*gridSize + 75*gridScale);
   }
 
   if (MODE == 1) {
@@ -1637,51 +1619,51 @@ function gameLoop() {
     else {
       fill(255,150,0)
     }
-    textSize(75)
-    text(wireLimit - fuses.length, 10, gridHeight*gridSize + 75);
-    textSize(40)
-    text("Wire Left", String(wireLimit - fuses.length).length * 50 + 15, gridHeight*gridSize + 75);
+    textSize(75*gridScale)
+    text(wireLimit - fuses.length, 10*gridScale, gridHeight*gridSize + 75*gridScale);
+    textSize(40*gridScale)
+    text("Wire Left", String(wireLimit - fuses.length).length * 50*gridScale + 15*gridScale, gridHeight*gridSize + 75*gridScale);
   }
 
   if (MODE == 1 || MODE == 2) {
     fill(255,255,100)
-    textSize(40)
-    text(movesBeforeInterval, 15, gridHeight*gridSize + 125);
-    textSize(30)
-    text("Moves Before Elec. Moves", String(movesBeforeInterval).length * 30 + 20, gridHeight*gridSize + 125);
+    textSize(40*gridScale)
+    text(movesBeforeInterval, 15*gridScale, gridHeight*gridSize + 125*gridScale);
+    textSize(30*gridScale)
+    text("Moves Before Elec. Moves", String(movesBeforeInterval).length * 30*gridScale + 20*gridScale, gridHeight*gridSize + 125*gridScale);
   }
 
   if (MODE == 3) {
     fill(100,150,255)
-    textSize(75)
-    text("Build", 10, gridHeight*gridSize + 75);
-    textSize(40)
-    text(selectedObject.name, 13, gridHeight*gridSize + 125);
-    textSize(20)
+    textSize(75*gridScale)
+    text("Build", 10, gridHeight*gridSize + 75*gridScale);
+    textSize(40*gridScale)
+    text(selectedObject.name, 13*gridScale, gridHeight*gridSize + 125*gridScale);
+    textSize(20*gridScale)
     if (currentObject) {
-      text("this.layer = " + currentObject.layer, 15, gridHeight*gridSize + 150);
+      text("this.layer = " + currentObject.layer, 15*gridScale, gridHeight*gridSize + 150*gridScale);
       if (currentObject.orientation) {
-        text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 15, gridHeight*gridSize + 175);
+        text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 15*gridScale, gridHeight*gridSize + 175*gridScale);
       }
     }
   }
 
   if (MODE == 4) {
     fill(255,100,125)
-    textSize(75)
-    text("Delete", 10, gridHeight*gridSize + 75);
-    textSize(40)
-    text("Layer " + currentLayer, 15, gridHeight*gridSize + 125);
+    textSize(75*gridScale)
+    text("Delete", 10*gridScale, gridHeight*gridSize + 75*gridScale);
+    textSize(40*gridScale)
+    text("Layer " + currentLayer, 15*gridScale, gridHeight*gridSize + 125*gridScale);
   }
 
   if (GAMEOVER) {
     push()
     textAlign(CENTER,CENTER)
     fill(255,255,255)
-    textSize(125)
-    text("You Died!",gridWith*gridSize/2,gridHeight*gridSize/2-35)
-    textSize(50)
-    text("Press [R] to Restart",gridWith*gridSize/2,gridHeight*gridSize/2+35)
+    textSize(125*gridScale)
+    text("You Died!",gridWith*gridSize/2,gridHeight*gridSize/2-35*gridScale)
+    textSize(50*gridScale)
+    text("Press [R] to Restart",gridWith*gridSize/2,gridHeight*gridSize/2+35*gridScale)
     pop()
   }
 
@@ -1699,8 +1681,8 @@ function gameLoop() {
     push()
     textAlign(CENTER,CENTER)
     fill(255,255,255)
-    textSize(75)
-    text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2-50)
+    textSize(75*gridScale)
+    text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2-50*gridScale)
     pop()
   }
 }
@@ -1763,7 +1745,6 @@ function tekenLoop() {
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
     if (fuse.validPosition() && fuses.length < wireLimit && !bombConnected) {
-      fuse.transparency = 0
       fuse.getArray().push(fuse)
       fuse = null
     }
@@ -1915,8 +1896,8 @@ function drawHoveredObjectHighlight() {
           push()
           noFill()
           stroke(255, 75, 100)
-          strokeWeight(3)
-          rect(object.x + 1.5, object.y + 1.5, object.width - 3, object.height - 3)
+          strokeWeight(3*gridScale)
+          rect(object.x + 1.5*gridScale, object.y + 1.5*gridScale, object.width - 3*gridScale, object.height - 3*gridScale)
           pop()
         }
       }
@@ -1932,8 +1913,8 @@ function drawHoveredObjectHighlight() {
       push()
       noFill()
       stroke(0, 150, 255)
-      strokeWeight(3)
-      rect(currentObject.x + 1.5, currentObject.y + 1.5, currentObject.width - 3, currentObject.height - 3)
+      strokeWeight(3*gridScale)
+      rect(currentObject.x + 1.5*gridScale, currentObject.y + 1.5*gridScale, currentObject.width - 3*gridScale, currentObject.height - 3*gridScale)
       pop()
       return
     }
@@ -1947,9 +1928,8 @@ function printLevel() {
     for (let object of objectArray) {
       let obj = {
         class: object.constructor.name,
-        x: object.x,
-        y: object.y,
-        transparency: object.transparency,
+        gridX: object.x/gridSize,
+        gridY: object.y/gridSize,
         orientation: object.orientation
       }
       levelArray.push(obj)
@@ -1960,7 +1940,7 @@ function printLevel() {
 
 function loadLevel(lvl) {
 
-  json = levels[lvl-1]
+  json = levels[lvl]
   if (!json) {
     return console.warn("failed to load level " + lvl + " :(")
   }
@@ -1986,7 +1966,7 @@ function loadLevel(lvl) {
       'Button': Button,
     };
 
-    object = new classes[constructor](data.x,data.y,data.transparency);
+    object = new classes[constructor](data.gridX*gridSize,data.gridY*gridSize);
     if (data.orientation) {
       object.orientation = data.orientation
     }
@@ -2192,11 +2172,12 @@ function keyPressed(event) {
       selectedObject = objects[objects.length-1]
     }
   }
-  if (key == '6') {
+  if (key == 'Tab') {
     printLevel()
   }
-  if (key == '9') {
-    loadLevel(level)
+  if (key == 'Delete' && (MODE == 3 || MODE == 4)) {
+    loadLevel(0)
+    SetMode(3)
   }
 
   if (key == 'm' && MODE !== 0) {

@@ -1,2811 +1,2833 @@
 [
     {
         "class": "Tile",
-        "x": 0,
-        "y": 0,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 40,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 80,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 120,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 160,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 200,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 240,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 280,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 320,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 360,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 400,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 440,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 480,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 520,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 560,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 0,
-        "y": 600,
-        "transparency": 0
+        "gridX": 0,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 0,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 40,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 80,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 120,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 160,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 200,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 240,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 280,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 320,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 360,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 400,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 440,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 480,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 520,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 560,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 40,
-        "y": 600,
-        "transparency": 0
+        "gridX": 1,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 0,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 40,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 80,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 120,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 160,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 200,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 240,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 280,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 320,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 360,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 400,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 440,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 480,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 520,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 560,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 80,
-        "y": 600,
-        "transparency": 0
+        "gridX": 2,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 0,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 40,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 80,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 120,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 160,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 200,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 240,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 280,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 320,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 360,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 400,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 440,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 480,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 520,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 560,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 120,
-        "y": 600,
-        "transparency": 0
+        "gridX": 3,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 0,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 40,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 80,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 120,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 160,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 200,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 240,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 280,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 320,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 360,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 400,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 440,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 480,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 520,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 560,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 160,
-        "y": 600,
-        "transparency": 0
+        "gridX": 4,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 0,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 40,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 80,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 120,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 160,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 200,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 240,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 280,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 320,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 360,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 400,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 440,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 480,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 520,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 560,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 200,
-        "y": 600,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 0,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 40,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 80,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 120,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 160,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 200,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 240,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 280,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 320,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 360,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 400,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 440,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 480,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 520,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 560,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 240,
-        "y": 600,
-        "transparency": 0
+        "gridX": 6,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 0,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 40,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 80,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 120,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 160,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 200,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 240,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 280,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 320,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 360,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 400,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 440,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 480,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 520,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 560,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 280,
-        "y": 600,
-        "transparency": 0
+        "gridX": 7,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 0,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 40,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 80,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 120,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 160,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 200,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 240,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 280,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 320,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 360,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 400,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 440,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 480,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 520,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 560,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 320,
-        "y": 600,
-        "transparency": 0
+        "gridX": 8,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 0,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 40,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 80,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 120,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 160,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 200,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 240,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 280,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 320,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 360,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 400,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 440,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 480,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 520,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 560,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 360,
-        "y": 600,
-        "transparency": 0
+        "gridX": 9,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 0,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 40,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 80,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 120,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 160,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 200,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 240,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 280,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 320,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 360,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 400,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 440,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 480,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 520,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 560,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 400,
-        "y": 600,
-        "transparency": 0
+        "gridX": 10,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 0,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 40,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 80,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 120,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 160,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 200,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 240,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 280,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 320,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 360,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 400,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 440,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 480,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 520,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 560,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 440,
-        "y": 600,
-        "transparency": 0
+        "gridX": 11,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 0,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 40,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 80,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 120,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 160,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 200,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 240,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 280,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 320,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 360,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 400,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 440,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 480,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 520,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 560,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 480,
-        "y": 600,
-        "transparency": 0
+        "gridX": 12,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 0,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 40,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 80,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 120,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 160,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 200,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 240,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 280,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 320,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 360,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 400,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 440,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 480,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 520,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 560,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 520,
-        "y": 600,
-        "transparency": 0
+        "gridX": 13,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 0,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 40,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 80,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 120,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 160,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 200,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 240,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 280,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 320,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 360,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 400,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 440,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 480,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 520,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 560,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 560,
-        "y": 600,
-        "transparency": 0
+        "gridX": 14,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 0,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 40,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 80,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 120,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 160,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 200,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 240,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 280,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 320,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 360,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 400,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 440,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 480,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 520,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 560,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 600,
-        "y": 600,
-        "transparency": 0
+        "gridX": 15,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 0,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 40,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 80,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 120,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 160,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 200,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 240,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 280,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 320,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 360,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 400,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 440,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 480,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 520,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 560,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 640,
-        "y": 600,
-        "transparency": 0
+        "gridX": 16,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 0,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 40,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 80,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 120,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 160,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 200,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 240,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 280,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 320,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 360,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 400,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 440,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 480,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 520,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 560,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 680,
-        "y": 600,
-        "transparency": 0
+        "gridX": 17,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 0,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 40,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 80,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 120,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 160,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 200,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 240,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 280,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 320,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 360,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 400,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 440,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 480,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 520,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 560,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 720,
-        "y": 600,
-        "transparency": 0
+        "gridX": 18,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 0,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 40,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 80,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 120,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 160,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 200,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 240,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 280,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 320,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 360,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 400,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 440,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 480,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 520,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 560,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 760,
-        "y": 600,
-        "transparency": 0
+        "gridX": 19,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 0,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 40,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 80,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 120,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 160,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 200,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 240,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 280,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 320,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 360,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 400,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 440,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 480,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 520,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 560,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 800,
-        "y": 600,
-        "transparency": 0
+        "gridX": 20,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 0,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 40,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 80,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 120,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 160,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 200,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 240,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 280,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 320,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 360,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 400,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 440,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 480,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 520,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 560,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 840,
-        "y": 600,
-        "transparency": 0
+        "gridX": 21,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 0,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 40,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 80,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 120,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 160,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 200,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 240,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 280,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 320,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 360,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 400,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 440,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 480,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 520,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 560,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 880,
-        "y": 600,
-        "transparency": 0
+        "gridX": 22,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 0,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 40,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 80,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 120,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 160,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 200,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 240,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 280,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 320,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 360,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 400,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 440,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 480,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 520,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 560,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 920,
-        "y": 600,
-        "transparency": 0
+        "gridX": 23,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 0,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 40,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 80,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 120,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 160,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 200,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 240,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 280,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 320,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 360,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 400,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 440,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 480,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 520,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 560,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 960,
-        "y": 600,
-        "transparency": 0
+        "gridX": 24,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 0,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 40,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 80,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 120,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 160,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 200,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 240,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 280,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 320,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 360,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 400,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 440,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 480,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 520,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 560,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 1000,
-        "y": 600,
-        "transparency": 0
+        "gridX": 25,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 0,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 40,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 80,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 120,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 160,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 200,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 240,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 280,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 320,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 360,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 400,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 440,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 480,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 520,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 560,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 1040,
-        "y": 600,
-        "transparency": 0
+        "gridX": 26,
+        "gridY": 15
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 0,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 0
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 40,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 1
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 80,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 2
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 120,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 3
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 160,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 4
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 200,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 5
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 240,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 6
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 280,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 7
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 320,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 8
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 360,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 9
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 400,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 10
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 440,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 11
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 480,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 12
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 520,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 13
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 560,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 14
     },
     {
         "class": "Tile",
-        "x": 1080,
-        "y": 600,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "x": 400,
-        "y": 360,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 5
     },
     {
-        "class": "Hazard",
-        "x": 400,
-        "y": 320,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 4
     },
     {
-        "class": "Hazard",
-        "x": 400,
-        "y": 280,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 3
     },
     {
-        "class": "Hazard",
-        "x": 400,
-        "y": 240,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 2
     },
     {
-        "class": "Hazard",
-        "x": 440,
-        "y": 200,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 1
     },
     {
-        "class": "Hazard",
-        "x": 480,
-        "y": 160,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 520,
-        "y": 160,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 1,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 560,
-        "y": 160,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 2,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 560,
-        "y": 200,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 3,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 560,
-        "y": 240,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 4,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 560,
-        "y": 280,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 5,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 560,
-        "y": 320,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 6,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 560,
-        "y": 360,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 7,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 600,
-        "y": 360,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 640,
-        "y": 400,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 680,
-        "y": 400,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 0
     },
     {
-        "class": "Hazard",
-        "x": 680,
-        "y": 360,
-        "transparency": 0
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 19,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 20,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 21,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 22,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 23,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 24,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 25,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 26,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 1
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 2
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 4
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 5
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 9
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 10
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 11
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 13
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 14
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 26,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 25,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 24,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 23,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 22,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 21,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 20,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 19,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 7,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 6,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 5,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 4,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 2,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 1,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 14
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 13
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 11
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 10
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 9
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 3,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 4
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 5
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 11
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 10
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 11
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 10
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 4
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 5
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 9
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 9
     },
     {
         "class": "Bomb",
-        "x": 200,
-        "y": 520,
-        "transparency": 0
+        "gridX": 5,
+        "gridY": 13
     },
     {
         "class": "FuseAttachment",
-        "x": 120,
-        "y": 600,
-        "transparency": 0,
-        "orientation": "top"
+        "gridX": 14,
+        "gridY": 1,
+        "orientation": "bottom"
     },
     {
         "class": "Exit",
-        "x": 120,
-        "y": 240,
-        "transparency": 0
+        "gridX": 27,
+        "gridY": 6
+    },
+    {
+        "class": "Button",
+        "gridX": 10,
+        "gridY": 10
+    },
+    {
+        "class": "Button",
+        "gridX": 16,
+        "gridY": 10
+    },
+    {
+        "class": "Button",
+        "gridX": 10,
+        "gridY": 5
+    },
+    {
+        "class": "Button",
+        "gridX": 16,
+        "gridY": 5
+    },
+    {
+        "class": "Button",
+        "gridX": 13,
+        "gridY": 1
     }
 ]
