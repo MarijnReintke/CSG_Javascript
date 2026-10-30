@@ -1258,7 +1258,7 @@ const targetFrameRate = 60
 var plr;
 var entrance;
 
-const gridSize = 5;
+const gridSize = 40;
 const gridScale = gridSize/40
 const gridWith = 28;
 const gridHeight = 16;
@@ -1446,7 +1446,7 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+260);
+  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+260*gridScale);
   canvas.parent('processing');
   textFont("Courier");
   textSize(40);
@@ -1499,7 +1499,7 @@ function menu() {
   background(160,150,170)
 
   for (var a=0;a<3;a++) {
-    let smokeParticle = new SmokeParticle(random(0,width),height-150)
+    let smokeParticle = new SmokeParticle(random(0,width),height-150*gridScale)
     smokeParticles.push(smokeParticle)
   }
 
@@ -1513,19 +1513,19 @@ function menu() {
 
   push()
     fill(0,0,0)
-    rect(0,0,width,150)
-    rect(0,height,width,-150)
+    rect(0,0,width,150*gridScale)
+    rect(0,height,width,-150*gridScale)
     textAlign(CENTER,CENTER)
     textSize(125*gridScale)
-    text("MENU SCREEN",width/2,gridSize*4+150)
+    text("MENU SCREEN",width/2,gridSize*4+150*gridScale)
   pop()
 
 }
 
 function drawAll() {
   push()
-  let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))
-  let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))
+  let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
+  let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   translate(xOffset,yOffset)
   const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance]];
 
