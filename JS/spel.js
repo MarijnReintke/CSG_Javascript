@@ -864,8 +864,8 @@ class Flashbang {
 
 class Countdown {
   constructor(number) {
-    this.x = gridSize*gridWith/2
-    this.y = gridHeight*gridSize/2+gridSize
+    this.x = width/2
+    this.y = height/2
     this.transparency = 0
     this.size = 600*gridScale
     this.number = number
@@ -1170,7 +1170,7 @@ class NextLevelButton extends TextButton {
   }
 
   teken() {
-    this.clickable = levels[level+1]
+    this.clickable = levels[level.currentLevel+1]
     this.hidden = !LEVELCOMPLETE
 
     super.state();
@@ -1181,8 +1181,8 @@ class NextLevelButton extends TextButton {
   }
 
   action() {
-    level++
-    loadLevel(level)
+    level.currentLevel++
+    loadLevel(level.currentLevel)
     this.hidden = true
   }
 }
@@ -1226,7 +1226,7 @@ class MenuStartButton extends TextButton {
   }
 
   action() {
-    loadLevel(level)
+    loadLevel(level.currentLevel)
     SetMode(1)
     this.hidden = true
   }
@@ -1275,10 +1275,13 @@ var bombConnected = false
 var selectedObject = null;
 var currentObject = null;
 var moves = 0
-var wireLimit = 50
-var wireInterval = 2
-var movesBeforeInterval = wireInterval
-var level = 1
+var level = {
+  currentLevel: 1,
+  wireLimit: 50,
+  wireInterval: 2,
+  name: "Untitled"
+}
+var movesBeforeInterval = level.wireInterval
 var currentLayer = 2
 var maxLayer = 3
 var shakeIntensity = 0
@@ -1519,6 +1522,7 @@ function menu() {
     rect(0,height,width,-75*gridScale)
     textAlign(CENTER,CENTER)
     textSize(150*gridScale)
+    textStyle(BOLD)
     text("MENU SCREEN",width/2,250*gridScale)
   pop()
 
@@ -1561,6 +1565,8 @@ function drawAll() {
   }
 
   plr.teken()
+  fill(5,10,15)
+  rect(gridSize*gridWith,0,gridSize*2,gridSize*gridHeight)
 
   for (let smokeParticle of smokeParticles) {
     smokeParticle.teken()
@@ -1586,7 +1592,7 @@ function gameLoop() {
   pop()
 
   if (MODE == 1) {
-    movesBeforeInterval = wireInterval
+    movesBeforeInterval = level.wireInterval
     tekenLoop()
   }
   if (MODE == 2) {
@@ -1622,16 +1628,16 @@ function gameLoop() {
   }
 
   if (MODE == 1) {
-    if (wireLimit - fuses.length > 0) {
+    if (level.wireLimit - fuses.length > 0) {
     fill(255,255,0)
     }
     else {
       fill(255,150,0)
     }
     textSize(75*gridScale)
-    text(wireLimit - fuses.length, 10*gridScale, gridHeight*gridSize + 75*gridScale);
+    text(level.wireLimit - fuses.length, 10*gridScale, gridHeight*gridSize + 75*gridScale);
     textSize(40*gridScale)
-    text("Wire Left", String(wireLimit - fuses.length).length * 50*gridScale + 15*gridScale, gridHeight*gridSize + 75*gridScale);
+    text("Wire Left", String(level.wireLimit - fuses.length).length * 50*gridScale + 15*gridScale, gridHeight*gridSize + 75*gridScale);
   }
 
   if (MODE == 1 || MODE == 2) {
@@ -1675,11 +1681,19 @@ function gameLoop() {
     flashbangs[flashbangs.length-1].teken()
   }
 
+  push()
+    fill(255,255,255)
+    textSize(50*gridScale)
+    textStyle(BOLD)
+    text(level.currentLevel + " - " + level.name,10*gridScale,55*gridScale)
+  pop()
+
   if (LEVELCOMPLETE) {
     push()
     textAlign(CENTER,CENTER)
     fill(255,255,255)
     textSize(75*gridScale)
+    textStyle(BOLD)
     text("Level Complete!",width/2,height/2-90*gridScale)
     pop()
   }
@@ -1689,8 +1703,10 @@ function gameLoop() {
     textAlign(CENTER,CENTER)
     fill(255,255,255)
     textSize(125*gridScale)
+    textStyle(BOLD)
     text("You Died!",width/2,height/2-55*gridScale)
     textSize(50*gridScale)
+    textStyle(NORMAL)
     text("Press [R] to Restart",width/2,height/2+15*gridScale)
     pop()
   }
@@ -1753,7 +1769,7 @@ function tekenLoop() {
   }
 
   if (mouseIsPressed === true && mouseButton === LEFT) {
-    if (fuse.validPosition() && fuses.length < wireLimit && !bombConnected) {
+    if (fuse.validPosition() && fuses.length < level.wireLimit && !bombConnected) {
       fuse.getArray().push(fuse)
       fuse = null
     }
@@ -1954,20 +1970,26 @@ function loadLevel(lvl) {
     return console.warn("failed to load level " + lvl + " :(")
   }
 
-  level = lvl
+  level.currentLevel = lvl
 
   for (let objectArray of objectArrays) {
     objectArray.splice(0,objectArray.length)
   }
 
+  level.name = "Untitled"
+  level.wireLimit = 50
+  level.wireInterval = 2
   for (var a=0;a < Object.keys(json).length; a++) {
     let data = json[a];
     let constructor = data.class
     if (data.limit) {
-      wireLimit = data.limit
+      level.wireLimit = data.limit
     }
     if (data.interval) {
-      wireInterval = data.interval
+      level.wireInterval = data.interval
+    }
+    if (data.name) {
+      level.name = data.name
     }
     if (!constructor || data.gridX == null || data.gridY == null) {
       continue
@@ -2002,7 +2024,6 @@ function snapToGrid(value) {
 
 function outOfBounds(x,y) {
   if (x >= (gridSize*gridWith) || x <= -gridSize || y >= (gridSize*gridHeight) || y <= -gridSize) {
-    print("out of bounds: " + x + ", " + y)
     return true
   }
   else {
@@ -2072,7 +2093,7 @@ function tick() {
   movesBeforeInterval--
   if (movesBeforeInterval == 0) {
     elecOrbs[0].nextFuse()
-    movesBeforeInterval = wireInterval
+    movesBeforeInterval = level.wireInterval
   }
 
   moves--
@@ -2145,8 +2166,8 @@ function SetMode(mode) {
     let elecOrb = new ElecOrb(fuseAttachments[0].x,fuseAttachments[0].y)
     elecOrbs.push(elecOrb)
     explosionTick = 0
-    movesBeforeInterval = wireInterval
-    moves = fuses.length*wireInterval
+    movesBeforeInterval = level.wireInterval
+    moves = fuses.length*level.wireInterval
     plr.spawn()
   }
   if (mode == 3) {

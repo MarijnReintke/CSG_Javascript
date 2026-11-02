@@ -1,4 +1,9 @@
-[
+[   
+    {
+        "name": "Awesome Level",
+        "limit": 25,
+        "interval": 3
+    },
     {
         "class": "Tile",
         "gridX": 0,

@@ -1,4 +1,9 @@
-[
+[   
+    {   
+        "name": "Don't blow up!",
+        "limit": 75,
+        "interval": 1
+    },
     {
         "class": "Tile",
         "gridX": 0,
