@@ -125,10 +125,10 @@ class Hazard extends Block {
     let offset = round(frameCount*3/targetFrameRate)
     for (var a=0;a<aantalKringen;a++) {
       if (this.active) {
-        fill(( (a+offset) % 2)*255,0,0,1)
+        fill(((a+offset) % 2)*255,0,0,1)
       }
       else {
-        fill(( (this.tickCount) % (this.interval))*255/this.interval,0,0,1)
+        fill(((this.tickCount) % (this.interval))*255/this.interval,0,0,1)
       }
       rect(this.x+a*gridSize/2/aantalKringen,this.y+a*gridSize/2/aantalKringen,this.width-(a*gridSize/aantalKringen))
     }
@@ -1170,7 +1170,7 @@ class NextLevelButton extends TextButton {
   }
 
   teken() {
-    this.clickable = levels[level]
+    this.clickable = levels[level+1]
     this.hidden = !LEVELCOMPLETE
 
     super.state();
@@ -1189,7 +1189,7 @@ class NextLevelButton extends TextButton {
 
 class StartButton extends TextButton {
   constructor(x,y) {
-    super(x,y,gridSize*12.5,gridSize*2.5)
+    super(x,y,gridSize*12.5,gridSize*3)
     this.clickable = false
   }
 
@@ -1212,7 +1212,7 @@ class StartButton extends TextButton {
 
 class MenuStartButton extends TextButton {
   constructor(x,y) {
-    super(x,y,gridSize*6,gridSize*2)
+    super(x,y,gridSize*6*1.5,gridSize*2*1.5)
   }
 
   teken() {
@@ -1234,7 +1234,7 @@ class MenuStartButton extends TextButton {
 
 class LevelSelectButton extends TextButton {
   constructor(x,y) {
-    super(x,y,gridSize*6,gridSize*2)
+    super(x,y,gridSize*6*1.5,gridSize*2*1.5)
   }
 
   teken() {
@@ -1258,7 +1258,7 @@ const targetFrameRate = 60
 var plr;
 var entrance;
 
-const gridSize = 40;
+const gridSize = 32;
 const gridScale = gridSize/40
 const gridWith = 28;
 const gridHeight = 16;
@@ -1446,7 +1446,9 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(gridWith*gridSize,gridHeight*gridSize+260*gridScale);
+  canvas = createCanvas(gridWith*gridSize+230*gridScale,gridHeight*gridSize+300*gridScale);
+  widthOffset = 230*gridScale/2
+  heightOffset = 300*gridScale/2-gridSize
   canvas.parent('processing');
   textFont("Courier");
   textSize(40);
@@ -1463,10 +1465,10 @@ function setup() {
 
   plr = new Plr(0,0)
   entrance = new Entrance()
-  nextLevelButton = new NextLevelButton(gridSize*gridWith/2,gridSize*gridHeight/2+120*gridScale)
-  startButton = new StartButton(gridSize*gridWith-gridSize*7,gridSize*gridHeight+gridSize*2)
-  menuStartButton = new MenuStartButton(width/2-gridSize*4,height/2+gridSize*2)
-  levelSelectButton = new LevelSelectButton(width/2+gridSize*4,height/2+gridSize*2)
+  nextLevelButton = new NextLevelButton(width/2,height/2+80*gridScale)
+  startButton = new StartButton(width-gridSize*8,height-gridSize*2.5)
+  menuStartButton = new MenuStartButton(width/2-gridSize*4*1.5,height/2+gridSize*2*1.5)
+  levelSelectButton = new LevelSelectButton(width/2+gridSize*4*1.5,height/2+gridSize*2*1.5)
   textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton)
 
 }
@@ -1499,7 +1501,7 @@ function menu() {
   background(160,150,170)
 
   for (var a=0;a<3;a++) {
-    let smokeParticle = new SmokeParticle(random(0,width),height-150*gridScale)
+    let smokeParticle = new SmokeParticle(random(0,width),height-75*gridScale)
     smokeParticles.push(smokeParticle)
   }
 
@@ -1513,11 +1515,11 @@ function menu() {
 
   push()
     fill(0,0,0)
-    rect(0,0,width,150*gridScale)
-    rect(0,height,width,-150*gridScale)
+    rect(0,0,width,75*gridScale)
+    rect(0,height,width,-75*gridScale)
     textAlign(CENTER,CENTER)
-    textSize(125*gridScale)
-    text("MENU SCREEN",width/2,gridSize*4+150*gridScale)
+    textSize(150*gridScale)
+    text("MENU SCREEN",width/2,250*gridScale)
   pop()
 
 }
@@ -1526,7 +1528,7 @@ function drawAll() {
   push()
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
-  translate(xOffset,yOffset)
+  translate(xOffset+widthOffset,yOffset+heightOffset)
   const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance]];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
@@ -1578,6 +1580,10 @@ function gameLoop() {
   }
 
   background(5,10,15)
+  push()
+    fill(28,23,30)
+    rect(widthOffset,heightOffset,gridWith*gridSize,gridHeight*gridSize)
+  pop()
 
   if (MODE == 1) {
     movesBeforeInterval = wireInterval
@@ -1598,7 +1604,10 @@ function gameLoop() {
   drawHoveredObjectHighlight()
 
   push();
+  let gridScale = gridSize/40
+  translate(0, heightOffset-5*gridScale);
 
+  gridScale = gridSize/40*1.25
   if (MODE == 2) {
     if (moves > 0) {
     fill(255,255,255)
@@ -1643,7 +1652,7 @@ function gameLoop() {
     if (currentObject) {
       text("this.layer = " + currentObject.layer, 15*gridScale, gridHeight*gridSize + 150*gridScale);
       if (currentObject.orientation) {
-        text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 15*gridScale, gridHeight*gridSize + 175*gridScale);
+        text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
       }
     }
   }
@@ -1654,17 +1663,6 @@ function gameLoop() {
     text("Delete", 10*gridScale, gridHeight*gridSize + 75*gridScale);
     textSize(40*gridScale)
     text("Layer " + currentLayer, 15*gridScale, gridHeight*gridSize + 125*gridScale);
-  }
-
-  if (GAMEOVER) {
-    push()
-    textAlign(CENTER,CENTER)
-    fill(255,255,255)
-    textSize(125*gridScale)
-    text("You Died!",gridWith*gridSize/2,gridHeight*gridSize/2-35*gridScale)
-    textSize(50*gridScale)
-    text("Press [R] to Restart",gridWith*gridSize/2,gridHeight*gridSize/2+35*gridScale)
-    pop()
   }
 
   pop();
@@ -1682,7 +1680,18 @@ function gameLoop() {
     textAlign(CENTER,CENTER)
     fill(255,255,255)
     textSize(75*gridScale)
-    text("Level Complete!",gridWith*gridSize/2,gridHeight*gridSize/2-50*gridScale)
+    text("Level Complete!",width/2,height/2-90*gridScale)
+    pop()
+  }
+
+  if (GAMEOVER) {
+    push()
+    textAlign(CENTER,CENTER)
+    fill(255,255,255)
+    textSize(125*gridScale)
+    text("You Died!",width/2,height/2-55*gridScale)
+    textSize(50*gridScale)
+    text("Press [R] to Restart",width/2,height/2+15*gridScale)
     pop()
   }
 }
@@ -1726,8 +1735,8 @@ function tekenLoop() {
     }
   }
 
-  const cellX = snapToGrid(mouseX)
-  const cellY = snapToGrid(mouseY)
+  const cellX = snapToGrid(mouseX-widthOffset)
+  const cellY = snapToGrid(mouseY-heightOffset)
   if (outOfBounds(cellX,cellY)) {
     return drawAll()
   }
@@ -1775,11 +1784,11 @@ function tekenLoop() {
   }
   else if (fuses.length > 0 && fuses[fuses.length-1].x == cellX && fuses[fuses.length-1].y == cellY) {
     fill(255,255,255,0.25)
-    ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
+    ellipse(cellX+widthOffset+gridSize/2,cellY+heightOffset+gridSize/2,gridSize)
   }
   else if (fuses.length == 0 && fuse.validPosition()) {
     fill(255,255,255,0.25)
-    ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
+    ellipse(cellX+widthOffset+gridSize/2,cellY+heightOffset+gridSize/2,gridSize)
   }
 }
 
@@ -1787,8 +1796,8 @@ function buildLoop() {
   plr.anchored = true
   plr.hidden = true
 
-  const cellX = snapToGrid(mouseX)
-  const cellY = snapToGrid(mouseY)
+  const cellX = snapToGrid(mouseX-widthOffset)
+  const cellY = snapToGrid(mouseY-heightOffset)
 
   if (!selectedObject) {
     selectedObject = Hazard
@@ -1846,12 +1855,12 @@ function deleteLoop() {
   plr.anchored = true
   plr.hidden = true
 
-  if (!mouseIsPressed || mouseButton !== LEFT || outOfBounds(mouseX,mouseY)) {
+  const cellX = snapToGrid(mouseX-widthOffset)
+  const cellY = snapToGrid(mouseY-heightOffset)
+
+  if (!mouseIsPressed || mouseButton !== LEFT || outOfBounds(cellX,cellY)) {
     return
   }
-
-  const cellX = snapToGrid(mouseX)
-  const cellY = snapToGrid(mouseY)
 
   for (const objectArray of objectArrays) {
     for (let a=0; a < objectArray.length; a++) {
@@ -1882,8 +1891,8 @@ function objectOverlapsCell(obj, cellX, cellY) {
 
 function drawHoveredObjectHighlight() {
 
-  const cellX = snapToGrid(mouseX)
-  const cellY = snapToGrid(mouseY)
+  const cellX = snapToGrid(mouseX-widthOffset)
+  const cellY = snapToGrid(mouseY-heightOffset)
   if (outOfBounds(cellX,cellY)) {
     return
   }
@@ -1897,7 +1906,7 @@ function drawHoveredObjectHighlight() {
           noFill()
           stroke(255, 75, 100)
           strokeWeight(3*gridScale)
-          rect(object.x + 1.5*gridScale, object.y + 1.5*gridScale, object.width - 3*gridScale, object.height - 3*gridScale)
+          rect(object.x+widthOffset + 1.5*gridScale, object.y+heightOffset + 1.5*gridScale, object.width - 3*gridScale, object.height - 3*gridScale)
           pop()
         }
       }
@@ -1914,7 +1923,7 @@ function drawHoveredObjectHighlight() {
       noFill()
       stroke(0, 150, 255)
       strokeWeight(3*gridScale)
-      rect(currentObject.x + 1.5*gridScale, currentObject.y + 1.5*gridScale, currentObject.width - 3*gridScale, currentObject.height - 3*gridScale)
+      rect(currentObject.x+widthOffset + 1.5*gridScale, currentObject.y+heightOffset + 1.5*gridScale, currentObject.width - 3*gridScale, currentObject.height - 3*gridScale)
       pop()
       return
     }
@@ -1954,6 +1963,15 @@ function loadLevel(lvl) {
   for (var a=0;a < Object.keys(json).length; a++) {
     let data = json[a];
     let constructor = data.class
+    if (data.limit) {
+      wireLimit = data.limit
+    }
+    if (data.interval) {
+      wireInterval = data.interval
+    }
+    if (!constructor || data.gridX == null || data.gridY == null) {
+      continue
+    }
 
     const classes = {
       'Tile': Tile,
@@ -1984,6 +2002,7 @@ function snapToGrid(value) {
 
 function outOfBounds(x,y) {
   if (x >= (gridSize*gridWith) || x <= -gridSize || y >= (gridSize*gridHeight) || y <= -gridSize) {
+    print("out of bounds: " + x + ", " + y)
     return true
   }
   else {
@@ -2046,6 +2065,9 @@ function tick() {
   for (let hazard of hazards) {
      hazard.tick()
   }
+  for (let door of doors) {
+    door.open = !door.open
+  }
 
   movesBeforeInterval--
   if (movesBeforeInterval == 0) {
@@ -2093,10 +2115,6 @@ function explode() {
   return false
 }
 
-function gameOver() {
-
-}
-
 function SetMode(mode) {
   shakeIntensity = 0
   flashbangs.splice(0,flashbangs.length)
@@ -2137,6 +2155,7 @@ function SetMode(mode) {
   if (mode == 4) {
 
   }
+
   MODE = mode
 }
 
