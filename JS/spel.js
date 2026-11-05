@@ -1253,12 +1253,54 @@ class LevelSelectButton extends TextButton {
   }
 }
 
+class MenuButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*6,gridSize*2)
+  }
+
+  teken() {
+    this.hidden = (MODE == 0 || MODE == "LEVELSELECT")
+
+    super.state()
+
+    if (this.hidden) return
+
+    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+  }
+
+  action() {
+    SetMode(0)
+    this.hidden = true
+  }
+}
+
+class BackButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*6,gridSize*2)
+  }
+
+  teken() {
+    this.hidden = (MODE !== "LEVELSELECT")
+
+    super.state()
+
+    if (this.hidden) return
+
+    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+  }
+
+  action() {
+    SetMode(0)
+    this.hidden = true
+  }
+}
+
 const targetFrameRate = 60
 
 var plr;
 var entrance;
 
-const gridSize = 32;
+const gridSize = 10;
 const gridScale = gridSize/40
 const gridWith = 28;
 const gridHeight = 16;
@@ -1472,7 +1514,9 @@ function setup() {
   startButton = new StartButton(width-gridSize*8,height-gridSize*2.5)
   menuStartButton = new MenuStartButton(width/2-gridSize*4*1.5,height/2+gridSize*2*1.5)
   levelSelectButton = new LevelSelectButton(width/2+gridSize*4*1.5,height/2+gridSize*2*1.5)
-  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton)
+  menuButton = new MenuButton(width-gridSize*3.5,gridSize*1.25)
+  backButton = new BackButton(gridSize*3.5,gridSize*1.25)
+  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton, menuButton, backButton)
 
 }
 
