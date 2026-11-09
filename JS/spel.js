@@ -1300,7 +1300,7 @@ const targetFrameRate = 60
 var plr;
 var entrance;
 
-const gridSize = 10;
+const gridSize = 1;
 const gridScale = gridSize/40
 const gridWith = 28;
 const gridHeight = 16;
@@ -1318,7 +1318,7 @@ var selectedObject = null;
 var currentObject = null;
 var moves = 0
 var level = {
-  currentLevel: 1,
+  currentLevel: 0,
   wireLimit: 50,
   wireInterval: 2,
   name: "Untitled"
