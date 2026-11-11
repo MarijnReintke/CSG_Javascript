@@ -484,6 +484,7 @@ class Door extends Block {
     this.tick = 0
     this.spriteIndex = 0
     this.previousState = this.open
+    this.id = 0
   }
 
   teken() {
@@ -611,6 +612,26 @@ class Exit extends Block {
     return exits
   }
 
+}
+
+class Switch extends Block {
+  constructor(x,y) {
+    super(x,y)
+    this.layer = 2
+    this.pressed = false
+    this.id = buildId
+  }
+
+  teken() {
+    push()
+      fill(210,210,210)
+      rect(this.x,this.y,gridSize)
+    pop()
+  }
+
+  getArray() {
+    return switches
+  }
 }
 
 class Entrance {
@@ -1183,7 +1204,6 @@ class NextLevelButton extends TextButton {
   action() {
     level.currentLevel++
     loadLevel(level.currentLevel)
-    this.hidden = true
   }
 }
 
@@ -1206,7 +1226,6 @@ class StartButton extends TextButton {
 
   action() {
     SetMode(2)
-    this.hidden = true
   }
 }
 
@@ -1226,9 +1245,8 @@ class MenuStartButton extends TextButton {
   }
 
   action() {
-    loadLevel(level.currentLevel)
+    loadLevel(1)
     SetMode(1)
-    this.hidden = true
   }
 }
 
@@ -1249,7 +1267,6 @@ class LevelSelectButton extends TextButton {
 
   action() {
     SetMode("LEVELSELECT")
-    this.hidden = true
   }
 }
 
@@ -1270,7 +1287,6 @@ class MenuButton extends TextButton {
 
   action() {
     SetMode(0)
-    this.hidden = true
   }
 }
 
@@ -1291,7 +1307,27 @@ class BackButton extends TextButton {
 
   action() {
     SetMode(0)
-    this.hidden = true
+  }
+}
+
+class LevelButton extends TextButton {
+  constructor(x,y,lvl) {
+    super(x,y,gridSize*5,gridSize*3.5)
+    this.level = lvl
+  }
+
+  teken() {
+    this.hidden = (MODE !== "LEVELSELECT")
+
+    super.state()
+
+    if (this.hidden) return
+
+    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+  }
+
+  action() {
+    loadLevel(this.level)
   }
 }
 
@@ -1300,7 +1336,7 @@ const targetFrameRate = 60
 var plr;
 var entrance;
 
-const gridSize = 1;
+const gridSize = 32;
 const gridScale = gridSize/40
 const gridWith = 28;
 const gridHeight = 16;
@@ -1308,6 +1344,7 @@ const gridHeight = 16;
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
+var nextmode = 0
 var MODE = 0
 var GAMEOVER = false
 var LEVELCOMPLETE = false
@@ -1329,6 +1366,7 @@ var maxLayer = 3
 var shakeIntensity = 0
 
 var buildOrientation = 'top'
+var buildId = 0
 
 var hazards = []
 var obstructions = []
@@ -1346,7 +1384,8 @@ var tileHighlights = []
 var exits = []
 var buttons = []
 var textButtons = []
-const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button]
+var switches = []
+const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button, Switch]
 const objectArrays = []
 
 var debug = false
@@ -1499,7 +1538,7 @@ function setup() {
   textSize(40);
   noStroke();
   colorMode(RGB,255,255,255,1)
-  frameRate(targetFrameRate)
+  frameRate(60)
   noSmooth();
   angleMode(DEGREES)
 
@@ -1517,10 +1556,27 @@ function setup() {
   menuButton = new MenuButton(width-gridSize*3.5,gridSize*1.25)
   backButton = new BackButton(gridSize*3.5,gridSize*1.25)
   textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton, menuButton, backButton)
+  let xAmount = 5
+  let yAmount = 5
+  let buttonWidth = gridSize*5
+  let buttonHeight = gridSize*3.5
+  let xSpacing = 30
+  let ySpacing = 15
+  let lvl = 1
+  for (var a=0;a<yAmount;a++) {
+    let y = a*buttonHeight+(height/2-yAmount*buttonHeight/2+buttonHeight/2-ySpacing*(yAmount-1)/2) + (a*ySpacing) + gridSize
+    for (var b=0;b<xAmount;b++) {
+      let x = b*buttonWidth+(width/2-xAmount*buttonWidth/2+buttonWidth/2-xSpacing*(xAmount-1)/2) + (b*xSpacing)
+      levelButton = new LevelButton(x,y,lvl)
+      textButtons.push(levelButton)
+      lvl += 1
+    }
+  }
 
 }
 
 function draw() {
+
   if (MODE == 0) {
     menu()
   } else if (MODE == "LEVELSELECT") {
@@ -1532,6 +1588,7 @@ function draw() {
   for (let textButton of textButtons) {
     textButton.teken()
   }
+
 }
 
 function levelSelect() {
@@ -1704,6 +1761,9 @@ function gameLoop() {
       if (currentObject.orientation) {
         text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
       }
+      if (currentObject.id !== undefined) {
+        text("this.id = " + currentObject.id, 215*gridScale, gridHeight*gridSize + 150*gridScale);
+      }
     }
   }
 
@@ -1870,6 +1930,9 @@ function buildLoop() {
   currentObject.y = cellY
   if (currentObject.orientation) {
     currentObject.orientation = buildOrientation
+  }
+  if (currentObject.id !== undefined) {
+    currentObject.id = buildId
   }
 
   if (selectedObject == Door) {
@@ -2192,6 +2255,8 @@ function SetMode(mode) {
   LEVELCOMPLETE = false
   GAMEOVER = false
   LEVELCOMPLETE = false
+  plr.hidden = true
+  plr.anchored = true
   for (let fuse of fuses) {
     fuse.electrified = false
   }
@@ -2222,6 +2287,8 @@ function SetMode(mode) {
   }
 
   MODE = mode
+
+  draw()
 }
 
 function changeOrientation(value) {
@@ -2264,29 +2331,36 @@ function keyPressed(event) {
     SetMode(3)
   }
 
-  if (key == 'm' && MODE !== 0) {
-    SetMode(0)
-  }
-  if (key == 'q' && MODE !== 1) {
+  if (key == 'q' && MODE !== 1 && MODE !== 'LEVELSELECT' && MODE !== 0) {
     SetMode(1)
   }
   if (key == 'Enter' && bombConnected && MODE !== 2) {
     SetMode(2)
   }
-  if (key == 'z' && MODE !== 3) {
+  if (key == 'z' && MODE !== 3 && MODE !== 'LEVELSELECT' && MODE !== 0) {
     SetMode(3)
   }
-  if (key == 'b' && MODE !== 4) {
+  if (key == 'b' && MODE !== 4 && MODE !== 'LEVELSELECT' && MODE !== 0) {
     SetMode(4)
   }
 
-  if ((key == 'w' || keyCode == '38') && MODE == 4) {
-    currentLayer += 1
-    currentLayer = constrain(currentLayer, 0, maxLayer)
+  if (key == 'w' || keyCode == '38') {
+    if (MODE == 4) {
+      currentLayer += 1
+      currentLayer = constrain(currentLayer, 0, maxLayer)
+    }
+    if (MODE == 3 && currentObject.id !== undefined) {
+      buildId += 1
+    }
   }
-  if ((key == 's' || keyCode == '40') && MODE == 4) {
-    currentLayer -= 1
-    currentLayer = constrain(currentLayer, 0, maxLayer)
+  if (key == 's' || keyCode == '40') {
+    if (MODE == 4) {
+      currentLayer -= 1
+      currentLayer = constrain(currentLayer, 0, maxLayer)
+    }
+    if (MODE == 3 && currentObject.id !== undefined) {
+      buildId -= 1
+    }
   }
   if (key == 'r' && MODE == 3 && currentObject.orientation) {
     buildOrientation = changeOrientation(buildOrientation)
@@ -2318,8 +2392,3 @@ function keyPressed(event) {
 
 }
 
-function mousePressed() {
-  if (mouseButton === LEFT) {
-    
-  }
-}
