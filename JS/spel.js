@@ -536,6 +536,12 @@ class Door extends Block {
       translate(this.x + this.width/2,this.y + this.height/2)
       rotate(this.rotation)
       image(doorSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
+      fill(255,255,255)
+      rotate(-this.rotation)
+      textAlign(CENTER,CENTER)
+      textStyle(BOLD)
+      textSize(30)
+      text(this.id,0,0)
     pop()
 
     this.previousState = this.open
@@ -619,13 +625,18 @@ class Switch extends Block {
     super(x,y)
     this.layer = 2
     this.pressed = false
-    this.id = buildId
+    this.id = 0
   }
 
   teken() {
     push()
       fill(210,210,210)
       rect(this.x,this.y,gridSize)
+      fill(0,0,0)
+      textAlign(CENTER,CENTER)
+      textStyle(BOLD)
+      textSize(30)
+      text(this.id,this.x+this.width/2,this.y+this.height/2)
     pop()
   }
 
@@ -714,12 +725,14 @@ class Plr {
     this.previousY = this.spawnY
     this.anchored = false
     this.hidden = false
+    this.facing = 'right'
     this.winAnimationTick = 0
   }
 
   spawn() {
     entrance.openAndClose()
     this.hidden = false
+    this.facing = 'right'
     this.winAnimationTick = 0
     this.targetX = this.spawnX
     this.targetY = this.spawnY
@@ -733,10 +746,23 @@ class Plr {
     if (this.hidden) {
       return
     }
-    fill(0,0,0,1)
-    rect(this.x+4*gridScale,this.y+4*gridScale,this.width);
-    fill(255,255,255,1)
-    rect(this.x+4*gridScale + this.width-this.width*0.9,this.y+4*gridScale + this.width-this.width*0.9,this.width*0.8);
+    push()
+      fill(0,0,0,1)
+      rect(this.x+4*gridScale,this.y+4*gridScale,this.width);
+      fill(255,255,255,1)
+      rect(this.x+4*gridScale + this.width-this.width*0.9,this.y+4*gridScale + this.width-this.width*0.9,this.width*0.8);
+      fill(125,125,125)
+      textAlign(CENTER,CENTER)
+      textSize(15)
+      textStyle(BOLD)
+      text(this.facing,this.x+this.width/2,this.y+this.height/2)
+    pop()
+  }
+
+  interact() {
+    if (this.facing == 'left' || this.facing == 'top') {
+      
+    }
   }
 
   winAnimation() {
@@ -1759,10 +1785,14 @@ function gameLoop() {
     if (currentObject) {
       text("this.layer = " + currentObject.layer, 15*gridScale, gridHeight*gridSize + 150*gridScale);
       if (currentObject.orientation) {
-        text("this.orientation = " + currentObject.orientation + '  [R to Rotate]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
+        text("this.orientation = " + currentObject.orientation + ' [R]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
       }
       if (currentObject.id !== undefined) {
-        text("this.id = " + currentObject.id, 215*gridScale, gridHeight*gridSize + 150*gridScale);
+        if (currentObject.orientation) {
+          text("this.id = " + currentObject.id + ' [UP/DOWN]', 575*gridScale, gridHeight*gridSize + 150*gridScale);
+        } else {
+          text("this.id = " + currentObject.id + ' [UP/DOWN]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
+        }
       }
     }
   }
@@ -1772,7 +1802,7 @@ function gameLoop() {
     textSize(75*gridScale)
     text("Delete", 10*gridScale, gridHeight*gridSize + 75*gridScale);
     textSize(40*gridScale)
-    text("Layer " + currentLayer, 15*gridScale, gridHeight*gridSize + 125*gridScale);
+    text("Layer " + currentLayer + ' [UP/DOWN]', 15*gridScale, gridHeight*gridSize + 125*gridScale);
   }
 
   pop();
@@ -2310,6 +2340,7 @@ function keyPressed(event) {
   if (key === ' ' || keyCode == '37' || keyCode == '38' || keyCode == '39' || keyCode == '40') {
     event.preventDefault();
   }
+  //
 
   if (key == 'd' && MODE == 3) {
     selectedObject = objects[objects.indexOf(selectedObject)+1]
@@ -2337,58 +2368,67 @@ function keyPressed(event) {
   if (key == 'Enter' && bombConnected && MODE !== 2) {
     SetMode(2)
   }
-  if (key == 'z' && MODE !== 3 && MODE !== 'LEVELSELECT' && MODE !== 0) {
-    SetMode(3)
+  if (key == 'v') {
+    if (MODE !==3 && MODE !== 'LEVELSELECT' && MODE !== 0) {
+      SetMode(3)
+    }
   }
   if (key == 'b' && MODE !== 4 && MODE !== 'LEVELSELECT' && MODE !== 0) {
     SetMode(4)
   }
 
   if (key == 'w' || keyCode == '38') {
-    if (MODE == 4) {
+    if (MODE == 4 && currentLayer < maxLayer) {
       currentLayer += 1
-      currentLayer = constrain(currentLayer, 0, maxLayer)
     }
-    if (MODE == 3 && currentObject.id !== undefined) {
+    if (MODE == 3 && currentObject.id !== undefined && buildId < 5) {
       buildId += 1
     }
   }
   if (key == 's' || keyCode == '40') {
-    if (MODE == 4) {
+    if (MODE == 4 && currentLayer > 0) {
       currentLayer -= 1
-      currentLayer = constrain(currentLayer, 0, maxLayer)
     }
-    if (MODE == 3 && currentObject.id !== undefined) {
+    if (MODE == 3 && currentObject.id !== undefined && buildId > 0) {
       buildId -= 1
     }
   }
-  if (key == 'r' && MODE == 3 && currentObject.orientation) {
-    buildOrientation = changeOrientation(buildOrientation)
+  if (key == 'r') {
+    if (MODE == 3 && currentObject.orientation) {
+      buildOrientation = changeOrientation(buildOrientation)
+    }
+    if (MODE == 2) {
+      SetMode(1)
+    }
   }
 
-  if (key == 'r' && MODE == 2) {
-    SetMode(1)
-  }
-
-  if (keyCooldown > 0 || plr.anchored) {
+  if (keyCooldown > 0 || plr.anchored || plr.hidden) {
     return
   }
-  keyCooldown = keyBaseCooldown
-  if (event.code == 'Space' && MODE == 2) {
-    tick()
-  }
-  if (key == 'w' || keyCode == '38') {
-    plr.targetY += -gridSize
-  }
-  if (key == 'a' || keyCode == '37') {
-    plr.targetX += -gridSize
-  }
-  if (key == 's' || keyCode == '40') {
-    plr.targetY += gridSize
-  }
-  if (key == 'd' || keyCode == '39') {
-    plr.targetX += gridSize
-  }
+
+    keyCooldown = keyBaseCooldown
+    if (event.code == 'Space' && MODE == 2) {
+      tick()
+    }
+    if (key == 'z') {
+      plr.interact()
+    }
+    if (key == 'w' || keyCode == '38') {
+      plr.facing = 'top'
+      plr.targetY += -gridSize
+    }
+    if (key == 'a' || keyCode == '37') {
+      plr.facing = 'left'
+      plr.targetX += -gridSize
+    }
+    if (key == 's' || keyCode == '40') {
+      plr.facing = 'bottom'
+      plr.targetY += gridSize
+    }
+    if (key == 'd' || keyCode == '39') {
+      plr.facing = 'right'
+      plr.targetX += gridSize
+    }
 
 }
 

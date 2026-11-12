@@ -1,7 +1,7 @@
 [   
     {   
-        "limit": 2,
-        "interval": 13
+        "limit": 999,
+        "interval": 1
     },
     {
         "class": "Tile",
