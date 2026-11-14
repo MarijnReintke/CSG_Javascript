@@ -166,7 +166,7 @@ class Fuse extends Block {
   }
 
   validPosition() {
-    const collidableObjects = [fuses,fuseAttachments,obstructions,doors,buttons,exits,[entrance]]
+    const collidableObjects = [fuses,fuseAttachments,obstructions,doors,buttons,exits,[entrance],switches]
 
     for (let array of collidableObjects) {
       for (let obj of array) {
@@ -252,23 +252,19 @@ class Fuse extends Block {
         shape = "vertical"
       } else if (
           (prevDx == -gridSize && nextDy == -gridSize) ||
-          (prevDy == -gridSize && nextDx == -gridSize)
-      ) {
+          (prevDy == -gridSize && nextDx == -gridSize)) {
         shape = "bottom-right"
       } else if (
           (prevDx == gridSize && nextDy == -gridSize) ||
-          (prevDy == -gridSize && nextDx == gridSize)
-      ) {
+          (prevDy == -gridSize && nextDx == gridSize)) {
         shape = "bottom-left"
       } else if (
           (prevDx == -gridSize && nextDy == gridSize) ||
-          (prevDy == gridSize && nextDx == -gridSize)
-      ) {
+          (prevDy == gridSize && nextDx == -gridSize)) {
         shape = "top-right"
       } else if (
           (prevDx == gridSize && nextDy == gridSize) ||
-          (prevDy == gridSize && nextDx == gridSize)
-      ) {
+          (prevDy == gridSize && nextDx == gridSize)) {
         shape = "top-left"
       }
     } else if (previousFuse) {
@@ -484,10 +480,16 @@ class Door extends Block {
     this.tick = 0
     this.spriteIndex = 0
     this.previousState = this.open
-    this.id = 0
+    this.id = buildId
   }
 
   teken() {
+    if (gameState.activeIds.includes(this.id)) {
+      this.open = true
+    } else {
+      this.open = false
+    }
+
     if (this.orientation == 'left' || this.orientation == 'right') {
       this.width = gridSize
       this.height = gridSize*3
@@ -624,13 +626,16 @@ class Switch extends Block {
   constructor(x,y) {
     super(x,y)
     this.layer = 2
-    this.pressed = false
-    this.id = 0
+    this.id = buildId
   }
 
   teken() {
     push()
-      fill(210,210,210)
+      if (gameState.activeIds.includes(this.id)) {
+        fill(210,210,100)
+      } else {
+        fill(210,210,210)
+      }
       rect(this.x,this.y,gridSize)
       fill(0,0,0)
       textAlign(CENTER,CENTER)
@@ -760,8 +765,20 @@ class Plr {
   }
 
   interact() {
-    if (this.facing == 'left' || this.facing == 'top') {
-      
+    for (let obj of switches) {
+      let distX = obj.x - this.targetX
+      let distY = obj.y - this.targetY
+      if ((this.facing == 'left' && distX == -gridSize && distY == 0) ||
+          (this.facing == 'right' && distX == gridSize && distY == 0) ||
+          (this.facing == 'top' && distY == -gridSize && distX == 0) ||
+          (this.facing == 'bottom' && distY == gridSize && distX == 0)) {
+        if (!gameState.activeIds.includes(obj.id)) {
+          gameState.activeIds.push(obj.id)
+        } else {
+          gameState.activeIds.splice(gameState.activeIds.indexOf(obj.id),1)
+        }
+        tick()
+      }
     }
   }
 
@@ -1370,7 +1387,6 @@ const gridHeight = 16;
 var keyBaseCooldown = 0.03
 var keyCooldown = 0
 
-var nextmode = 0
 var MODE = 0
 var GAMEOVER = false
 var LEVELCOMPLETE = false
@@ -1384,9 +1400,13 @@ var level = {
   currentLevel: 0,
   wireLimit: 50,
   wireInterval: 2,
-  name: "Untitled"
+  name: "Untitled",
+  activeIds: [],
 }
-var movesBeforeInterval = level.wireInterval
+var gameState = {
+  activeIds: [...level.activeIds],
+  movesBeforeInterval: level.wireInterval,
+}
 var currentLayer = 2
 var maxLayer = 3
 var shakeIntensity = 0
@@ -1719,7 +1739,7 @@ function gameLoop() {
   pop()
 
   if (MODE == 1) {
-    movesBeforeInterval = level.wireInterval
+    gameState.movesBeforeInterval = level.wireInterval
     tekenLoop()
   }
   if (MODE == 2) {
@@ -1770,9 +1790,9 @@ function gameLoop() {
   if (MODE == 1 || MODE == 2) {
     fill(255,255,100)
     textSize(40*gridScale)
-    text(movesBeforeInterval, 15*gridScale, gridHeight*gridSize + 125*gridScale);
+    text(gameState.movesBeforeInterval, 15*gridScale, gridHeight*gridSize + 125*gridScale);
     textSize(30*gridScale)
-    text("Moves Before Elec. Moves", String(movesBeforeInterval).length * 30*gridScale + 20*gridScale, gridHeight*gridSize + 125*gridScale);
+    text("Moves Before Elec. Moves", String(gameState.movesBeforeInterval).length * 30*gridScale + 20*gridScale, gridHeight*gridSize + 125*gridScale);
   }
 
   if (MODE == 3) {
@@ -2220,17 +2240,11 @@ function tick() {
   if (moves <= 0 || fuses.length == 0) {
     return
   }
-  for (let hazard of hazards) {
-     hazard.tick()
-  }
-  for (let door of doors) {
-    door.open = !door.open
-  }
 
-  movesBeforeInterval--
-  if (movesBeforeInterval == 0) {
+  gameState.movesBeforeInterval--
+  if (gameState.movesBeforeInterval == 0) {
     elecOrbs[0].nextFuse()
-    movesBeforeInterval = level.wireInterval
+    gameState.movesBeforeInterval = level.wireInterval
   }
 
   moves--
@@ -2284,7 +2298,7 @@ function SetMode(mode) {
   bombConnected = false
   LEVELCOMPLETE = false
   GAMEOVER = false
-  LEVELCOMPLETE = false
+  gameState.activeIds = [...level.activeIds]
   plr.hidden = true
   plr.anchored = true
   for (let fuse of fuses) {
@@ -2305,7 +2319,7 @@ function SetMode(mode) {
     let elecOrb = new ElecOrb(fuseAttachments[0].x,fuseAttachments[0].y)
     elecOrbs.push(elecOrb)
     explosionTick = 0
-    movesBeforeInterval = level.wireInterval
+    gameState.movesBeforeInterval = level.wireInterval
     moves = fuses.length*level.wireInterval
     plr.spawn()
   }
