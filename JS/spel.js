@@ -473,6 +473,7 @@ class Door extends Block {
     this.height
     this.normallyActive = buildNormallyActive
     this.open = this.normallyActive
+    this.canCollide = !this.open
     this.orientation = buildOrientation
     this.rotation
     this.tick = 0
@@ -664,7 +665,11 @@ class Laser {
 
     push()
       fill(255,0,255)
-      rect(this.x,this.y,gridSize)
+      if (this.orientation == "top" || this.orientation == "bottom") {
+        rect(this.x+gridSize/4,this.y,gridSize/2,gridSize)
+      } else {
+        rect(this.x,this.y+gridSize/4,gridSize,gridSize/2)
+      }
     pop()
 
   }
@@ -696,9 +701,12 @@ class LaserCannon extends Block {
       if (this.active) {
         fill(200,150,0)
       }
-      rect(this.x,this.y,gridSize)
+      rect(this.x+gridSize*0.125,this.y+gridSize*0.125,gridSize*0.75,gridSize*0.75)
     pop()
 
+  }
+
+  updateBeam() {
     if (!this.active) {
       return
     }
@@ -724,6 +732,16 @@ class LaserCannon extends Block {
 
     let laser = new Laser(x,y,this,this.orientation)
     while (validPosition(laser,null,true)) {
+      for (let obj of elecs) {
+        if (objectOverlapsCell(laser,obj.x,obj.y)) {
+          return
+        }
+      }
+      for (let obj of elecOrbs) {
+        if (objectOverlapsCell(laser,obj.targetX,obj.targetY)) {
+          return
+        }
+      } 
       lasers.push(laser)
       x += xStep
       y += yStep
@@ -1154,7 +1172,10 @@ class ElecOrb {
       return
     }
     this.currentFuse.electrified = true
+    this.currentFuse.teken()
     this.currentFuse = fuses[fuses.indexOf(this.currentFuse)+1]
+    this.targetX = this.currentFuse.x
+    this.targetY = this.currentFuse.y
   }
 
   getArray() {
@@ -1716,7 +1737,14 @@ function setup() {
 
 }
 
+let fps = 0
+let fpsInterval = 0
 function draw() {
+  fpsInterval += frameRate()
+  if (frameCount % 30 == 0) {
+    fps = round(fpsInterval/30)
+    fpsInterval = 0
+  }
 
   if (MODE == 0) {
     menu()
@@ -1733,13 +1761,7 @@ function draw() {
 }
 
 function levelSelect() {
-  background(0,0,0)
-  push()
-    fill(255,255,255)
-    textSize(50*gridScale)
-    textAlign(CENTER,CENTER)
-    text("W.I.P",width/2,height/2)
-  pop()
+  background(160,150,170)
 }
 
 function menu() {
@@ -1774,8 +1796,11 @@ function drawAll() {
   push()
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
-  translate(xOffset+widthOffset,yOffset+heightOffset)
+  translate(xOffset,yOffset)
   lasers.splice(0,lasers.length)
+  for (let obj of laserCannons) {
+    obj.updateBeam()
+  }
   const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance], lasers];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
@@ -1834,21 +1859,24 @@ function gameLoop() {
     rect(widthOffset,heightOffset,gridWith*gridSize,gridHeight*gridSize)
   pop()
 
-  if (MODE == 1) {
-    gameState.movesBeforeInterval = level.wireInterval
-    tekenLoop()
-  }
-  if (MODE == 2) {
-    playerLoop()
-    drawAll()
-  }
-  if (MODE == 3) {
-    buildLoop()
-  }
-  if (MODE == 4) {
-    deleteLoop()
-    drawAll()
-  }
+  push()
+    translate(widthOffset,heightOffset)
+    if (MODE == 1) {
+      gameState.movesBeforeInterval = level.wireInterval
+      tekenLoop()
+    }
+    if (MODE == 2) {
+      playerLoop()
+      drawAll()
+    }
+    if (MODE == 3) {
+      buildLoop()
+    }
+    if (MODE == 4) {
+      deleteLoop()
+      drawAll()
+    }
+  pop()
 
   drawHoveredObjectHighlight()
 
@@ -1948,6 +1976,12 @@ function gameLoop() {
     text(level.currentLevel + " - " + level.name,10*gridScale,55*gridScale)
   pop()
 
+  push()
+    fill(255,255,255)
+    textSize(20*gridScale)
+    text("FPS: " + fps,width-100*gridScale,height-10*gridScale)
+  pop()
+
   if (LEVELCOMPLETE) {
     push()
     textAlign(CENTER,CENTER)
@@ -1984,7 +2018,6 @@ function playerLoop() {
     else {
       plr.anchored = false
     }
-
     plr.beweeg()
   } else if (LEVELCOMPLETE) {
     plr.anchored = true
@@ -2056,15 +2089,15 @@ function tekenLoop() {
 
   if (mouseIsPressed === true && mouseButton === LEFT) { 
     fill(255,255,255,0.25)
-    ellipse(mouseX,mouseY,gridSize)
+    ellipse(mouseX-widthOffset,mouseY-heightOffset,gridSize)
   }
   else if (fuses.length > 0 && fuses[fuses.length-1].x == cellX && fuses[fuses.length-1].y == cellY) {
     fill(255,255,255,0.25)
-    ellipse(cellX+widthOffset+gridSize/2,cellY+heightOffset+gridSize/2,gridSize)
+    ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }
   else if (fuses.length == 0 && fuse.validPosition()) {
     fill(255,255,255,0.25)
-    ellipse(cellX+widthOffset+gridSize/2,cellY+heightOffset+gridSize/2,gridSize)
+    ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }
 }
 
@@ -2335,24 +2368,11 @@ function validPosition(obj,objArrays,collisionChecks) {
         continue
       }
 
-      for (let a = 0; a < otherObj.height / gridSize; a++) {
-        const otherY = otherObj.y + a * gridSize;
-
-        for (let b = 0; b < otherObj.width / gridSize; b++) {
-          const otherX = otherObj.x + b * gridSize;
-
-          for (let c = 0; c < obj.height / gridSize; c++) {
-            const objY = obj.y + c * gridSize;
-
-            for (let d = 0; d < obj.width / gridSize; d++) {
-              const objX = obj.x + d * gridSize;
-
-              if (otherX === objX && otherY === objY) {
-                return false;
-              }
-            }
-          }
-        }
+      if (obj.x < otherObj.x + otherObj.width &&
+          obj.x + obj.width > otherObj.x &&
+          obj.y < otherObj.y + otherObj.height &&
+          obj.y + obj.height > otherObj.y) {
+        return false
       }
     }
   }
@@ -2369,6 +2389,10 @@ function tick() {
   gameState.movesBeforeInterval--
   if (gameState.movesBeforeInterval == 0) {
     elecOrbs[0].nextFuse()
+    lasers.splice(0,lasers.length)
+    for (let obj of laserCannons) {
+      obj.updateBeam()
+    }
     gameState.movesBeforeInterval = level.wireInterval
   }
 
@@ -2566,7 +2590,7 @@ function keyPressed(event) {
       plr.targetY += -gridSize
     }
     if (key == 'a' || keyCode == '37') {
-      plr.facing = 'left'
+      plr.interact()
       plr.targetX += -gridSize
     }
     if (key == 's' || keyCode == '40') {
