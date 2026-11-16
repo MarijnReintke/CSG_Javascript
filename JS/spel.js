@@ -91,13 +91,10 @@ class Obstruction extends Block {
 }
 
 class Hazard extends Block {
-  constructor(x,y,act) {
+  constructor(x,y) {
     super(x,y)
-    if (!act) {
-      act = false
-    }
     this.layer = 2
-    this.active = act
+    this.active = false
     this.interval = 3
     this.tickCount = 0
     this.canCollide = false
@@ -166,7 +163,7 @@ class Fuse extends Block {
   }
 
   validPosition() {
-    const collidableObjects = [fuses,fuseAttachments,obstructions,doors,buttons,exits,[entrance],switches]
+    const collidableObjects = [fuses,fuseAttachments,obstructions,doors,buttons,exits,[entrance],switches,laserCannons]
 
     for (let array of collidableObjects) {
       for (let obj of array) {
@@ -474,7 +471,8 @@ class Door extends Block {
     this.layer = 2
     this.width
     this.height
-    this.open = false
+    this.normallyActive = buildNormallyActive
+    this.open = this.normallyActive
     this.orientation = buildOrientation
     this.rotation
     this.tick = 0
@@ -485,9 +483,9 @@ class Door extends Block {
 
   teken() {
     if (gameState.activeIds.includes(this.id)) {
-      this.open = true
+      this.open = !this.normallyActive
     } else {
-      this.open = false
+      this.open = this.normallyActive
     }
 
     if (this.orientation == 'left' || this.orientation == 'right') {
@@ -647,6 +645,92 @@ class Switch extends Block {
 
   getArray() {
     return switches
+  }
+}
+
+class Laser {
+  constructor(x,y,parent,orientation) {
+    this.x = x
+    this.y = y
+    this.layer = 2
+    this.orientation = orientation
+    this.parent = parent
+    this.width = gridSize
+    this.height = gridSize
+    this.canCollide = true
+  }
+
+  teken() {
+    push()
+      fill(255,0,255)
+      rect(this.x,this.y,gridSize)
+    pop()
+  }
+
+  getArray() {
+    return lasers
+  }
+}
+
+class LaserCannon extends Block {
+  constructor(x,y) {
+    super(x,y)
+    this.layer = 2
+    this.normallyActive = buildNormallyActive
+    this.orientation = buildOrientation
+    this.active = this.normallyActive
+    this.id = buildId
+  }
+
+  teken() {
+    if (gameState.activeIds.includes(this.id)) {
+      this.active = !this.normallyActive
+    } else {
+      this.active = this.normallyActive
+    }
+
+    push()
+      fill(50,50,50)
+      if (this.active) {
+        fill(200,150,0)
+      }
+      rect(this.x,this.y,gridSize)
+    pop()
+
+    if (!this.active) {
+      return
+    }
+
+    let yStep = 0
+    let xStep = 0
+
+    if (this.orientation == "top") {
+      yStep = -gridSize
+    }
+    if (this.orientation == "right") {
+      xStep = gridSize
+    }
+    if (this.orientation == "bottom") {
+      yStep = gridSize
+    }
+    if (this.orientation == "left") {
+      xStep = -gridSize
+    }
+
+    let x = this.x+xStep
+    let y = this.y+yStep
+
+    let laser = new Laser(x,y,this,this.orientation)
+    lasers.splice(0,lasers.length)
+    while (validPosition(laser,[...objectArrays, [entrance], lasers],true)) {
+      lasers.push(laser)
+      laser = new Laser(x+xStep,y+yStep,this,this.orientation)
+    }
+    laser = null
+  }
+
+  getArray() {
+    return laserCannons
   }
 }
 
@@ -1398,7 +1482,7 @@ var currentObject = null;
 var moves = 0
 var level = {
   currentLevel: 0,
-  wireLimit: 50,
+  wireLimit: 99,
   wireInterval: 2,
   name: "Untitled",
   activeIds: [],
@@ -1413,6 +1497,7 @@ var shakeIntensity = 0
 
 var buildOrientation = 'top'
 var buildId = 0
+var buildNormallyActive = false
 
 var hazards = []
 var obstructions = []
@@ -1431,7 +1516,9 @@ var exits = []
 var buttons = []
 var textButtons = []
 var switches = []
-const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button, Switch]
+var laserCannons = []
+var lasers = []
+const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button, Switch, LaserCannon]
 const objectArrays = []
 
 var debug = false
@@ -1456,7 +1543,7 @@ var wireSprites
 function preload() {
   let children
   
-  children = 3
+  children = 4
   for (var a=0;a<children;a++) {
     var json = loadJSON('JS/spelAssets/levels/' + a + '.json')
     levels.push(json)
@@ -1680,7 +1767,7 @@ function drawAll() {
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   translate(xOffset+widthOffset,yOffset+heightOffset)
-  const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance]];
+  const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance], lasers];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
     let layer
@@ -1803,16 +1890,26 @@ function gameLoop() {
     text(selectedObject.name, 13*gridScale, gridHeight*gridSize + 125*gridScale);
     textSize(20*gridScale)
     if (currentObject) {
-      text("this.layer = " + currentObject.layer, 15*gridScale, gridHeight*gridSize + 150*gridScale);
+      text("layer = " + currentObject.layer, 15*gridScale, gridHeight*gridSize + 150*gridScale);
       if (currentObject.orientation) {
-        text("this.orientation = " + currentObject.orientation + ' [R]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
+        text("orientation = " + currentObject.orientation + ' [R]', 150*gridScale, gridHeight*gridSize + 150*gridScale);
       }
       if (currentObject.id !== undefined) {
+        let xOffset = 150
         if (currentObject.orientation) {
-          text("this.id = " + currentObject.id + ' [UP/DOWN]', 575*gridScale, gridHeight*gridSize + 150*gridScale);
-        } else {
-          text("this.id = " + currentObject.id + ' [UP/DOWN]', 215*gridScale, gridHeight*gridSize + 150*gridScale);
+          xOffset += 300
         }
+        text("id = " + currentObject.id + ' [UP/DOWN]', xOffset*gridScale, gridHeight*gridSize + 150*gridScale);
+      }
+      if (currentObject.normallyActive !== undefined) {
+        let xOffset = 150
+        if (currentObject.orientation) {
+          xOffset += 300
+        }
+        if (currentObject.id !== undefined) {
+          xOffset += 225
+        }
+        text("normallyActive = " + currentObject.normallyActive + ' [N]', xOffset*gridScale, gridHeight*gridSize + 150*gridScale);
       }
     }
   }
@@ -1984,6 +2081,9 @@ function buildLoop() {
   if (currentObject.id !== undefined) {
     currentObject.id = buildId
   }
+  if (currentObject.normallyActive !== undefined) {
+    currentObject.normallyActive = buildNormallyActive
+  }
 
   if (selectedObject == Door) {
     if (currentObject.orientation == 'left' || currentObject.orientation == 'right') {
@@ -2112,7 +2212,9 @@ function printLevel() {
         class: object.constructor.name,
         gridX: object.x/gridSize,
         gridY: object.y/gridSize,
-        orientation: object.orientation
+        orientation: object.orientation,
+        id: object.id,
+        normallyActive: object.normallyActive,
       }
       levelArray.push(obj)
     }
@@ -2134,7 +2236,7 @@ function loadLevel(lvl) {
   }
 
   level.name = "Untitled"
-  level.wireLimit = 50
+  level.wireLimit = 99
   level.wireInterval = 2
   for (var a=0;a < Object.keys(json).length; a++) {
     let data = json[a];
@@ -2161,11 +2263,19 @@ function loadLevel(lvl) {
       'Door': Door,
       'Exit': Exit,
       'Button': Button,
+      'Switch': Switch,
+
     };
 
     object = new classes[constructor](data.gridX*gridSize,data.gridY*gridSize);
     if (data.orientation) {
       object.orientation = data.orientation
+    }
+    if (data.id) {
+      object.id = data.id
+    }
+    if (data.normallyActive) {
+      object.normallyActive = data.normallyActive
     }
 
     object.getArray().push(object)
@@ -2189,7 +2299,7 @@ function outOfBounds(x,y) {
 }
 
 
-function validPosition(obj) {
+function validPosition(obj,objArrays,collisionChecks) {
 
   for (let a = 0; a < obj.height / gridSize; a++) {
     const objY = obj.y + a * gridSize;
@@ -2202,11 +2312,17 @@ function validPosition(obj) {
     }
   }
 
-  const allObjectArrays = [...objectArrays, [entrance]]
+  let allObjectArrays = [...objectArrays, [entrance]]
+  if (objArrays) {
+    allObjectArrays = objArrays
+  }
   for (const objectArray of allObjectArrays) {
     for (const otherObj of objectArray) {
 
       if (otherObj.layer !== obj.layer) {
+        continue
+      }
+      if (collisionChecks && !otherObj.canCollide) {
         continue
       }
 
@@ -2415,6 +2531,15 @@ function keyPressed(event) {
       SetMode(1)
     }
   }
+  if (key == 'n') {
+    if (MODE == 3 && currentObject.normallyActive !== undefined) {
+      if (buildNormallyActive) {
+        buildNormallyActive = false
+      } else {
+        buildNormallyActive = true
+      }
+    }
+  }
 
   if (keyCooldown > 0 || plr.anchored || plr.hidden) {
     return
@@ -2424,7 +2549,7 @@ function keyPressed(event) {
     if (event.code == 'Space' && MODE == 2) {
       tick()
     }
-    if (key == 'z') {
+    if (key == 'e') {
       plr.interact()
     }
     if (key == 'w' || keyCode == '38') {
