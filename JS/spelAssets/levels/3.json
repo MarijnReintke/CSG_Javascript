@@ -2262,15 +2262,15 @@
     {
         "class": "Obstruction",
         "gridX": 0,
-        "gridY": 0
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
         "gridY": 1
     },
     {
         "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 0
+    },
+    {
+        "class": "Obstruction",
         "gridX": 1,
         "gridY": 0
     },
@@ -2403,196 +2403,6 @@
         "class": "Obstruction",
         "gridX": 27,
         "gridY": 0
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 9
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 10
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 11
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 12
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 13
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 14
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 0,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 1,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 2,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 3,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 4,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 5,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 6,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 7,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 8,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 9,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 10,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 11,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 12,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 13,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 14,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 15,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 16,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 17,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 18,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 19,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 20,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 21,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 22,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 23,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 24,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 25,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 26,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 27,
-        "gridY": 15
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 27,
-        "gridY": 14
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 27,
-        "gridY": 13
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 27,
-        "gridY": 12
-    },
-    {
-        "class": "Obstruction",
-        "gridX": 27,
-        "gridY": 11
     },
     {
         "class": "Obstruction",
@@ -2622,478 +2432,389 @@
     {
         "class": "Obstruction",
         "gridX": 27,
+        "gridY": 9
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
         "gridY": 10
     },
     {
         "class": "Obstruction",
         "gridX": 27,
-        "gridY": 9
+        "gridY": 11
     },
     {
         "class": "Obstruction",
-        "gridX": 22,
+        "gridX": 27,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
         "gridY": 13
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 14
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 27,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 26,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 25,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 24,
+        "gridY": 15
     },
     {
         "class": "Obstruction",
         "gridX": 23,
-        "gridY": 13
+        "gridY": 15
     },
     {
         "class": "Obstruction",
-        "gridX": 25,
-        "gridY": 3
+        "gridX": 22,
+        "gridY": 15
     },
     {
         "class": "Obstruction",
-        "gridX": 25,
-        "gridY": 4
+        "gridX": 21,
+        "gridY": 15
     },
     {
         "class": "Obstruction",
-        "gridX": 25,
-        "gridY": 5
+        "gridX": 20,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 2,
-        "gridY": 3
+        "class": "Obstruction",
+        "gridX": 19,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 2,
-        "gridY": 4
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 2,
-        "gridY": 5
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 3,
-        "gridY": 5
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 4,
-        "gridY": 4
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 7,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 6,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
         "gridX": 5,
-        "gridY": 4
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 6,
-        "gridY": 4
+        "class": "Obstruction",
+        "gridX": 4,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 6,
-        "gridY": 3
+        "class": "Obstruction",
+        "gridX": 2,
+        "gridY": 15
     },
     {
-        "class": "Hazard",
-        "gridX": 24,
+        "class": "Obstruction",
+        "gridX": 1,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 14
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 0,
         "gridY": 13
     },
     {
-        "class": "Hazard",
-        "gridX": 24,
+        "class": "Obstruction",
+        "gridX": 0,
         "gridY": 12
     },
     {
-        "class": "Hazard",
-        "gridX": 25,
-        "gridY": 6
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 11
     },
     {
-        "class": "Hazard",
-        "gridX": 25,
-        "gridY": 7
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 10
     },
     {
-        "class": "Hazard",
-        "gridX": 25,
-        "gridY": 8
+        "class": "Obstruction",
+        "gridX": 0,
+        "gridY": 9
     },
     {
-        "class": "Hazard",
-        "gridX": 26,
+        "class": "Obstruction",
+        "gridX": 3,
+        "gridY": 15
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 3
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 9,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 10,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 11,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 12,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 13,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 14,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 15,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 16,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 17,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 12
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 4
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 5
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 11
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
+        "gridY": 10
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 11
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 10
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 4
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 5
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 8,
+        "gridY": 9
+    },
+    {
+        "class": "Obstruction",
+        "gridX": 18,
         "gridY": 9
     },
     {
         "class": "Bomb",
-        "gridX": 10,
-        "gridY": 6
+        "gridX": 5,
+        "gridY": 13
     },
     {
         "class": "FuseAttachment",
         "gridX": 14,
-        "gridY": 9,
-        "orientation": "top"
-    },
-    {
-        "class": "Door",
-        "gridX": 19,
-        "gridY": 12,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 20,
-        "gridY": 11,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 21,
-        "gridY": 10,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 21,
-        "gridY": 9,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 21,
-        "gridY": 8,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 22,
-        "gridY": 7,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 22,
-        "gridY": 6,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 21,
-        "gridY": 5,
-        "orientation": "top",
-        "id": 0,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 15,
-        "gridY": 5,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 15,
-        "gridY": 4,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 14,
-        "gridY": 3,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 12,
-        "gridY": 5,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 12,
-        "gridY": 6,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 12,
-        "gridY": 7,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 12,
-        "gridY": 8,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 11,
-        "gridY": 9,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 11,
-        "gridY": 10,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 11,
-        "gridY": 11,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 10,
-        "gridY": 12,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 13,
-        "gridY": 12,
-        "orientation": "top",
-        "id": 3,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 14,
-        "gridY": 11,
-        "orientation": "top",
-        "id": 3,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 16,
-        "gridY": 10,
-        "orientation": "top",
-        "id": 3,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 16,
-        "gridY": 9,
-        "orientation": "top",
-        "id": 4,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 17,
-        "gridY": 8,
-        "orientation": "top",
-        "id": 4,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 18,
-        "gridY": 7,
-        "orientation": "top",
-        "id": 4,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 18,
-        "gridY": 6,
-        "orientation": "top",
-        "id": 4,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 20,
-        "gridY": 4,
-        "orientation": "top",
-        "id": 4,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 20,
-        "gridY": 3,
-        "orientation": "top",
-        "id": 4,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 21,
-        "gridY": 2,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": false
-    },
-    {
-        "class": "Door",
-        "gridX": 7,
-        "gridY": 10,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 8,
-        "gridY": 9,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 8,
-        "gridY": 8,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 8,
-        "gridY": 7,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 9,
-        "gridY": 5,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 9,
-        "gridY": 4,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 10,
-        "gridY": 3,
-        "orientation": "top",
-        "id": 5,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 7,
-        "gridY": 11,
-        "orientation": "top",
-        "id": 3,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 7,
-        "gridY": 12,
-        "orientation": "top",
-        "id": 3,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 7,
-        "gridY": 13,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 10,
-        "gridY": 13,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 13,
-        "gridY": 13,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 16,
-        "gridY": 13,
-        "orientation": "top",
-        "id": 1,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 17,
-        "gridY": 3,
-        "orientation": "top",
-        "id": 2,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 18,
-        "gridY": 2,
-        "orientation": "top",
-        "id": 3,
-        "normallyActive": true
-    },
-    {
-        "class": "Door",
-        "gridX": 18,
         "gridY": 1,
-        "orientation": "top",
-        "id": 3,
+        "orientation": "bottom"
+    },
+    {
+        "class": "Door",
+        "gridX": 18,
+        "gridY": 6,
+        "orientation": "left",
+        "id": 0,
         "normallyActive": true
+    },
+    {
+        "class": "Door",
+        "gridX": 8,
+        "gridY": 6,
+        "orientation": "left",
+        "id": 0,
+        "normallyActive": false
     },
     {
         "class": "Exit",
@@ -3102,160 +2823,87 @@
     },
     {
         "class": "Button",
-        "gridX": 5,
-        "gridY": 13
-    },
-    {
-        "class": "Button",
-        "gridX": 4,
-        "gridY": 12
-    },
-    {
-        "class": "Button",
-        "gridX": 4,
-        "gridY": 11
-    },
-    {
-        "class": "Button",
-        "gridX": 4,
+        "gridX": 10,
         "gridY": 10
     },
     {
         "class": "Button",
-        "gridX": 5,
+        "gridX": 16,
         "gridY": 10
     },
     {
         "class": "Button",
-        "gridX": 5,
-        "gridY": 9
-    },
-    {
-        "class": "Button",
-        "gridX": 5,
-        "gridY": 11
-    },
-    {
-        "class": "Button",
-        "gridX": 5,
-        "gridY": 12
-    },
-    {
-        "class": "Button",
-        "gridX": 4,
-        "gridY": 13
-    },
-    {
-        "class": "Button",
-        "gridX": 24,
-        "gridY": 2
-    },
-    {
-        "class": "Switch",
-        "gridX": 2,
-        "gridY": 10,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 2,
-        "gridY": 9,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 3,
-        "gridY": 9,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 3,
-        "gridY": 8,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 4,
-        "gridY": 8,
-        "id": 4
-    },
-    {
-        "class": "Switch",
-        "gridX": 4,
-        "gridY": 7,
-        "id": 4
-    },
-    {
-        "class": "Switch",
-        "gridX": 5,
-        "gridY": 7,
-        "id": 4
-    },
-    {
-        "class": "Switch",
-        "gridX": 6,
-        "gridY": 6,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 7,
-        "gridY": 6,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 8,
-        "gridY": 5,
-        "id": 3
-    },
-    {
-        "class": "Switch",
-        "gridX": 9,
-        "gridY": 3,
-        "id": 2
-    },
-    {
-        "class": "Switch",
-        "gridX": 9,
-        "gridY": 2,
-        "id": 3
-    },
-    {
-        "class": "Switch",
         "gridX": 10,
-        "gridY": 2,
-        "id": 4
+        "gridY": 5
     },
     {
-        "class": "Switch",
-        "gridX": 10,
-        "gridY": 1,
-        "id": 4
+        "class": "Button",
+        "gridX": 16,
+        "gridY": 5
     },
     {
-        "class": "Switch",
-        "gridX": 11,
-        "gridY": 1,
-        "id": 4
-    },
-    {
-        "class": "Switch",
-        "gridX": 12,
-        "gridY": 1,
-        "id": 4
+        "class": "Button",
+        "gridX": 13,
+        "gridY": 1
     },
     {
         "class": "Switch",
         "gridX": 13,
-        "gridY": 1,
-        "id": 4
+        "gridY": 4,
+        "id": 0
     },
     {
         "class": "Switch",
-        "gridX": 24,
-        "gridY": 3,
-        "id": 4
+        "gridX": 1,
+        "gridY": 14,
+        "id": 0
+    },
+    {
+        "class": "LaserCannon",
+        "gridX": 7,
+        "gridY": 1,
+        "orientation": "bottom",
+        "id": 0,
+        "normallyActive": true
+    },
+    {
+        "class": "LaserCannon",
+        "gridX": 19,
+        "gridY": 1,
+        "orientation": "bottom",
+        "id": 0,
+        "normallyActive": false
+    },
+    {
+        "class": "LaserCannon",
+        "gridX": 26,
+        "gridY": 14,
+        "orientation": "left",
+        "id": 0,
+        "normallyActive": false
+    },
+    {
+        "class": "LaserCannon",
+        "gridX": 26,
+        "gridY": 13,
+        "orientation": "left",
+        "id": 0,
+        "normallyActive": false
+    },
+    {
+        "class": "LaserCannon",
+        "gridX": 26,
+        "gridY": 2,
+        "orientation": "left",
+        "id": 0,
+        "normallyActive": true
+    },
+    {
+        "class": "LaserCannon",
+        "gridX": 26,
+        "gridY": 1,
+        "orientation": "left",
+        "id": 0,
+        "normallyActive": true
     }
 ]

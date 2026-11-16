@@ -657,14 +657,16 @@ class Laser {
     this.parent = parent
     this.width = gridSize
     this.height = gridSize
-    this.canCollide = true
+    this.canCollide = false
   }
 
   teken() {
+
     push()
       fill(255,0,255)
       rect(this.x,this.y,gridSize)
     pop()
+
   }
 
   getArray() {
@@ -721,10 +723,11 @@ class LaserCannon extends Block {
     let y = this.y+yStep
 
     let laser = new Laser(x,y,this,this.orientation)
-    lasers.splice(0,lasers.length)
-    while (validPosition(laser,[...objectArrays, [entrance], lasers],true)) {
+    while (validPosition(laser,null,true)) {
       lasers.push(laser)
-      laser = new Laser(x+xStep,y+yStep,this,this.orientation)
+      x += xStep
+      y += yStep
+      laser = new Laser(x,y,this,this.orientation)
     }
     laser = null
   }
@@ -957,6 +960,11 @@ class Plr {
     }
     for (let elec of elecs) {
       if (elec.x == this.targetX && elec.y == this.targetY) {
+        GAMEOVER = true
+      }
+    }
+    for (let obj of lasers) {
+      if (obj.x == this.targetX && obj.y == this.targetY) {
         GAMEOVER = true
       }
     }
@@ -1767,6 +1775,7 @@ function drawAll() {
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   translate(xOffset+widthOffset,yOffset+heightOffset)
+  lasers.splice(0,lasers.length)
   const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance], lasers];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
@@ -2264,7 +2273,7 @@ function loadLevel(lvl) {
       'Exit': Exit,
       'Button': Button,
       'Switch': Switch,
-
+      'LaserCannon': LaserCannon,
     };
 
     object = new classes[constructor](data.gridX*gridSize,data.gridY*gridSize);
