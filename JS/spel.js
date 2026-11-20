@@ -17,7 +17,7 @@ class Tile extends Block {
     this.spriteIndex = 0
   }
 
-  teken() {
+  update() {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -41,21 +41,34 @@ class Tile extends Block {
       }
     }
 
-    image(tileSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
-
     if (MODE == 1 && !(this.x == 0 || this.x == gridSize*(gridWith-1) 
         || this.y == 0 || this.y == gridSize*(gridHeight-1))) {
       for (let tileHighlight of tileHighlights) {
         if (this.x == tileHighlight.x && this.y == tileHighlight.y) {
           tileHighlight.parent = this
         }
+      }
+      if (!tileHighlights.some(tileHighlight => tileHighlight.parent == this)) {
+        let tileHighlight = new TileHighlight(this)
+        tileHighlights.push(tileHighlight)
+      }
+    }
+  }
+
+  teken() {
+    if (this.hidden) {
+      return
+    }
+
+    image(tileSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
+
+    if (MODE == 1) {
+      for (let tileHighlight of tileHighlights) {
         if (tileHighlight.parent == this) {
-          return tileHighlight.teken()
+          tileHighlight.teken()
+          return
         }
       }
-      let tileHighlight = new TileHighlight(this)
-      tileHighlights.push(tileHighlight)
-      tileHighlight.teken()
     }
   }
 
@@ -72,10 +85,12 @@ class Obstruction extends Block {
     this.spriteIndex = 0
   }
 
-  teken() {
+  update() {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
+  }
 
+  teken() {
     if (this.hidden) {
       return
     }
@@ -109,13 +124,16 @@ class Hazard extends Block {
     }
   }
 
-  teken() {
+  update() {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
+  }
 
+  teken() {
     if (this.hidden) {
       return
     }
+
     push();
     noStroke();
     let aantalKringen = 5
@@ -157,6 +175,7 @@ class Fuse extends Block {
     this.electrified = false
     this.origin;
     this.canCollide = false
+    this.shape
     if (fuses.length > 0) {
       this.origin = fuses[0].origin
     }
@@ -199,6 +218,16 @@ class Fuse extends Block {
   }
 
   teken() {
+    if (fuseAttachments.includes(this.origin)) {
+      image(wireSprites[this.shape],this.x,this.y,gridSize,gridSize)
+      const elec = elecs.find(elec => elec.parent == this)
+      if (elec) {
+        elec.teken()
+      }
+    }
+  }
+
+  update() {
     if (!fuseAttachments.includes(this.origin)) {
       fuses.splice(0, fuses.length)
       return
@@ -206,7 +235,21 @@ class Fuse extends Block {
 
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
+    this.updateElectricity()
+  }
 
+  updateElectricity() {
+    this.findShape()
+
+    if (this.electrified) {
+      if (!elecs.some(elec => elec.parent == this)) {
+        let elec = new Electricity(this,this.shape)
+        elecs.push(elec)
+      }
+    }
+  }
+
+  findShape() {
     const fuseIndex = fuses.indexOf(this)
 
     let previousFuse = null
@@ -280,23 +323,7 @@ class Fuse extends Block {
       shape = shape + "-charged"
     }
 
-    image(wireSprites[shape],this.x,this.y,gridSize,gridSize)
-
-    if (this.electrified) {
-
-      if (elecs.length > 0) {
-        for (let elec of elecs) {
-          if (elec.parent == this) {
-            elec.teken()
-            return
-          }
-        }
-      }
-    
-    let elec = new Electricity(this,shape)
-    elecs.push(elec)
-    elec.teken()
-    }
+    this.shape = shape
   }
 
 }
@@ -308,9 +335,10 @@ class FuseAttachment extends Block {
     this.canCollide = false
     this.electrified = false
     this.orientation = buildOrientation
+    this.shape
   }
 
-  teken() {
+  update() {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
 
@@ -318,6 +346,24 @@ class FuseAttachment extends Block {
       this.electrified = false
     }
 
+    this.findShape()
+    if (this.electrified && !elecs.some(elec => elec.parent == this)) {
+      let elec = new Electricity(this,this.shape)
+      elecs.push(elec)
+    }
+  }
+
+  teken() {
+    image(wireSprites[this.shape],this.x,this.y,gridSize,gridSize)
+    if (this.electrified) {
+      const elec = elecs.find(elec => elec.parent == this)
+      if (elec) {
+        elec.teken()
+      }
+    }
+  }
+
+  findShape() {
     let previousFuse = true
     let nextFuse = null
 
@@ -393,23 +439,7 @@ class FuseAttachment extends Block {
       shape = shape + "-charged"
     }
 
-    image(wireSprites[shape],this.x,this.y,gridSize,gridSize)
-
-    if (this.electrified) {
-
-      if (elecs.length > 0) {
-        for (let elec of elecs) {
-          if (elec.parent == this) {
-            elec.teken()
-            return
-          }
-        }
-      }
-    
-    let elec = new Electricity(this,shape)
-    elecs.push(elec)
-    elec.teken()
-    }
+    this.shape = shape
   }
 
   getArray() {
@@ -425,10 +455,12 @@ class Bomb extends Block {
     this.spriteIndex = 0
   }
 
-  teken() {
+  update() {
     this.x = snapToGrid(this.x)
     this.y = snapToGrid(this.y)
+  }
 
+  teken() {
     if (this.hidden) {
       return
     }
@@ -450,13 +482,15 @@ class Button extends Block {
     this.pressed = false
   }
 
-  teken() {
+  update() {
     if (this.pressed) {
       this.spriteIndex = 1
     } else {
       this.spriteIndex = 0
     }
+  }
 
+  teken() {
     image(buttonSprites[this.spriteIndex],this.x,this.y,this.width,this.width)
   }
 
@@ -482,7 +516,7 @@ class Door extends Block {
     this.id = buildId
   }
 
-  teken() {
+  update() {
     if (gameState.activeIds.includes(this.id)) {
       this.open = !this.normallyActive
     } else {
@@ -532,6 +566,10 @@ class Door extends Block {
       this.canCollide = true
     }
 
+    this.previousState = this.open
+  }
+
+  teken() {
     push()
       imageMode(CENTER)
       translate(this.x + this.width/2,this.y + this.height/2)
@@ -544,8 +582,6 @@ class Door extends Block {
       textSize(30)
       text(this.id,0,0)
     pop()
-
-    this.previousState = this.open
 
   }
 
@@ -568,7 +604,7 @@ class Exit extends Block {
     this.previousState = this.open
   }
 
-  teken() {
+  update() {
     let allButtonsPressed = buttons.every(obj => obj.pressed == true)
     if (!LEVELCOMPLETE) {
       if (allButtonsPressed) {
@@ -604,14 +640,16 @@ class Exit extends Block {
       this.canCollide = true
     }
 
+    this.previousState = this.open
+  }
+
+  teken() {
     push()
       imageMode(CENTER)
       translate(this.x + this.width/2,this.y + this.height/2)
       rotate(this.rotation)
       image(exitSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
     pop()
-
-    this.previousState = this.open
 
   }
 
@@ -664,7 +702,7 @@ class Laser {
   teken() {
 
     push()
-      fill(255,0,255)
+      fill(255,0,0,0.6)
       if (this.orientation == "top" || this.orientation == "bottom") {
         rect(this.x+gridSize/4,this.y,gridSize/2,gridSize)
       } else {
@@ -685,28 +723,50 @@ class LaserCannon extends Block {
     this.layer = 2
     this.normallyActive = buildNormallyActive
     this.orientation = buildOrientation
+    this.rotations = {
+      "top": 0,
+      "right": 90,
+      "bottom": 180,
+      "left": 270,
+    }
     this.active = this.normallyActive
     this.id = buildId
   }
 
-  teken() {
+  update() {
     if (gameState.activeIds.includes(this.id)) {
       this.active = !this.normallyActive
     } else {
       this.active = this.normallyActive
     }
+  }
 
+  teken() {
     push()
+      rectMode(CENTER)
+      textAlign(CENTER)
+      translate(this.x+gridSize/2,this.y+gridSize/2)
+      rotate(this.rotations[this.orientation])
       fill(50,50,50)
       if (this.active) {
         fill(200,150,0)
       }
-      rect(this.x+gridSize*0.125,this.y+gridSize*0.125,gridSize*0.75,gridSize*0.75)
+      rect(0,0,gridSize)
+      fill(255,255,255)
+      textAlign(CENTER,CENTER)
+      textStyle(BOLD)
+      textSize(30)
+      text(this.id,0,-3)
     pop()
 
   }
 
   updateBeam() {
+    if (gameState.activeIds.includes(this.id)) {
+      this.active = !this.normallyActive
+    } else {
+      this.active = this.normallyActive
+    }
     if (!this.active) {
       return
     }
@@ -777,8 +837,7 @@ class Entrance {
     this.ticksUntilClose = this.time*targetFrameRate
   }
 
-  teken() {
-
+  update() {
     if (this.ticksUntilClose == 0) {
       this.ticksUntilClose = this.time*targetFrameRate
       this.open = false
@@ -807,15 +866,17 @@ class Entrance {
       }
     }
 
+    this.previousState = this.open
+    this.ticksUntilClose--
+  }
+
+  teken() {
     push()
       imageMode(CENTER)
       translate(this.x + this.width/2,this.y + this.height/2)
       rotate(this.rotation)
       image(entranceSprites[this.spriteIndex],0,0,gridSize,gridSize*3)
     pop()
-
-    this.previousState = this.open
-    this.ticksUntilClose--
 
   }
 }
@@ -1007,7 +1068,7 @@ class Flashbang {
     this.time = 2
   }
 
-  teken() {
+  update() {
     if (flashbangs.length > 1) {
       flashbangs.splice(0,flashbangs.length-1)
     }
@@ -1021,14 +1082,16 @@ class Flashbang {
     let progress = this.tick / lastTick;
 
     this.transparency = Math.pow(progress, 2);
+    this.tick++;
+    return true
+  }
 
+  teken() {
     push();
     fill(255, 255, 255, (1 - this.transparency));
     noStroke();
     rect(0, 0, width, height);
     pop();
-
-    this.tick++;
   }
 
   getArray() {
@@ -1045,7 +1108,7 @@ class Countdown {
     this.number = number
   }
 
-  teken() {
+  update() {
     if (this.transparency >= 1) {
       countdowns.splice(countdowns.indexOf(this),1)
     }
@@ -1054,14 +1117,17 @@ class Countdown {
       countdowns.splice(0,countdowns.length-1)
     }
 
+    this.size += 5*gridScale
+    this.transparency += 0.04
+  }
+
+  teken() {
     push()
     textAlign(CENTER,CENTER)
     fill(255,255,255,1-this.transparency)
     textSize(this.size)
     text(this.number,this.x,this.y)
     pop()
-    this.size += 5*gridScale
-    this.transparency += 0.04
   }
 
   getArray() {
@@ -1080,6 +1146,16 @@ class SmokeParticle {
     this.tick = 0
     this.size = gridSize
     this.lastTick = this.time * targetFrameRate
+  }
+
+  update() {
+    if (this.tick >= this.lastTick) {
+      smokeParticles.splice(smokeParticles.indexOf(this), 1)
+      return
+    }
+
+    this.tick++
+    this.y -= gridSize/20
   }
 
   teken() {
@@ -1109,14 +1185,6 @@ class SmokeParticle {
     rect(0,0,size);
     pop();
 
-    this.tick++;
-    this.y -= gridSize/20;
-  }
-
-  check() {
-    if (this.tick >= this.lastTick) {
-      smokeParticles.splice(smokeParticles.indexOf(this), 1);
-    }
   }
 
   getArray() {
@@ -1136,7 +1204,7 @@ class ElecOrb {
     this.damping = 5
   }
 
-  teken() {
+  update() {
     if (LEVELCOMPLETE) {
       this.damping = 2
     } else {
@@ -1150,12 +1218,6 @@ class ElecOrb {
     this.x += (this.targetX-this.x)/this.damping;
     this.y += (this.targetY-this.y)/this.damping;
 
-    image(elecOrbSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
-
-    for (let bomb of bombs) {
-      bomb.teken()
-    }
-
     if (frameCount % 6 == 0) {
       if (this.spriteIndex == elecOrbSprites.length-1) {
         this.spriteIndex = 0
@@ -1165,6 +1227,10 @@ class ElecOrb {
     }
   }
 
+  teken() {
+    image(elecOrbSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
+  }
+
   nextFuse() {
     if (!this.currentFuse) {
       fuseAttachments[0].electrified = true
@@ -1172,7 +1238,7 @@ class ElecOrb {
       return
     }
     this.currentFuse.electrified = true
-    this.currentFuse.teken()
+    this.currentFuse.updateElectricity()
     this.currentFuse = fuses[fuses.indexOf(this.currentFuse)+1]
     this.targetX = this.currentFuse.x
     this.targetY = this.currentFuse.y
@@ -1206,7 +1272,7 @@ class Electricity {
     }
   }
 
-  teken() {
+  update() {
     if (this.tick % 5 == 0) {
       if (this.spriteIndex == 3) {
         this.spriteIndex = 0
@@ -1219,7 +1285,10 @@ class Electricity {
       this.spriteIndex = elecs[0].spriteIndex
     }
 
+    this.tick++
+  }
 
+  teken() {
     let shape
     shape = String(this.spriteIndex)
     if (this.shape !== 'vertical-charged' && this.shape !== 'horizontal-charged') {
@@ -1232,8 +1301,6 @@ class Electricity {
       rotate(this.rotation)
       image(electricitySprites[shape],0,0,gridSize,gridSize)
     pop()
-
-    this.tick++
   }
 
   getArray() {
@@ -1250,7 +1317,7 @@ class TileHighlight {
     this.spriteIndex = 0
   }
 
-  teken() {
+  update() {
     if (!this.parent) {
       tileHighlights.splice(tileHighlights.indexOf(this),1)
     }
@@ -1267,9 +1334,11 @@ class TileHighlight {
       this.spriteIndex = tileHighlights[0].spriteIndex
     }
 
-    image(tileHighlightSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
-    
     this.tick++
+  }
+
+  teken() {
+    image(tileHighlightSprites[this.spriteIndex],this.x,this.y,gridSize,gridSize)
   }
 
   getArray() {
@@ -1327,6 +1396,10 @@ class TextButton {
 
   }
 
+  update() {
+    this.state()
+  }
+
   hoverCheck() { 
     if (mouseX >= this.x && mouseX <= this.x + this.width && 
         mouseY >= this.y && mouseY <= this.y + this.height) { 
@@ -1346,11 +1419,14 @@ class NextLevelButton extends TextButton {
     super(x,y,gridSize*6,gridSize*3)
   }
 
-  teken() {
+  update() {
     this.clickable = levels[level.currentLevel+1]
     this.hidden = !LEVELCOMPLETE
 
-    super.state();
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1369,11 +1445,14 @@ class StartButton extends TextButton {
     this.clickable = false
   }
 
-  teken() {
+  update() {
     this.clickable = bombConnected
     this.hidden = (MODE !== 1)
 
-    super.state()
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1390,10 +1469,13 @@ class MenuStartButton extends TextButton {
     super(x,y,gridSize*6*1.5,gridSize*2*1.5)
   }
 
-  teken() {
+  update() {
     this.hidden = (MODE !== 0)
 
-    super.state()
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1411,10 +1493,13 @@ class LevelSelectButton extends TextButton {
     super(x,y,gridSize*6*1.5,gridSize*2*1.5)
   }
 
-  teken() {
+  update() {
     this.hidden = (MODE !== 0)
 
-    super.state()
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1431,10 +1516,13 @@ class MenuButton extends TextButton {
     super(x,y,gridSize*6,gridSize*2)
   }
 
-  teken() {
+  update() {
     this.hidden = (MODE == 0 || MODE == "LEVELSELECT")
 
-    super.state()
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1451,10 +1539,13 @@ class BackButton extends TextButton {
     super(x,y,gridSize*6,gridSize*2)
   }
 
-  teken() {
+  update() {
     this.hidden = (MODE !== "LEVELSELECT")
 
-    super.state()
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1472,10 +1563,13 @@ class LevelButton extends TextButton {
     this.level = lvl
   }
 
-  teken() {
+  update() {
     this.hidden = (MODE !== "LEVELSELECT")
 
-    super.state()
+    super.update()
+  }
+
+  teken() {
 
     if (this.hidden) return
 
@@ -1486,6 +1580,58 @@ class LevelButton extends TextButton {
     loadLevel(this.level)
   }
 }
+
+
+class Timer {
+  constructor() {
+    this.elapsedTime = 0
+    this.startedAt = null
+    this.displayTime = 0
+  }
+
+  get running() {
+    return this.startedAt !== null
+  }
+
+  resume() {
+    if (!this.running) {
+      this.startedAt = millis()
+    }
+  }
+
+  pause() {
+    if (this.running) {
+      this.elapsedTime += millis() - this.startedAt
+      this.startedAt = null
+    }
+  }
+
+  reset() {
+    this.elapsedTime = 0
+    this.startedAt = millis()
+  }
+
+  update() {
+    let elapsed = this.elapsedTime
+
+    if (this.running) {
+      elapsed += millis() - this.startedAt
+    }
+
+    this.displayTime = floor(elapsed/10)/100
+  }
+
+  teken() {
+    this.update()
+    push()
+    fill(255)
+    textSize(24)
+    textAlign(LEFT, TOP)
+    text(this.displayTime, 10, 2)
+    pop()
+  }
+}
+
 
 const targetFrameRate = 60
 
@@ -1700,7 +1846,7 @@ function setup() {
   textSize(40);
   noStroke();
   colorMode(RGB,255,255,255,1)
-  frameRate(60)
+  frameRate(targetFrameRate)
   noSmooth();
   angleMode(DEGREES)
 
@@ -1711,6 +1857,7 @@ function setup() {
 
   plr = new Plr(0,0)
   entrance = new Entrance()
+  timer = new Timer()
   nextLevelButton = new NextLevelButton(width/2,height/2+80*gridScale)
   startButton = new StartButton(width-gridSize*8,height-gridSize*2.5)
   menuStartButton = new MenuStartButton(width/2-gridSize*4*1.5,height/2+gridSize*2*1.5)
@@ -1738,13 +1885,8 @@ function setup() {
 }
 
 let fps = 0
-let fpsInterval = 0
 function draw() {
-  fpsInterval += frameRate()
-  if (frameCount % 30 == 0) {
-    fps = round(fpsInterval/30)
-    fpsInterval = 0
-  }
+  fps = round(frameRate())
 
   if (MODE == 0) {
     menu()
@@ -1755,6 +1897,7 @@ function draw() {
   }
 
   for (let textButton of textButtons) {
+    textButton.update()
     textButton.teken()
   }
 
@@ -1772,22 +1915,32 @@ function menu() {
     smokeParticles.push(smokeParticle)
   }
 
+  for (let particle of [...smokeParticles]) {
+    particle.update()
+  }
+
   for (let particle of smokeParticles) {
     particle.teken()
   }
 
-  for (let particle of smokeParticles) {
-    particle.check()
-  }
-
+  let xOffset = 0
+  let yOffset = 0
   push()
     fill(0,0,0)
     rect(0,0,width,75*gridScale)
     rect(0,height,width,-75*gridScale)
     textAlign(CENTER,CENTER)
-    textSize(150*gridScale)
     textStyle(BOLD)
-    text("MENU SCREEN",width/2,250*gridScale)
+    for (var a=0;a<10;a++) {
+      fill(0,0,0,0.1)
+      print(a)
+      print(1/10*(a+1))
+      textSize(125*gridScale)
+      text("[ESCAPE PROTOCOL]",width/2+a,250*gridScale+a)
+    }
+    fill(0,0,0)
+    textSize(125*gridScale)
+    text("[ESCAPE PROTOCOL]",width/2,250*gridScale)
   pop()
 
 }
@@ -1797,11 +1950,29 @@ function drawAll() {
   let xOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   translate(xOffset,yOffset)
+
+  const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance], lasers];
+  for (const objectArray of allObjectArrays) {
+    for (const obj of [...objectArray]) {
+      if (obj.update) {
+        obj.update()
+      }
+    }
+  }
+  for (let elec of [...elecs]) {
+    elec.update()
+  }
+  for (let tileHighlight of [...tileHighlights]) {
+    tileHighlight.update()
+  }
+  for (let smokeParticle of [...smokeParticles]) {
+    smokeParticle.update()
+  }
+
   lasers.splice(0,lasers.length)
   for (let obj of laserCannons) {
     obj.updateBeam()
   }
-  const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance], lasers];
 
   if ((MODE == 4 || MODE == 3) && keyIsDown(32)) {
     let layer
@@ -1838,9 +2009,6 @@ function drawAll() {
 
   for (let smokeParticle of smokeParticles) {
     smokeParticle.teken()
-  }
-  for (let smokeParticle of smokeParticles) {
-    smokeParticle.check()
   }
   pop()
 }
@@ -1962,11 +2130,16 @@ function gameLoop() {
   pop();
 
   if (countdowns.length > 0) {
-    countdowns[countdowns.length-1].teken()
+    const countdown = countdowns[countdowns.length-1]
+    countdown.update()
+    countdown.teken()
   }
 
   if (flashbangs.length > 0) {
-    flashbangs[flashbangs.length-1].teken()
+    const flashbang = flashbangs[flashbangs.length-1]
+    if (flashbang.update()) {
+      flashbang.teken()
+    }
   }
 
   push()
@@ -1981,6 +2154,8 @@ function gameLoop() {
     textSize(20*gridScale)
     text("FPS: " + fps,width-100*gridScale,height-10*gridScale)
   pop()
+
+  timer.teken()
 
   if (LEVELCOMPLETE) {
     push()
@@ -2037,11 +2212,10 @@ function tekenLoop() {
   plr.hidden = true
   plr.anchored = true
 
-  bombConnected = false
-  for (let bomb of bombs) {
-    if (fuses.length > 0 && fuses[fuses.length-1].x == bomb.x && fuses[fuses.length-1].y == bomb.y) {
-      bombConnected = true
-    }
+  if (fuses.length > 0 && bombs.length > 0 && fuses[fuses.length-1].x == bombs[0].x && fuses[fuses.length-1].y == bombs[0].y) {
+    bombConnected = true
+  } else {
+    bombConnected = false
   }
 
   const cellX = snapToGrid(mouseX-widthOffset)
@@ -2098,6 +2272,12 @@ function tekenLoop() {
   else if (fuses.length == 0 && fuse.validPosition()) {
     fill(255,255,255,0.25)
     ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
+  }
+
+  if (fuses.length > 0 && bombs.length > 0 && fuses[fuses.length-1].x == bombs[0].x && fuses[fuses.length-1].y == bombs[0].y) {
+    bombConnected = true
+  } else {
+    bombConnected = false
   }
 }
 
@@ -2323,6 +2503,8 @@ function loadLevel(lvl) {
     object.getArray().push(object)
   }
   
+  timer.reset()
+  timer.resume()
   SetMode(1)
 }
 
@@ -2462,7 +2644,7 @@ function SetMode(mode) {
 
 
   if (mode == 1) {
-
+    timer.resume()
   }
   if (mode == 2) {
     let elecOrb = new ElecOrb(fuseAttachments[0].x,fuseAttachments[0].y)
@@ -2473,10 +2655,10 @@ function SetMode(mode) {
     plr.spawn()
   }
   if (mode == 3) {
-
+    timer.pause()
   }
   if (mode == 4) {
-
+    timer.pause()
   }
 
   MODE = mode
@@ -2590,7 +2772,7 @@ function keyPressed(event) {
       plr.targetY += -gridSize
     }
     if (key == 'a' || keyCode == '37') {
-      plr.interact()
+      plr.facing = 'left'
       plr.targetX += -gridSize
     }
     if (key == 's' || keyCode == '40') {
