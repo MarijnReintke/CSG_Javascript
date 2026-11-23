@@ -698,6 +698,14 @@ class Sensor extends Block {
   }
 
   teken() {
+    for (let obj of [...elecOrbs,...elecs]) {
+      if (objectOverlapsCell(obj,this.x,this.y)) {
+        this.activated = true
+        break
+      } else {
+        this.activated = false
+      }
+    }
     push()
       if (this.activated) {
         fill(210,210,100)
@@ -1275,7 +1283,6 @@ class ElecOrb {
     this.targetY = this.currentFuse.y
     for (let obj of sensors) {
       if (obj.x == this.targetX && obj.y == this.targetY) {
-        obj.activated = true
         if (!gameState.activeIds.includes(obj.id)) {
           gameState.activeIds.push(obj.id)
         } else {
@@ -1704,9 +1711,10 @@ var level = {
   activeIds: [],
 }
 var gameState = {
-  activeIds: [...level.activeIds],
+  activeIds: [],
   movesBeforeInterval: level.wireInterval,
 }
+var gameStates = []
 var currentLayer = 2
 var maxLayer = 3
 var shakeIntensity = 0
@@ -2422,11 +2430,23 @@ function deleteLoop() {
 }
 
 function objectOverlapsCell(obj, cellX, cellY) {
-  for (let a = 0; a < obj.height / gridSize; a++) {
-    let objectY = obj.y + a*gridSize;
+  let objHeight = obj.height ?? gridSize
+  let objWidth = obj.width ?? gridSize
+  for (let a = 0; a < objHeight / gridSize; a++) {
+    let objectY
+    if (obj.targetY !== undefined) {
+      objectY = obj.targetY + a*gridSize;
+    } else {
+      objectY = obj.y + a*gridSize;
+    }
 
-    for (let b = 0; b < obj.width / gridSize; b++) {
-      let objectX = obj.x + b*gridSize;
+    for (let b = 0; b < objWidth / gridSize; b++) {
+      let objectX
+      if (obj.targetX !== undefined) {
+        objectX = obj.targetX + b*gridSize;
+      } else {
+        objectX = obj.x + b*gridSize;
+      }
 
       if (objectX == cellX && objectY == cellY) {
         return true;
@@ -2618,6 +2638,27 @@ function validPosition(obj,objArrays,collisionChecks) {
   return true;
 }
 
+function saveGameState() {
+  gameStates.push({
+    activeIds: [...gameState.activeIds],
+    movesBeforeInterval: gameState.movesBeforeInterval,
+    playerPos: {x: plr.targetX, y: plr.targetY},
+    playerFacing: plr.facing,
+    fuseStates: fuses.map(fuse => ({electrified: fuse.electrified})),
+    fuseAttachmentStates: fuseAttachments.map(fuse => ({electrified: fuse.electrified})),
+    bombStates: bombs.map(bomb => ({spriteIndex: bomb.spriteIndex})),
+    buttonStates: buttons.map(button => ({pressed: button.pressed})),
+    elecOrbStates: elecOrbs.map(orb => ({
+      currentFuseIndex: fuses.indexOf(orb.currentFuse),
+      targetX: orb.targetX,
+      targetY: orb.targetY,
+    })),
+    moves,
+    gameOver: GAMEOVER,
+    levelComplete: LEVELCOMPLETE,
+  })
+}
+
 
 function tick() {
   if (moves <= 0 || fuses.length == 0) {
@@ -2635,6 +2676,8 @@ function tick() {
   }
 
   moves--
+
+  saveGameState()
 
   if (moves > 0 && moves <= 5) {
     let countdown = new Countdown(moves)
@@ -2712,6 +2755,8 @@ function SetMode(mode) {
     gameState.movesBeforeInterval = level.wireInterval
     moves = fuses.length*level.wireInterval
     plr.spawn()
+    gameStates.splice(0,gameStates.length)
+    saveGameState()
   }
   if (mode == 3) {
     timer.pause()
@@ -2736,6 +2781,57 @@ function changeOrientation(value) {
     value = "top"
   }
   return value
+}
+
+function undo() {
+  if (MODE !== 2 || gameStates.length < 2) {
+    return
+  }
+  gameStates.pop()
+  const previousState = gameStates[gameStates.length-1]
+  gameState.activeIds = [...previousState.activeIds]
+  gameState.movesBeforeInterval = previousState.movesBeforeInterval
+  previousState.fuseStates.forEach((state, index) => {
+    fuses[index].electrified = state.electrified
+  })
+  previousState.fuseAttachmentStates.forEach((state, index) => {
+    fuseAttachments[index].electrified = state.electrified
+  })
+  previousState.bombStates.forEach((state, index) => {
+    bombs[index].spriteIndex = state.spriteIndex
+  })
+  previousState.buttonStates.forEach((state, index) => {
+    buttons[index].pressed = state.pressed
+  })
+  previousState.elecOrbStates.forEach((state, index) => {
+    let orb = elecOrbs[index]
+    if (!orb) {
+      orb = new ElecOrb(bombs[0].x,bombs[0].y)
+      elecOrbs.push(orb)
+    }
+    orb.currentFuse = state.currentFuseIndex < 0 ? undefined : fuses[state.currentFuseIndex]
+    orb.targetX = state.targetX
+    orb.targetY = state.targetY
+  })
+  elecs.splice(0,elecs.length)
+  for (let fuse of [...fuseAttachments,...fuses]) {
+    if (fuse.electrified) {
+      fuse.findShape()
+      elecs.push(new Electricity(fuse,fuse.shape))
+    }
+  }
+  lasers.splice(0,lasers.length)
+  for (let laserCannon of laserCannons) {
+    laserCannon.updateBeam()
+  }
+  moves = previousState.moves
+  GAMEOVER = previousState.gameOver
+  LEVELCOMPLETE = previousState.levelComplete
+  plr.previousX = previousState.playerPos.x
+  plr.previousY = previousState.playerPos.y
+  plr.targetX = previousState.playerPos.x
+  plr.targetY = previousState.playerPos.y
+  plr.facing = previousState.playerFacing
 }
 
 function keyPressed(event) {
@@ -2813,6 +2909,15 @@ function keyPressed(event) {
         buildNormallyActive = true
       }
     }
+  }
+
+  if (key == 'z' && MODE == 2) {
+    if (keyCooldown > 0) {
+      return
+    }
+    keyCooldown = keyBaseCooldown
+    undo()
+    return
   }
 
   if (keyCooldown > 0 || plr.anchored || plr.hidden) {
