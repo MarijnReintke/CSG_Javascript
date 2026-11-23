@@ -1876,6 +1876,8 @@ function preload() {
     "top-end-charged": loadImage('JS/spelAssets/sprites/wire/top-end-charged.png'),
     "bottom-end-charged": loadImage('JS/spelAssets/sprites/wire/bottom-end-charged.png'),
   }
+
+  arrowPNG = loadImage('JS/spelAssets/arrow.png')
 }
 
 function setup() {
@@ -2043,8 +2045,13 @@ function drawAll() {
   }
 
   if (MODE == 1 && fuses.length == 0 && fuseAttachments.length > 0) {
-    let yOffset = sin(frameCount)*5
-
+    let yOffset = sin(frameCount*2)*5
+    push()
+      imageMode(CENTER)
+      translate(fuseAttachments[0].x+gridSize/2,fuseAttachments[0].y+yOffset-gridSize)
+      rotate(-90)
+      image(arrowPNG,0,0,gridSize,gridSize)
+    pop()
   }
 
   plr.teken()
