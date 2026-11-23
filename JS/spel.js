@@ -331,7 +331,7 @@ class Fuse extends Block {
 class FuseAttachment extends Block {
   constructor(x,y) {
     super(x,y)
-    this.layer = 2
+    this.layer = 1
     this.canCollide = false
     this.electrified = false
     this.orientation = buildOrientation
@@ -684,6 +684,36 @@ class Switch extends Block {
 
   getArray() {
     return switches
+  }
+}
+
+class Sensor extends Block {
+  constructor(x,y) {
+    super(x,y)
+    this.layer = 1
+    this.id = buildId
+    this.canCollide = false
+    this.activated = false
+  }
+
+  teken() {
+    push()
+      if (this.activated) {
+        fill(210,210,100)
+      } else {
+        fill(210,210,210)
+      }
+      ellipse(this.x+gridSize/2,this.y+gridSize/2,gridSize)
+      fill(0,0,0)
+      textAlign(CENTER,CENTER)
+      textStyle(BOLD)
+      textSize(30)
+      text(this.id,this.x+this.width/2,this.y+this.height/2+1)
+    pop()
+  }
+
+  getArray() {
+    return sensors
   }
 }
 
@@ -1242,6 +1272,16 @@ class ElecOrb {
     this.currentFuse = fuses[fuses.indexOf(this.currentFuse)+1]
     this.targetX = this.currentFuse.x
     this.targetY = this.currentFuse.y
+    for (let obj of sensors) {
+      if (obj.x == this.targetX && obj.y == this.targetY) {
+        obj.activated = true
+        if (!gameState.activeIds.includes(obj.id)) {
+          gameState.activeIds.push(obj.id)
+        } else {
+          gameState.activeIds.splice(gameState.activeIds.indexOf(obj.id),1)
+        }
+      }
+    }
   }
 
   getArray() {
@@ -1693,7 +1733,8 @@ var textButtons = []
 var switches = []
 var laserCannons = []
 var lasers = []
-const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button, Switch, LaserCannon]
+var sensors = []
+const objects = [Tile, Obstruction, Hazard, Bomb, FuseAttachment, Door, Exit, Button, Switch, LaserCannon, Sensor]
 const objectArrays = []
 
 var debug = false
@@ -1904,11 +1945,11 @@ function draw() {
 }
 
 function levelSelect() {
-  background(160,150,170)
+  background(100,90,110)
 }
 
 function menu() {
-  background(160,150,170)
+  background(100,90,110)
 
   for (var a=0;a<3;a++) {
     let smokeParticle = new SmokeParticle(random(0,width),height-75*gridScale)
@@ -1924,21 +1965,19 @@ function menu() {
   }
 
   let xOffset = 0
-  let yOffset = 0
+  let yOffset = sin(frameCount)*10
   push()
     fill(0,0,0)
     rect(0,0,width,75*gridScale)
     rect(0,height,width,-75*gridScale)
+    translate(xOffset,yOffset)
     textAlign(CENTER,CENTER)
     textStyle(BOLD)
-    for (var a=0;a<10;a++) {
-      fill(0,0,0,0.1)
-      print(a)
-      print(1/10*(a+1))
-      textSize(125*gridScale)
-      text("[ESCAPE PROTOCOL]",width/2+a,250*gridScale+a)
-    }
-    fill(0,0,0)
+    textSize(125*gridScale)
+    text("[ESCAPE PROTOCOL]",width/2+7,250*gridScale+7)
+    stroke(0,0,0)
+    strokeWeight(7)
+    fill(255,255,255)
     textSize(125*gridScale)
     text("[ESCAPE PROTOCOL]",width/2,250*gridScale)
   pop()
@@ -1951,7 +1990,7 @@ function drawAll() {
   let yOffset = floor(random(-shakeIntensity,shakeIntensity+1))*gridScale
   translate(xOffset,yOffset)
 
-  const allObjectArrays = [...objectArrays, fuses, elecOrbs, [entrance], lasers];
+  const allObjectArrays = [fuses, elecOrbs, ...objectArrays, [entrance], lasers];
   for (const objectArray of allObjectArrays) {
     for (const obj of [...objectArray]) {
       if (obj.update) {
@@ -2003,6 +2042,11 @@ function drawAll() {
     }
   }
 
+  if (MODE == 1 && fuses.length == 0 && fuseAttachments.length > 0) {
+    let yOffset = sin(frameCount)*5
+
+  }
+
   plr.teken()
   fill(5,10,15)
   rect(gridSize*gridWith,0,gridSize*2,gridSize*gridHeight)
@@ -2050,7 +2094,7 @@ function gameLoop() {
 
   push();
   let gridScale = gridSize/40
-  translate(0, heightOffset-5*gridScale);
+  translate(0, heightOffset-5*gridScale)
 
   gridScale = gridSize/40*1.25
   if (MODE == 2) {
@@ -2127,35 +2171,13 @@ function gameLoop() {
     text("Layer " + currentLayer + ' [UP/DOWN]', 15*gridScale, gridHeight*gridSize + 125*gridScale);
   }
 
-  pop();
-
-  if (countdowns.length > 0) {
-    const countdown = countdowns[countdowns.length-1]
-    countdown.update()
-    countdown.teken()
-  }
-
-  if (flashbangs.length > 0) {
-    const flashbang = flashbangs[flashbangs.length-1]
-    if (flashbang.update()) {
-      flashbang.teken()
-    }
-  }
-
+  translate(0,-(heightOffset-5*gridScale))
   push()
     fill(255,255,255)
     textSize(50*gridScale)
     textStyle(BOLD)
     text(level.currentLevel + " - " + level.name,10*gridScale,55*gridScale)
   pop()
-
-  push()
-    fill(255,255,255)
-    textSize(20*gridScale)
-    text("FPS: " + fps,width-100*gridScale,height-10*gridScale)
-  pop()
-
-  timer.teken()
 
   if (LEVELCOMPLETE) {
     push()
@@ -2179,6 +2201,29 @@ function gameLoop() {
     text("Press [R] to Restart",width/2,height/2+15*gridScale)
     pop()
   }
+
+  pop();
+
+  if (countdowns.length > 0) {
+    const countdown = countdowns[countdowns.length-1]
+    countdown.update()
+    countdown.teken()
+  }
+
+  if (flashbangs.length > 0) {
+    const flashbang = flashbangs[flashbangs.length-1]
+    if (flashbang.update()) {
+      flashbang.teken()
+    }
+  }
+
+  push()
+    fill(255,255,255)
+    textSize(20*gridScale)
+    text("FPS: " + fps,width-100*gridScale,height-10*gridScale)
+  pop()
+
+  timer.teken()
 }
 
 
@@ -2487,6 +2532,7 @@ function loadLevel(lvl) {
       'Button': Button,
       'Switch': Switch,
       'LaserCannon': LaserCannon,
+      'Sensor': Sensor
     };
 
     object = new classes[constructor](data.gridX*gridSize,data.gridY*gridSize);
@@ -2543,7 +2589,9 @@ function validPosition(obj,objArrays,collisionChecks) {
   for (const objectArray of allObjectArrays) {
     for (const otherObj of objectArray) {
 
-      if (otherObj.layer !== obj.layer) {
+      if (otherObj.layer !== obj.layer && obj.layer !== 1) {
+        continue
+      } else if (obj.layer == 1 && otherObj.layer == 0) {
         continue
       }
       if (collisionChecks && !otherObj.canCollide) {
@@ -2626,6 +2674,9 @@ function SetMode(mode) {
   elecOrbs.splice(0,elecOrbs.length)
   elecs.splice(0,elecs.length)
   tileHighlights.splice(0,tileHighlights.length)
+  for (let obj of sensors) {
+    obj.activated = false
+  }
   bombConnected = false
   LEVELCOMPLETE = false
   GAMEOVER = false
