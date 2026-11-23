@@ -354,6 +354,7 @@ class FuseAttachment extends Block {
   }
 
   teken() {
+    this.findShape()
     image(wireSprites[this.shape],this.x,this.y,gridSize,gridSize)
     if (this.electrified) {
       const elec = elecs.find(elec => elec.parent == this)
