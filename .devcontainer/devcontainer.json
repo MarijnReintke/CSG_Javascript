@@ -1,38 +1,23 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+
 {
-	"name": "Node.js",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/javascript-node:5-24-trixie",
+    "name": "Node.js",
+    "image": "mcr.microsoft.com/devcontainers/javascript-node:5-24-trixie",
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+    "forwardPorts": [8080],
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+    "portsAttributes": {
+        "8080": {
+            "label": "Website",
+            "onAutoForward": "openBrowser"
+        }
+    },
 
-	
-	"forwardPorts": [8080],
-	"portsAttributes": {
-  		"8080": {
-    	"label": "Website",
-    	"onAutoForward": "openBrowser"
-  		}
-	},
-	
-	"postStartCommand": "bash -c 'if ! curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then nohup python3 -m http.server 8080 --bind 0.0.0.0 >/tmp/website-server.log 2>&1 </dev/null & sleep 1; fi; curl -fsS http://127.0.0.1:8080/ >/dev/null || { cat /tmp/website-server.log; exit 1; }'",
+    "postStartCommand": "bash .devcontainer/start-server.sh",
 
-
-
-	"otherPortsAttributes": {
-  		"onAutoForward": "ignore"
-	}
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+    "otherPortsAttributes": {
+        "onAutoForward": "ignore"
+    }
 }
+
