@@ -344,6 +344,8 @@ class FuseAttachment extends Block {
 
     if (MODE !== 2) {
       this.electrified = false
+    } else {
+      this.electrified = true
     }
 
     this.findShape()
@@ -1274,6 +1276,8 @@ class ElecOrb {
     if (!this.currentFuse) {
       fuseAttachments[0].electrified = true
       this.currentFuse = fuses[0]
+      this.targetX = this.currentFuse.x
+      this.targetY = this.currentFuse.y
     }
     else {
       this.currentFuse.electrified = true
@@ -1303,7 +1307,7 @@ class Electricity {
     this.parent = parent
     this.x = parent.x
     this.y = parent.y
-    this.tick = 0
+    this.totalFrames = 4
     this.spriteIndex = 0
     this.parent
     this.rotation = 0
@@ -1322,19 +1326,7 @@ class Electricity {
   }
 
   update() {
-    if (this.tick % 5 == 0) {
-      if (this.spriteIndex == 3) {
-        this.spriteIndex = 0
-      } else {
-        this.spriteIndex++
-      }
-    }
-
-    if (elecs.length > 1) {
-      this.spriteIndex = elecs[0].spriteIndex
-    }
-
-    this.tick++
+    this.spriteIndex = floor(frameCount/5) % this.totalFrames
   }
 
   teken() {
@@ -1562,7 +1554,7 @@ class LevelSelectButton extends TextButton {
 
 class MenuButton extends TextButton {
   constructor(x,y) {
-    super(x,y,gridSize*6,gridSize*2)
+    super(x,y,gridSize*6,gridSize*1.5)
   }
 
   update() {
@@ -1575,7 +1567,7 @@ class MenuButton extends TextButton {
 
     if (this.hidden) return
 
-    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+    image(menuButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
   }
 
   action() {
@@ -1598,7 +1590,7 @@ class BackButton extends TextButton {
 
     if (this.hidden) return
 
-    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+    image(backButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
   }
 
   action() {
@@ -1764,6 +1756,8 @@ var tileSprites = []
 var obstructionSprites = []
 var menuStartButtonSprites = []
 var levelSelectButtonSprites = []
+var backButtonSprites = []
+var menuButtonSprites = []
 var wireSprites
 
 function preload() {
@@ -1851,6 +1845,18 @@ function preload() {
   for (var a=0;a<children;a++) {
     var png = loadImage('JS/spelAssets/sprites/obstruction/' + a + '.png')
     obstructionSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/backButton/' + a + '.png')
+    backButtonSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/menuButton/' + a + '.png')
+    menuButtonSprites.push(png)
   }
 
   electricitySprites = {
@@ -1957,11 +1963,11 @@ function draw() {
 }
 
 function levelSelect() {
-  background(100,90,110)
+  background(57, 52, 72)
 }
 
 function menu() {
-  background(100,90,110)
+  background(57, 52, 72)
 
   for (var a=0;a<3;a++) {
     let smokeParticle = new SmokeParticle(random(0,width),height-75*gridScale)
@@ -2823,6 +2829,7 @@ function undo() {
     }
   })
   elecs.splice(0,elecs.length)
+  fuses[fuses.indexOf(elecOrbs[0].currentFuse)].electrified = true
   for (let fuse of [...fuseAttachments,...fuses]) {
     if (fuse.electrified) {
       fuse.findShape()
