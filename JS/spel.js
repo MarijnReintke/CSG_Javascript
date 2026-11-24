@@ -1274,13 +1274,14 @@ class ElecOrb {
     if (!this.currentFuse) {
       fuseAttachments[0].electrified = true
       this.currentFuse = fuses[0]
-      return
     }
-    this.currentFuse.electrified = true
-    this.currentFuse.updateElectricity()
-    this.currentFuse = fuses[fuses.indexOf(this.currentFuse)+1]
-    this.targetX = this.currentFuse.x
-    this.targetY = this.currentFuse.y
+    else {
+      this.currentFuse.electrified = true
+      this.currentFuse.updateElectricity()
+      this.currentFuse = fuses[fuses.indexOf(this.currentFuse)+1]
+      this.targetX = this.currentFuse.x
+      this.targetY = this.currentFuse.y
+    }
     for (let obj of sensors) {
       if (obj.x == this.targetX && obj.y == this.targetY) {
         if (!gameState.activeIds.includes(obj.id)) {
@@ -2654,8 +2655,6 @@ function saveGameState() {
       targetY: orb.targetY,
     })),
     moves,
-    gameOver: GAMEOVER,
-    levelComplete: LEVELCOMPLETE,
   })
 }
 
@@ -2787,6 +2786,12 @@ function undo() {
   if (MODE !== 2 || gameStates.length < 2) {
     return
   }
+  shakeIntensity = 0
+  flashbangs.splice(0,flashbangs.length)
+  countdowns.splice(0,countdowns.length)
+  smokeParticles.splice(0,smokeParticles.length)
+  plr.hidden = false
+  plr.winAnimationTick = 0
   gameStates.pop()
   const previousState = gameStates[gameStates.length-1]
   gameState.activeIds = [...previousState.activeIds]
@@ -2812,6 +2817,10 @@ function undo() {
     orb.currentFuse = state.currentFuseIndex < 0 ? undefined : fuses[state.currentFuseIndex]
     orb.targetX = state.targetX
     orb.targetY = state.targetY
+    if (LEVELCOMPLETE) {
+      orb.x = orb.targetX
+      orb.y = orb.targetY
+    }
   })
   elecs.splice(0,elecs.length)
   for (let fuse of [...fuseAttachments,...fuses]) {
@@ -2825,13 +2834,14 @@ function undo() {
     laserCannon.updateBeam()
   }
   moves = previousState.moves
-  GAMEOVER = previousState.gameOver
-  LEVELCOMPLETE = previousState.levelComplete
   plr.previousX = previousState.playerPos.x
   plr.previousY = previousState.playerPos.y
   plr.targetX = previousState.playerPos.x
   plr.targetY = previousState.playerPos.y
   plr.facing = previousState.playerFacing
+
+  LEVELCOMPLETE = false
+  GAMEOVER = false
 }
 
 function keyPressed(event) {
