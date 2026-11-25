@@ -2215,6 +2215,8 @@ function gameLoop() {
   if (GAMEOVER) {
     push()
     textAlign(CENTER,CENTER)
+    stroke(0,0,0)
+    strokeWeight(6)
     fill(255,255,255)
     textSize(125*gridScale)
     textStyle(BOLD)
@@ -2222,6 +2224,7 @@ function gameLoop() {
     textSize(50*gridScale)
     textStyle(NORMAL)
     text("Press [R] to Restart",width/2,height/2+15*gridScale)
+    text("Press [Z] to Undo",width/2,height/2+65*gridScale)
     pop()
   }
 
@@ -2276,6 +2279,7 @@ function playerLoop() {
 
 var fuseSelected = false
 var fuse;
+
 function tekenLoop() {
   plr.hidden = true
   plr.anchored = true
@@ -2288,6 +2292,12 @@ function tekenLoop() {
 
   const cellX = snapToGrid(mouseX-widthOffset)
   const cellY = snapToGrid(mouseY-heightOffset)
+  const leftPressed = mouseIsPressed === true && mouseButton === LEFT
+
+  if (!leftPressed) {
+    fuseSelected = false
+  }
+
   if (outOfBounds(cellX,cellY)) {
     return drawAll()
   }
@@ -2299,16 +2309,43 @@ function tekenLoop() {
   fuse.x = cellX
   fuse.y = cellY
 
-  if (!(mouseIsPressed === true && mouseButton === LEFT)) {
-    fuseSelected = false
-  }
+  if (leftPressed) {
+    let pathWasFound = false
+    let path = null
+    let pathOrigin = null
 
-  if (mouseIsPressed === true && mouseButton === LEFT) {
-    if (fuse.validPosition() && fuses.length < level.wireLimit && !bombConnected) {
+    if (fuses.length > 0) {
+      const lastFuse = fuses[fuses.length-1]
+      path = findFusePath(lastFuse,{x:cellX,y:cellY},lastFuse)
+      pathOrigin = lastFuse.origin
+    } else {
+      for (const attachment of fuseAttachments) {
+        const candidatePath = findFusePath(attachment,{x:cellX,y:cellY},attachment)
+        if (candidatePath !== null && (path === null || candidatePath.length < path.length)) {
+          path = candidatePath
+          pathOrigin = attachment
+        }
+      }
+    }
+
+    if (path !== null && path.length > 0) {
+      pathWasFound = true
+      if (fuses.length + path.length <= level.wireLimit && !bombConnected) {
+        for (const cell of path) {
+          const nextFuse = new Fuse(cell.x,cell.y)
+          if (fuses.length === 0) {
+            nextFuse.origin = pathOrigin
+          }
+          fuses.push(nextFuse)
+        }
+        fuse = null
+      }
+    }
+
+    if (!pathWasFound && fuse.validPosition() && fuses.length < level.wireLimit && !bombConnected) {
       fuse.getArray().push(fuse)
       fuse = null
-    }
-    else if (fuses.length > 0) {
+    } else if (!pathWasFound && fuses.length > 0) {
       if (fuses[fuses.length-1].x == cellX && fuses[fuses.length-1].y == cellY) {
         fuseSelected = true
       }
@@ -2320,10 +2357,10 @@ function tekenLoop() {
           }
         }
       }
-    }
-    if ((!fuseSelected && fuses.length > 0 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY) || 
-    (fuseSelected && fuses.length == 1 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY)) {
-      fuses.splice(0,fuses.length)
+      if ((!fuseSelected && fuses.length > 0 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY) ||
+      (fuseSelected && fuses.length == 1 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY)) {
+        fuses.splice(0,fuses.length)
+      }
     }
   }
 
@@ -2829,7 +2866,10 @@ function undo() {
     }
   })
   elecs.splice(0,elecs.length)
-  fuses[fuses.indexOf(elecOrbs[0].currentFuse)].electrified = true
+  let fuse = fuses[fuses.indexOf(elecOrbs[0].currentFuse)]
+  if (fuse) {
+    fuse.electrified = true
+  }
   for (let fuse of [...fuseAttachments,...fuses]) {
     if (fuse.electrified) {
       fuse.findShape()
