@@ -2277,7 +2277,6 @@ function playerLoop() {
   }
 }
 
-var fuseSelected = false
 var fuse;
 
 function tekenLoop() {
@@ -2294,9 +2293,7 @@ function tekenLoop() {
   const cellY = snapToGrid(mouseY-heightOffset)
   const leftPressed = mouseIsPressed === true && mouseButton === LEFT
 
-  if (!leftPressed) {
-    fuseSelected = false
-  }
+  resetFuseSelection(leftPressed)
 
   if (outOfBounds(cellX,cellY)) {
     return drawAll()
@@ -2309,60 +2306,7 @@ function tekenLoop() {
   fuse.x = cellX
   fuse.y = cellY
 
-  if (leftPressed) {
-    let pathWasFound = false
-    let path = null
-    let pathOrigin = null
-
-    if (fuses.length > 0) {
-      const lastFuse = fuses[fuses.length-1]
-      path = findFusePath(lastFuse,{x:cellX,y:cellY},lastFuse)
-      pathOrigin = lastFuse.origin
-    } else {
-      for (const attachment of fuseAttachments) {
-        const candidatePath = findFusePath(attachment,{x:cellX,y:cellY},attachment)
-        if (candidatePath !== null && (path === null || candidatePath.length < path.length)) {
-          path = candidatePath
-          pathOrigin = attachment
-        }
-      }
-    }
-
-    if (path !== null && path.length > 0) {
-      pathWasFound = true
-      if (fuses.length + path.length <= level.wireLimit && !bombConnected) {
-        for (const cell of path) {
-          const nextFuse = new Fuse(cell.x,cell.y)
-          if (fuses.length === 0) {
-            nextFuse.origin = pathOrigin
-          }
-          fuses.push(nextFuse)
-        }
-        fuse = null
-      }
-    }
-
-    if (!pathWasFound && fuse.validPosition() && fuses.length < level.wireLimit && !bombConnected) {
-      fuse.getArray().push(fuse)
-      fuse = null
-    } else if (!pathWasFound && fuses.length > 0) {
-      if (fuses[fuses.length-1].x == cellX && fuses[fuses.length-1].y == cellY) {
-        fuseSelected = true
-      }
-      if (!fuseSelected == true || (fuses.length > 1 && fuses[fuses.length-2].x == cellX && fuses[fuses.length-2].y == cellY)) {
-        for (var a=0;a<fuses.length-1;a++) {
-          let fuse = fuses[a]
-          if (fuse.x == cellX && fuse.y == cellY) {
-            fuses.splice(a+1,fuses.length-1-a)
-          }
-        }
-      }
-      if ((!fuseSelected && fuses.length > 0 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY) ||
-      (fuseSelected && fuses.length == 1 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY)) {
-        fuses.splice(0,fuses.length)
-      }
-    }
-  }
+  fuse = updateFusePlacement(fuse,cellX,cellY,leftPressed)
 
   drawAll()
 
@@ -2374,7 +2318,7 @@ function tekenLoop() {
     fill(255,255,255,0.25)
     ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }
-  else if (fuses.length == 0 && fuse.validPosition()) {
+  else if (fuses.length == 0 && fuseAttachments[0].x == cellX && fuseAttachments[0].y == cellY) {
     fill(255,255,255,0.25)
     ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }

@@ -1,5 +1,13 @@
-// BFS Pathfinding created by ChatGPT, modified by me to work with fuses and fuse attachments
-// "When drawing the fuse, how would I make the fuse find the fastest path to the grid where the player holds their mouse?"
+// BFS Pathfinding created by Claude
+// "When drawing the fuse, how would I make the fuse find the fastest path to the grid where the player holds their left mouse button?"
+
+var fuseSelected = false
+
+function resetFuseSelection(leftPressed) {
+  if (!leftPressed) {
+    fuseSelected = false
+  }
+}
 
 function fuseCellIsAvailable(x, y, ignoredObject, allowBomb = false) {
   if (outOfBounds(x, y)) {
@@ -57,4 +65,68 @@ function findFusePath(start, target, ignoredObject) {
   }
 
   return null
+}
+
+function updateFusePlacement(fuse, cellX, cellY, leftPressed) {
+  resetFuseSelection(leftPressed)
+  if (!leftPressed) {
+    return fuse
+  }
+
+  let pathWasFound = false
+  let path = null
+  let pathOrigin = null
+
+  if (fuses.length > 0) {
+    const lastFuse = fuses[fuses.length-1]
+    path = findFusePath(lastFuse,{x:cellX,y:cellY},lastFuse)
+    pathOrigin = lastFuse.origin
+  } else {
+    for (const attachment of fuseAttachments) {
+      const candidatePath = findFusePath(attachment,{x:cellX,y:cellY},attachment)
+      if (candidatePath !== null && (path === null || candidatePath.length < path.length)) {
+        path = candidatePath
+        pathOrigin = attachment
+      }
+    }
+  }
+
+  if (path !== null && path.length > 0) {
+    pathWasFound = true
+    if (fuses.length + path.length <= level.wireLimit && !bombConnected) {
+      for (const cell of path) {
+        const nextFuse = new Fuse(cell.x,cell.y)
+        if (fuses.length === 0) {
+          nextFuse.origin = pathOrigin
+        }
+        fuses.push(nextFuse)
+      }
+      return null
+    }
+  }
+
+  if (!pathWasFound && fuse.validPosition() && fuses.length < level.wireLimit && !bombConnected) {
+    fuses.push(fuse)
+    return null
+  }
+
+  if (!pathWasFound && fuses.length > 0) {
+    if (fuses[fuses.length-1].x == cellX && fuses[fuses.length-1].y == cellY) {
+      fuseSelected = true
+    }
+    if (!fuseSelected || (fuses.length > 1 && fuses[fuses.length-2].x == cellX && fuses[fuses.length-2].y == cellY)) {
+      for (let a=0;a<fuses.length-1;a++) {
+        const existingFuse = fuses[a]
+        if (existingFuse.x == cellX && existingFuse.y == cellY) {
+          fuses.splice(a+1,fuses.length-1-a)
+        }
+      }
+    }
+    if ((!fuseSelected && fuses.length > 0 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY) ||
+    (fuseSelected && fuses.length == 1 && fuses[0].origin.x == cellX && fuses[0].origin.y == cellY)) {
+      fuses.splice(0,fuses.length)
+    }
+  }
+
+  return fuse
 }
