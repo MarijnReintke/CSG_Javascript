@@ -1577,7 +1577,7 @@ class MenuButton extends TextButton {
 
 class BackButton extends TextButton {
   constructor(x,y) {
-    super(x,y,gridSize*6,gridSize*2)
+    super(x,y,gridSize*6,gridSize*1.5)
   }
 
   update() {
@@ -1763,7 +1763,7 @@ var wireSprites
 function preload() {
   let children
   
-  children = 4
+  children = 5
   for (var a=0;a<children;a++) {
     var json = loadJSON('JS/spelAssets/levels/' + a + '.json')
     levels.push(json)
@@ -2318,7 +2318,7 @@ function tekenLoop() {
     fill(255,255,255,0.25)
     ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }
-  else if (fuses.length == 0 && fuseAttachments[0].x == cellX && fuseAttachments[0].y == cellY) {
+  else if (fuses.length == 0 && fuseAttachments[0] && fuseAttachments[0].x == cellX && fuseAttachments[0].y == cellY) {
     fill(255,255,255,0.25)
     ellipse(cellX+gridSize/2,cellY+gridSize/2,gridSize)
   }
