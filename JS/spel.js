@@ -1600,7 +1600,7 @@ class BackButton extends TextButton {
 
 class LevelButton extends TextButton {
   constructor(x,y,lvl) {
-    super(x,y,gridSize*5,gridSize*3.5)
+    super(x,y,gridSize*5*1.2,gridSize*3.5*1.2)
     this.level = lvl
   }
 
@@ -1614,7 +1614,16 @@ class LevelButton extends TextButton {
 
     if (this.hidden) return
 
-    image(levelSelectButtonSprites[this.spriteIndex],this.x,this.y,this.width,this.height)
+    image(levelButtonSprites[this.spriteIndex], this.x,this.y,this.width,this.height)
+
+    let digits = this.level.toString();
+    let spacing = 50
+    let startX = this.x + (this.width-(digits.length - 1)*spacing)/2-this.width/2
+
+    for (let a = 0; a < digits.length; a++) {
+      let digit = parseInt(digits[a]);
+      image(numberSprites[digit],startX + a*spacing,this.y,this.width,this.height);
+    }
   }
 
   action() {
@@ -1622,6 +1631,29 @@ class LevelButton extends TextButton {
   }
 }
 
+class QuestionMarkButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*1.25,gridSize*1.25)
+  }
+
+  update() {
+    this.hidden = (MODE !== "LEVELSELECT")
+
+    super.update()
+  }
+
+  teken() {
+
+    if (this.hidden) return
+
+    image(questionMarkSprites[this.spriteIndex], this.x,this.y,this.width,this.height)
+
+  }
+
+  action() {
+    loadLevel(0)
+  }
+}
 
 class Timer {
   constructor() {
@@ -1672,7 +1704,6 @@ class Timer {
     pop()
   }
 }
-
 
 const targetFrameRate = 60
 
@@ -1758,6 +1789,9 @@ var menuStartButtonSprites = []
 var levelSelectButtonSprites = []
 var backButtonSprites = []
 var menuButtonSprites = []
+var levelButtonSprites = []
+var numberSprites = []
+var questionMarkSprites = []
 var wireSprites
 
 function preload() {
@@ -1859,6 +1893,24 @@ function preload() {
     menuButtonSprites.push(png)
   }
 
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/levelButton/' + a + '.png')
+    levelButtonSprites.push(png)
+  }
+
+  children = 10
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/numbers/' + a + '.png')
+    numberSprites.push(png)
+  }
+
+  children = 3
+  for (var a=0;a<children;a++) {
+    var png = loadImage('JS/spelAssets/sprites/questionMarkButton/' + a + '.png')
+    questionMarkSprites.push(png)
+  }
+
   electricitySprites = {
     "0": loadImage('JS/spelAssets/sprites/electricity/0.png'),
     "0-corner": loadImage('JS/spelAssets/sprites/electricity/0-corner.png'),
@@ -1923,16 +1975,17 @@ function setup() {
   levelSelectButton = new LevelSelectButton(width/2+gridSize*4*1.5,height/2+gridSize*2*1.5)
   menuButton = new MenuButton(width-gridSize*3.5,gridSize*1.25)
   backButton = new BackButton(gridSize*3.5,gridSize*1.25)
-  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton, menuButton, backButton)
-  let xAmount = 5
-  let yAmount = 5
-  let buttonWidth = gridSize*5
-  let buttonHeight = gridSize*3.5
-  let xSpacing = 30
-  let ySpacing = 15
+  questionMarkButton = new QuestionMarkButton(width-gridSize*0.75,height-gridSize*0.75)
+  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton, menuButton, backButton, questionMarkButton)
+  let xAmount = 4
+  let yAmount = 3
+  let buttonWidth = gridSize*5*1.2
+  let buttonHeight = gridSize*3.5*1.2
+  let xSpacing = 50
+  let ySpacing = 50
   let lvl = 1
   for (var a=0;a<yAmount;a++) {
-    let y = a*buttonHeight+(height/2-yAmount*buttonHeight/2+buttonHeight/2-ySpacing*(yAmount-1)/2) + (a*ySpacing) + gridSize
+    let y = a*buttonHeight+(height/2-yAmount*buttonHeight/2+buttonHeight/2-ySpacing*(yAmount-1)/2) + (a*ySpacing)
     for (var b=0;b<xAmount;b++) {
       let x = b*buttonWidth+(width/2-xAmount*buttonWidth/2+buttonWidth/2-xSpacing*(xAmount-1)/2) + (b*xSpacing)
       levelButton = new LevelButton(x,y,lvl)
@@ -2249,10 +2302,7 @@ function gameLoop() {
     text("FPS: " + fps,width-100*gridScale,height-10*gridScale)
   pop()
 
-  timer.teken()
 }
-
-
 
 function playerLoop() {
 
@@ -2278,7 +2328,6 @@ function playerLoop() {
 }
 
 var fuse;
-
 function tekenLoop() {
   plr.hidden = true
   plr.anchored = true
@@ -2584,7 +2633,6 @@ function outOfBounds(x,y) {
   }
 }
 
-
 function validPosition(obj,objArrays,collisionChecks) {
 
   for (let a = 0; a < obj.height / gridSize; a++) {
@@ -2644,7 +2692,6 @@ function saveGameState() {
     moves,
   })
 }
-
 
 function tick() {
   if (moves <= 0 || fuses.length == 0) {
@@ -2842,6 +2889,9 @@ function keyPressed(event) {
     event.preventDefault();
   }
   //
+  if (!plr) {
+    return
+  }
 
   if (key == 'd' && MODE == 3) {
     selectedObject = objects[objects.indexOf(selectedObject)+1]
