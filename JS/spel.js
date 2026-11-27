@@ -1423,11 +1423,13 @@ class TextButton {
       }
 
       if (!leftPressed && this.mouseWasHeld) {
-        if (this.pressedInside && this.hovering) {
+        const shouldActivate = this.pressedInside && this.hovering
+        this.pressedInside = false
+        this.mouseWasHeld = leftPressed
+        if (shouldActivate) {
           this.action()
         }
-
-        this.pressedInside = false
+        return
       }
 
       this.mouseWasHeld = leftPressed
@@ -1487,8 +1489,19 @@ class StartButton extends TextButton {
   }
 
   update() {
+    if (level.currentLevel === "Custom" && MODE === 1) {
+      this.width = gridSize*6
+      this.height = gridSize*1.5
+      this.x = width-this.width
+      this.y = gridSize/2
+    } else {
+      this.width = gridSize*12.5
+      this.height = gridSize*3
+      this.x = width-gridSize*8
+      this.y = height-gridSize*2.5
+    }
     this.clickable = bombConnected
-    this.hidden = (MODE !== 1)
+    this.hidden = (MODE !== 1 || editorLoadMenuOpen)
 
     super.update()
   }
@@ -1552,13 +1565,146 @@ class LevelSelectButton extends TextButton {
   }
 }
 
+class LevelEditorButton extends TextButton {
+  constructor(x,y) {
+    super(x,y,gridSize*3,gridSize*3)
+  }
+
+  update() {
+    this.hidden = (MODE !== 0)
+    super.update()
+  }
+
+  teken() {
+    if (this.hidden) return
+
+    push()
+    stroke(255,182,6)
+    strokeWeight(3)
+    if (this.spriteIndex === 2) {
+      fill(110,75,25)
+    } else if (this.spriteIndex === 1) {
+      fill(75,70,65)
+    } else {
+      fill(45,55,75)
+    }
+    rect(this.x,this.y,this.width,this.height)
+    noStroke()
+    fill(255,182,6)
+    for (let x=0;x<3;x++) {
+      for (let y=0;y<3;y++) {
+        rect(this.x+18+x*16,this.y+14+y*16,12,12)
+      }
+    }
+    stroke(255,182,6)
+    strokeWeight(5)
+    line(this.x+59,this.y+62,this.x+78,this.y+43)
+    noStroke()
+    fill(255,255,255)
+    textAlign(CENTER,CENTER)
+    textSize(12)
+    textStyle(BOLD)
+    text("EDIT",this.x+this.width/2,this.y+this.height-10)
+    pop()
+  }
+
+  action() {
+    createCustomLevel()
+  }
+}
+
+class EditorActionButton extends TextButton {
+  constructor(x,y,w,h,label,action,visible,enabled) {
+    super(x,y,w,h)
+    this.label = label
+    this.actionCallback = action
+    this.visibleWhen = visible
+    this.enabledWhen = enabled || (() => true)
+  }
+
+  update() {
+    this.hidden = !this.visibleWhen()
+    this.clickable = this.enabledWhen()
+    super.update()
+  }
+
+  teken() {
+    if (this.hidden) return
+
+    push()
+    noStroke()
+    if (this.spriteIndex === 2) {
+      fill(110,75,25)
+    } else if (this.spriteIndex === 1) {
+      fill(95,80,40)
+    } else if (this.spriteIndex === 3) {
+      fill(35,35,45)
+    } else {
+      fill(45,52,68)
+    }
+    rect(this.x,this.y,this.width,this.height)
+    stroke(255,182,6)
+    strokeWeight(2)
+    noFill()
+    rect(this.x+1,this.y+1,this.width-2,this.height-2)
+    noStroke()
+    fill(255,255,255)
+    textAlign(CENTER,CENTER)
+    textSize(13)
+    textStyle(BOLD)
+    text(this.label,this.x+this.width/2,this.y+this.height/2)
+    pop()
+  }
+
+  action() {
+    this.actionCallback()
+  }
+}
+
+class SavedLevelButton extends TextButton {
+  constructor(x,y,index) {
+    super(x,y,gridSize*16,gridSize)
+    this.index = index
+  }
+
+  update() {
+    const savedIndex = editorLoadPage*8+this.index
+    this.hidden = !editorLoadMenuOpen || savedIndex >= savedCustomLevels.length
+    super.update()
+  }
+
+  teken() {
+    if (this.hidden) return
+
+    const savedLevel = savedCustomLevels[editorLoadPage*8+this.index]
+    push()
+    noStroke()
+    fill(this.spriteIndex === 2 ? 110 : this.spriteIndex === 1 ? 80 : 45,55,68)
+    rect(this.x,this.y,this.width,this.height)
+    stroke(255,182,6)
+    strokeWeight(2)
+    noFill()
+    rect(this.x+1,this.y+1,this.width-2,this.height-2)
+    noStroke()
+    fill(255,255,255)
+    textAlign(LEFT,CENTER)
+    textSize(16)
+    text(savedLevel.data.find(entry => entry.name)?.name || 'Untitled',this.x+12,this.y+this.height/2)
+    pop()
+  }
+
+  action() {
+    loadCustomLevelFromSaved(editorLoadPage*8+this.index)
+  }
+}
+
 class MenuButton extends TextButton {
   constructor(x,y) {
     super(x,y,gridSize*6,gridSize*1.5)
   }
 
   update() {
-    this.hidden = (MODE == 0 || MODE == "LEVELSELECT")
+    this.hidden = (MODE == 0 || MODE == "LEVELSELECT" || editorLoadMenuOpen || level.currentLevel === "Custom")
 
     super.update()
   }
@@ -1773,6 +1919,13 @@ const objectArrays = []
 var debug = false
 
 var levels = []
+var currentCustomLevelId = null
+var levelEditorMessage = ""
+var savedCustomLevels = []
+var editorLoadMenuOpen = false
+var editorLoadPage = 0
+var levelNameEditing = false
+const customLevelsStorageKey = "escapeProtocol.customLevels.v1"
 var dynamiteSprites = []
 var elecOrbSprites = []
 var electricitySprites = []
@@ -1787,6 +1940,7 @@ var tileSprites = []
 var obstructionSprites = []
 var menuStartButtonSprites = []
 var levelSelectButtonSprites = []
+var levelEditorButton
 var backButtonSprites = []
 var menuButtonSprites = []
 var levelButtonSprites = []
@@ -1976,7 +2130,8 @@ function setup() {
   menuButton = new MenuButton(width-gridSize*3.5,gridSize*1.25)
   backButton = new BackButton(gridSize*3.5,gridSize*1.25)
   questionMarkButton = new QuestionMarkButton(width-gridSize*0.75,height-gridSize*0.75)
-  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton, menuButton, backButton, questionMarkButton)
+  levelEditorButton = new LevelEditorButton(width/2,height/2+gridSize*8)
+  textButtons.push(nextLevelButton, startButton, menuStartButton, levelSelectButton, menuButton, backButton, questionMarkButton, levelEditorButton)
   let xAmount = 4
   let yAmount = 3
   let buttonWidth = gridSize*5*1.2
@@ -1994,6 +2149,8 @@ function setup() {
     }
   }
 
+  initializeLevelEditorControls()
+
 }
 
 let fps = 0
@@ -2008,11 +2165,371 @@ function draw() {
     gameLoop()
   }
 
+  if (editorLoadMenuOpen) {
+    drawSavedLevelMenu()
+  } else if (level.currentLevel === "Custom" && [1,3,4].includes(MODE)) {
+    drawCustomEditorHud()
+  }
+
   for (let textButton of textButtons) {
     textButton.update()
     textButton.teken()
   }
 
+}
+
+function initializeLevelEditorControls() {
+  const editorVisible = () => level.currentLevel === "Custom" && [1,3,4].includes(MODE) && !editorLoadMenuOpen
+  const loadMenuVisible = () => editorLoadMenuOpen
+  const firstRowY = height-gridSize*2.4
+  const secondRowY = height-gridSize*1.05
+  const firstRowWidth = gridSize*3.75
+  const secondRowWidth = gridSize*4.375
+  const firstStart = (width-(firstRowWidth*8+8*7))/2+firstRowWidth/2
+  const secondStart = (width-(secondRowWidth*7+10*6))/2+secondRowWidth/2
+
+  levelEditorImportInput = document.createElement('input')
+  levelEditorImportInput.type = 'file'
+  levelEditorImportInput.accept = '.json,application/json'
+  levelEditorImportInput.style.display = 'none'
+  levelEditorImportInput.addEventListener('change', () => importCustomLevel(levelEditorImportInput))
+  document.body.appendChild(levelEditorImportInput)
+
+  const firstRow = [
+    ["PLACE", () => SetMode(3)],
+    ["DELETE", () => SetMode(4)],
+    ["TEST", () => { if (applyEditorSettings()) SetMode(1) }],
+    ["SAVE", saveCustomLevel],
+    ["LOAD", openSavedLevelMenu],
+    ["EXPORT", downloadCustomLevel],
+    ["IMPORT", () => levelEditorImportInput.click()],
+    ["MENU", () => SetMode(0)],
+  ]
+  for (let a=0;a<firstRow.length;a++) {
+    textButtons.push(new EditorActionButton(firstStart+a*(firstRowWidth+8),firstRowY,firstRowWidth,gridSize,firstRow[a][0],firstRow[a][1],editorVisible))
+  }
+
+  const secondRow = [
+    ["OBJECT -", () => cycleEditorObject(-1)],
+    ["OBJECT +", () => cycleEditorObject(1)],
+    ["NAME", toggleLevelNameEditing],
+    ["WIRE -", () => { level.wireLimit = max(1,level.wireLimit-1) }],
+    ["WIRE +", () => { level.wireLimit = min(999,level.wireLimit+1) }],
+    ["TICK -", () => { level.wireInterval = max(1,level.wireInterval-1) }],
+    ["TICK +", () => { level.wireInterval = min(99,level.wireInterval+1) }],
+  ]
+  for (let a=0;a<secondRow.length;a++) {
+    textButtons.push(new EditorActionButton(secondStart+a*(secondRowWidth+10),secondRowY,secondRowWidth,gridSize,secondRow[a][0],secondRow[a][1],editorVisible))
+  }
+
+  for (let a=0;a<8;a++) {
+    textButtons.push(new SavedLevelButton(width/2,height/2-105+a*36,a))
+  }
+  textButtons.push(
+    new EditorActionButton(width/2-160,height/2+184,gridSize*4,gridSize,"< PREV",() => { editorLoadPage-- },loadMenuVisible,() => editorLoadPage>0),
+    new EditorActionButton(width/2,height/2+184,gridSize*4,gridSize,"CANCEL",() => { editorLoadMenuOpen=false },loadMenuVisible),
+    new EditorActionButton(width/2+160,height/2+184,gridSize*4,gridSize,"NEXT >",() => { editorLoadPage++ },loadMenuVisible,() => (editorLoadPage+1)*8<savedCustomLevels.length)
+  )
+}
+
+function getLevelObjectConstructors() {
+  return {
+    Tile,
+    Obstruction,
+    Hazard,
+    Bomb,
+    FuseAttachment,
+    Door,
+    Exit,
+    Button,
+    Switch,
+    LaserCannon,
+    Sensor,
+  }
+}
+
+function validateLevelData(data) {
+  if (!Array.isArray(data) || data.length > 5000) {
+    return "A level must be a JSON array with no more than 5,000 entries."
+  }
+
+  const objectConstructors = getLevelObjectConstructors()
+  const orientations = ['top', 'right', 'bottom', 'left']
+  for (const entry of data) {
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+      return "Every level entry must be an object."
+    }
+    if (entry.name !== undefined && (typeof entry.name !== 'string' || entry.name.length > 50)) {
+      return "The level name must be 50 characters or fewer."
+    }
+    if (entry.limit !== undefined && (!Number.isInteger(entry.limit) || entry.limit < 1 || entry.limit > 999)) {
+      return "The wire limit must be a whole number from 1 to 999."
+    }
+    if (entry.interval !== undefined && (!Number.isInteger(entry.interval) || entry.interval < 1 || entry.interval > 99)) {
+      return "The wire interval must be a whole number from 1 to 99."
+    }
+    if (entry.class === undefined) {
+      if (entry.gridX !== undefined || entry.gridY !== undefined) {
+        return "Object entries must include a supported class."
+      }
+      continue
+    }
+    if (!Object.prototype.hasOwnProperty.call(objectConstructors, entry.class)) {
+      return `Unsupported object type: ${entry.class}.`
+    }
+    if (!Number.isInteger(entry.gridX) || !Number.isInteger(entry.gridY) ||
+        entry.gridX < 0 || entry.gridX >= gridWith || entry.gridY < 0 || entry.gridY >= gridHeight) {
+      return "Object positions must be whole grid coordinates inside the board."
+    }
+    if (entry.orientation !== undefined && !orientations.includes(entry.orientation)) {
+      return "Object orientation must be top, right, bottom, or left."
+    }
+    if (entry.id !== undefined && (!Number.isInteger(entry.id) || entry.id < 0 || entry.id > 5)) {
+      return "Object IDs must be whole numbers from 0 to 5."
+    }
+    if (entry.normallyActive !== undefined && typeof entry.normallyActive !== 'boolean') {
+      return "normallyActive must be true or false."
+    }
+  }
+  return null
+}
+
+function readSavedCustomLevels() {
+  let savedLevels
+  try {
+    const stored = localStorage.getItem(customLevelsStorageKey)
+    savedLevels = stored ? JSON.parse(stored) : []
+  } catch (error) {
+    throw new Error(`Could not read saved levels: ${error.message}`)
+  }
+  if (!Array.isArray(savedLevels)) {
+    throw new Error("Saved level data is invalid.")
+  }
+  for (const savedLevel of savedLevels) {
+    if (!savedLevel || typeof savedLevel.id !== 'string' || validateLevelData(savedLevel.data)) {
+      throw new Error("A saved level is invalid.")
+    }
+  }
+  return savedLevels
+}
+
+function createCustomLevel() {
+  const data = [{name: "Untitled", limit: 99, interval: 2}]
+  for (let x=0;x<gridWith;x++) {
+    for (let y=0;y<gridHeight;y++) {
+      data.push({class: "Tile", gridX: x, gridY: y})
+    }
+  }
+  currentCustomLevelId = null
+  selectedObject = Bomb
+  levelNameEditing = false
+  editorLoadMenuOpen = false
+  loadLevel(0,data)
+  SetMode(3)
+  currentObject = null
+  levelEditorMessage = "PLACE OBJECTS. CLICK NAME TO RENAME."
+}
+
+function openSavedLevelMenu() {
+  try {
+    savedCustomLevels = readSavedCustomLevels()
+    if (savedCustomLevels.length === 0) {
+      levelEditorMessage = "No saved levels yet. Save this level first."
+      return
+    }
+    editorLoadPage = 0
+    editorLoadMenuOpen = true
+    levelNameEditing = false
+    levelEditorMessage = ""
+  } catch (error) {
+    levelEditorMessage = error.message
+  }
+}
+
+function loadCustomLevelFromSaved(index) {
+  const savedLevel = savedCustomLevels[index]
+  if (!savedLevel) return
+
+  editorLoadMenuOpen = false
+  currentCustomLevelId = savedLevel.id
+  selectedObject = Hazard
+  currentObject = null
+  loadLevel(0,savedLevel.data)
+  SetMode(3)
+  levelEditorMessage = "Loaded. Place objects or test your level."
+}
+
+function cycleEditorObject(direction) {
+  let objectIndex = objects.indexOf(selectedObject)
+  objectIndex = (objectIndex+direction+objects.length) % objects.length
+  selectedObject = objects[objectIndex]
+  currentObject = null
+}
+
+function toggleLevelNameEditing() {
+  levelNameEditing = !levelNameEditing
+  if (levelNameEditing) {
+    level.name = ""
+    levelEditorMessage = "TYPE A NAME, THEN PRESS ENTER"
+  } else if (!level.name.trim()) {
+    level.name = "Untitled"
+  }
+}
+
+function drawCustomEditorHud() {
+  push()
+  noStroke()
+  fill(255,182,6)
+  textAlign(LEFT,CENTER)
+  textSize(16)
+  const modeName = MODE === 3 ? "BUILD" : MODE === 4 ? "DELETE" : "PLAYTEST"
+  const name = level.name + (levelNameEditing ? "_" : "")
+  const objectName = selectedObject ? selectedObject.name : "Hazard"
+  text(`${modeName}  ${name}  OBJECT: ${objectName}  WIRES: ${level.wireLimit}  TICK: ${level.wireInterval}`,20,height-gridSize*4.25)
+  fill(255,255,255)
+  textSize(13)
+  text(levelEditorMessage,20,height-gridSize*3.45,width-40,18)
+  pop()
+}
+
+function drawSavedLevelMenu() {
+  const panelWidth = width-gridSize*12
+  const panelHeight = gridSize*14
+  push()
+  noStroke()
+  fill(5,10,20,0.96)
+  rect((width-panelWidth)/2,(height-panelHeight)/2,panelWidth,panelHeight)
+  stroke(255,182,6)
+  strokeWeight(4)
+  noFill()
+  rect((width-panelWidth)/2,(height-panelHeight)/2,panelWidth,panelHeight)
+  noStroke()
+  fill(255,182,6)
+  textAlign(CENTER,CENTER)
+  textStyle(BOLD)
+  textSize(24)
+  text("LOAD A SAVED LEVEL",width/2,height/2-gridSize*5.7)
+  fill(255,255,255)
+  textSize(14)
+  text(`PAGE ${editorLoadPage+1} / ${max(1,ceil(savedCustomLevels.length/8))}`,width/2,height/2-gridSize*4.5)
+  if (savedCustomLevels.length === 0) {
+    text("NO SAVED LEVELS",width/2,height/2)
+  }
+  pop()
+}
+
+function readEditorSettings() {
+  const name = level.name.trim()
+  if (!name || name.length > 50) {
+    throw new Error("Level name must have 1 to 50 characters.")
+  }
+  if (!Number.isInteger(level.wireLimit) || level.wireLimit < 1 || level.wireLimit > 999) {
+    throw new Error("Wire limit must be between 1 and 999.")
+  }
+  if (!Number.isInteger(level.wireInterval) || level.wireInterval < 1 || level.wireInterval > 99) {
+    throw new Error("Tick interval must be between 1 and 99.")
+  }
+  level.name = name
+  return {name, wireLimit: level.wireLimit, wireInterval: level.wireInterval}
+}
+
+function applyEditorSettings() {
+  try {
+    readEditorSettings()
+    levelEditorMessage = "Level settings applied."
+    return true
+  } catch (error) {
+    levelEditorMessage = error.message
+    return false
+  }
+}
+
+function serializeCurrentLevel() {
+  const settings = readEditorSettings()
+  const data = [{name: settings.name, limit: settings.wireLimit, interval: settings.wireInterval}]
+  for (const objectArray of objectArrays) {
+    for (const object of objectArray) {
+      data.push({
+        class: object.constructor.name,
+        gridX: object.x / gridSize,
+        gridY: object.y / gridSize,
+        orientation: object.orientation,
+        id: object.id,
+        normallyActive: object.normallyActive,
+      })
+    }
+  }
+  const validationError = validateLevelData(data)
+  if (validationError) {
+    throw new Error(validationError)
+  }
+  return data
+}
+
+function saveCustomLevel() {
+  try {
+    const data = serializeCurrentLevel()
+    const savedLevels = readSavedCustomLevels()
+    const id = currentCustomLevelId || `level-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+    const existingIndex = savedLevels.findIndex(savedLevel => savedLevel.id === id)
+    const savedLevel = {id, data}
+    if (existingIndex === -1) {
+      savedLevels.push(savedLevel)
+    } else {
+      savedLevels[existingIndex] = savedLevel
+    }
+    localStorage.setItem(customLevelsStorageKey, JSON.stringify(savedLevels))
+    currentCustomLevelId = id
+    savedCustomLevels = savedLevels
+    levelEditorMessage = "LEVEL SAVED"
+  } catch (error) {
+    levelEditorMessage = error.message
+  }
+}
+
+function downloadCustomLevel() {
+  try {
+    const data = serializeCurrentLevel()
+    const blob = new Blob([JSON.stringify(data,null,2)],{type: 'application/json'})
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    const safeName = data[0].name.replace(/[^a-z0-9-_]+/gi,'-').replace(/^-|-$/g,'') || 'custom-level'
+    link.href = url
+    link.download = `${safeName}.json`
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    setTimeout(() => URL.revokeObjectURL(url),1000)
+    levelEditorMessage = "JSON EXPORTED"
+  } catch (error) {
+    levelEditorMessage = error.message
+  }
+}
+
+function importCustomLevel(fileInput) {
+  const file = fileInput.files[0]
+  fileInput.value = ''
+  if (!file) return
+  file.text().then(text => {
+    let data
+    try {
+      data = JSON.parse(text)
+    } catch (error) {
+      throw new Error(`Could not parse level JSON: ${error.message}`)
+    }
+    const validationError = validateLevelData(data)
+    if (validationError) {
+      throw new Error(validationError)
+    }
+    currentCustomLevelId = null
+    selectedObject = Hazard
+    currentObject = null
+    loadLevel(0,data)
+    SetMode(3)
+    levelEditorMessage = "LEVEL IMPORTED"
+  }).catch(error => {
+    levelEditorMessage = error.message
+  })
 }
 
 function levelSelect() {
@@ -2186,7 +2703,7 @@ function gameLoop() {
     text("Moves Left", String(moves).length * 50*gridScale + 15*gridScale, gridHeight*gridSize + 75*gridScale);
   }
 
-  if (MODE == 1) {
+  if (MODE == 1 && level.currentLevel !== "Custom") {
     if (level.wireLimit - fuses.length > 0) {
     fill(255,255,0)
     }
@@ -2199,7 +2716,7 @@ function gameLoop() {
     text("Wire Left", String(level.wireLimit - fuses.length).length * 50*gridScale + 15*gridScale, gridHeight*gridSize + 75*gridScale);
   }
 
-  if (MODE == 1 || MODE == 2) {
+  if ((MODE == 1 && level.currentLevel !== "Custom") || MODE == 2) {
     fill(255,255,100)
     textSize(40*gridScale)
     text(gameState.movesBeforeInterval, 15*gridScale, gridHeight*gridSize + 125*gridScale);
@@ -2207,7 +2724,7 @@ function gameLoop() {
     text("Moves Before Elec. Moves", String(gameState.movesBeforeInterval).length * 30*gridScale + 20*gridScale, gridHeight*gridSize + 125*gridScale);
   }
 
-  if (MODE == 3) {
+  if (MODE == 3 && level.currentLevel !== "Custom") {
     fill(100,150,255)
     textSize(75*gridScale)
     text("Build", 10, gridHeight*gridSize + 75*gridScale);
@@ -2239,7 +2756,7 @@ function gameLoop() {
     }
   }
 
-  if (MODE == 4) {
+  if (MODE == 4 && level.currentLevel !== "Custom") {
     fill(255,100,125)
     textSize(75*gridScale)
     text("Delete", 10*gridScale, gridHeight*gridSize + 75*gridScale);
@@ -2554,15 +3071,26 @@ function printLevel() {
   print(levelArray)
 }
 
-function loadLevel(lvl) {
+function loadLevel(lvl, customData) {
 
-  json = levels[lvl]
+  const json = customData || levels[lvl]
   if (!json) {
     return console.warn("failed to load level " + lvl + " :(")
   }
 
-  level.currentLevel = lvl
+  if (customData) {
+    const validationError = validateLevelData(customData)
+    if (validationError) {
+      throw new Error(validationError)
+    }
+    level.currentLevel = "Custom"
+  } else {
+    currentCustomLevelId = null
+    level.currentLevel = lvl
+  }
 
+  fuses.splice(0,fuses.length)
+  fuse = null
   for (let objectArray of objectArrays) {
     objectArray.splice(0,objectArray.length)
   }
@@ -2586,28 +3114,16 @@ function loadLevel(lvl) {
       continue
     }
 
-    const classes = {
-      'Tile': Tile,
-      'Hazard': Hazard,
-      'Obstruction': Obstruction,
-      'Bomb': Bomb,
-      'FuseAttachment': FuseAttachment,
-      'Door': Door,
-      'Exit': Exit,
-      'Button': Button,
-      'Switch': Switch,
-      'LaserCannon': LaserCannon,
-      'Sensor': Sensor
-    };
+    const classes = getLevelObjectConstructors()
 
     object = new classes[constructor](data.gridX*gridSize,data.gridY*gridSize);
     if (data.orientation) {
       object.orientation = data.orientation
     }
-    if (data.id) {
+    if (data.id !== undefined) {
       object.id = data.id
     }
-    if (data.normallyActive) {
+    if (data.normallyActive !== undefined) {
       object.normallyActive = data.normallyActive
     }
 
@@ -2797,6 +3313,10 @@ function SetMode(mode) {
   if (mode == 4) {
     timer.pause()
   }
+  if (mode == 3 || mode == 4) {
+    fuses.splice(0,fuses.length)
+    fuse = null
+  }
 
   MODE = mode
 
@@ -2882,7 +3402,46 @@ function undo() {
   GAMEOVER = false
 }
 
+function keyTyped() {
+  if (!levelNameEditing || level.name.length >= 50 || key.length !== 1) {
+    return
+  }
+  if (key >= ' ') {
+    level.name += key
+  }
+  return false
+}
+
 function keyPressed(event) {
+
+  if (editorLoadMenuOpen) {
+    if (key === 'Escape') {
+      editorLoadMenuOpen = false
+    } else if (keyCode === LEFT_ARROW && editorLoadPage > 0) {
+      editorLoadPage--
+    } else if (keyCode === RIGHT_ARROW && (editorLoadPage+1)*8 < savedCustomLevels.length) {
+      editorLoadPage++
+    }
+    return
+  }
+
+  if (levelNameEditing) {
+    if (keyCode === BACKSPACE) {
+      level.name = level.name.slice(0,-1)
+      event.preventDefault()
+    } else if (key === 'Enter' || key === 'Escape') {
+      levelNameEditing = false
+      if (!level.name.trim()) {
+        level.name = "Untitled"
+      }
+    }
+    return
+  }
+
+  const target = event.target
+  if (target && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.tagName))) {
+    return
+  }
 
   // note to self: deze zorgen ervoor dat de website niet scrollt
   if (key === ' ' || keyCode == '37' || keyCode == '38' || keyCode == '39' || keyCode == '40') {
@@ -2908,7 +3467,7 @@ function keyPressed(event) {
   if (key == 'Tab') {
     printLevel()
   }
-  if (key == 'Delete' && (MODE == 3 || MODE == 4)) {
+  if (key == 'Delete' && (MODE == 3 || MODE == 4) && level.currentLevel !== "Custom") {
     loadLevel(0)
     SetMode(3)
   }
